@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.GestionUsuarioFragment">
+    tools:context=".ui.InscripcionFragment">
 
     <TextView
         android:id="@+id/titulo"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="40dp"
-        android:text="Gestión de Personas"
+        android:text="INSCRIPCIÓN"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:hint="Apellidos"
         android:inputType="text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        app:layout_constraintTop_toBottomOf="@+id/nombre" />
 
     <EditText
         android:id="@+id/fecha_nac"
@@ -52,7 +52,7 @@
         android:inputType="date"
         android:hint="Fecha de Nacimiento"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/apellidos" />
+        app:layout_constraintTop_toBottomOf="@+id/email" />
 
     <Spinner
         android:id="@+id/spinner_equipos"
@@ -114,7 +114,7 @@
         android:inputType="text"
         android:hint="Email"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nombre" />
+        app:layout_constraintTop_toBottomOf="@+id/apellidos" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

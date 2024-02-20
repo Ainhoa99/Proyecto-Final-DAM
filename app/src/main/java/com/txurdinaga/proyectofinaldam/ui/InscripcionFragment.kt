@@ -9,12 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionUsuarioBinding
+import com.txurdinaga.proyectofinaldam.databinding.FragmentInscripcionBinding
 
 
-class GestionUsuarioFragment : Fragment() {
+class InscripcionFragment : Fragment() {
 
-    private var _binding: FragmentGestionUsuarioBinding? = null
+    private var _binding: FragmentInscripcionBinding? = null
     private val binding get() = _binding!!
     private val pickImage =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -47,12 +47,8 @@ class GestionUsuarioFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentGestionUsuarioBinding.inflate(layoutInflater, container, false)
-
-
+        _binding = FragmentInscripcionBinding.inflate(layoutInflater, container, false)
 
         return binding.root
     }
-
-
 }

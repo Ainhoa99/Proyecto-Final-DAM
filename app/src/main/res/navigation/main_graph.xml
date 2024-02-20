@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/gestionUsuarioFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.GestionUsuarioFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
         android:label="fragment_gestion_usuario"
-        tools:layout="@layout/fragment_gestion_usuario" />
+        tools:layout="@layout/fragment_inscripcion" />
 </navigation>
