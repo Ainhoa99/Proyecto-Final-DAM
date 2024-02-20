@@ -6,10 +6,6 @@
     app:startDestination="@id/principalFragment">
 
     <fragment
-        android:id="@+id/principalFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.PrincipalFragment"
-        android:label="PrincipalFragment" />
-    <fragment
         android:id="@+id/inscripcionFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
         android:label="fragment_inscripcion"
@@ -30,27 +26,38 @@
         android:label="fragment_contacto"
         tools:layout="@layout/fragment_contacto" />
     <fragment
-        android:id="@+id/personalFragment"
+        android:id="@+id/personalFragment2"
         android:name="com.txurdinaga.proyectofinaldam.ui.PersonalFragment"
-        android:label="PersonalFragment" />
+        android:label="fragment_personal"
+        tools:layout="@layout/fragment_personal" />
     <fragment
-        android:id="@+id/loginFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.LoginFragment"
-        android:label="LoginFragment" />
-    <fragment
-        android:id="@+id/fotosFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.FotosFragment"
-        android:label="FotosFragment" />
-    <fragment
-        android:id="@+id/informacionFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.InformacionFragment"
-        android:label="InformacionFragment" />
-    <fragment
-        android:id="@+id/colaboradoresFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.ColaboradoresFragment"
-        android:label="ColaboradoresFragment" />
-    <fragment
-        android:id="@+id/calendarioFragment"
+        android:id="@+id/calendarioFragment2"
         android:name="com.txurdinaga.proyectofinaldam.ui.CalendarioFragment"
-        android:label="CalendarioFragment" />
+        android:label="fragment_calendario"
+        tools:layout="@layout/fragment_calendario" />
+    <fragment
+        android:id="@+id/colaboradoresFragment2"
+        android:name="com.txurdinaga.proyectofinaldam.ui.ColaboradoresFragment"
+        android:label="fragment_colaboradores"
+        tools:layout="@layout/fragment_colaboradores" />
+    <fragment
+        android:id="@+id/fotosFragment2"
+        android:name="com.txurdinaga.proyectofinaldam.ui.FotosFragment"
+        android:label="fragment_fotos"
+        tools:layout="@layout/fragment_fotos" />
+    <fragment
+        android:id="@+id/informacionFragment2"
+        android:name="com.txurdinaga.proyectofinaldam.ui.InformacionFragment"
+        android:label="fragment_informacion"
+        tools:layout="@layout/fragment_informacion" />
+    <fragment
+        android:id="@+id/loginFragment2"
+        android:name="com.txurdinaga.proyectofinaldam.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/principalFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.PrincipalFragment"
+        android:label="fragment_principal"
+        tools:layout="@layout/fragment_principal" />
 </navigation>
