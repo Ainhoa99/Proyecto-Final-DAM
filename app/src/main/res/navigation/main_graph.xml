@@ -3,11 +3,54 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/gestionUsuarioFragment">
+    app:startDestination="@id/principalFragment">
 
     <fragment
-        android:id="@+id/gestionUsuarioFragment"
+        android:id="@+id/principalFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.PrincipalFragment"
+        android:label="PrincipalFragment" />
+    <fragment
+        android:id="@+id/inscripcionFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
-        android:label="fragment_gestion_usuario"
+        android:label="fragment_inscripcion"
         tools:layout="@layout/fragment_inscripcion" />
+    <fragment
+        android:id="@+id/gestionPartidosFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionPartidosFragment"
+        android:label="fragment_gestion_partidos"
+        tools:layout="@layout/fragment_gestion_partidos" />
+    <fragment
+        android:id="@+id/gestionEquiposFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionEquiposFragment"
+        android:label="fragment_gestion_equipos"
+        tools:layout="@layout/fragment_gestion_equipos" />
+    <fragment
+        android:id="@+id/contactoFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.ContactoFragment"
+        android:label="fragment_contacto"
+        tools:layout="@layout/fragment_contacto" />
+    <fragment
+        android:id="@+id/personalFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.PersonalFragment"
+        android:label="PersonalFragment" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.LoginFragment"
+        android:label="LoginFragment" />
+    <fragment
+        android:id="@+id/fotosFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.FotosFragment"
+        android:label="FotosFragment" />
+    <fragment
+        android:id="@+id/informacionFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.InformacionFragment"
+        android:label="InformacionFragment" />
+    <fragment
+        android:id="@+id/colaboradoresFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.ColaboradoresFragment"
+        android:label="ColaboradoresFragment" />
+    <fragment
+        android:id="@+id/calendarioFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.CalendarioFragment"
+        android:label="CalendarioFragment" />
 </navigation>
