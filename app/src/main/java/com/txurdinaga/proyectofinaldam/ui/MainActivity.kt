@@ -7,10 +7,11 @@ import android.provider.MediaStore
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
+import com.txurdinaga.proyectofinaldam.databinding.FragmentUsuariosBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: FragmentUsuariosBinding
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = FragmentUsuariosBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.btnSelectImage.setOnClickListener {
