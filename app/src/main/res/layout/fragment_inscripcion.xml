@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:id="@+id/login"
+    android:id="@+id/inscripcion"
     tools:context=".ui.InscripcionFragment">
 
 
