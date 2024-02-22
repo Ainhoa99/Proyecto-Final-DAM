@@ -26,21 +26,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Normativa1" />
+                android:text="Normativa1"
+                app:cornerRadius="8dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"/>
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:id="@+id/btn_pdf2"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Normativa2" />
+                android:text="Normativa2"
+                app:cornerRadius="8dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"/>
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:id="@+id/btn_pdf3"
                 android:layout_width="wrap_content"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Normativa3" />
+                android:text="Normativa3"
+                app:cornerRadius="8dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"/>
         </LinearLayout>
 
 
@@ -62,14 +71,14 @@
             android:textSize="20dip" />
 
         <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/Widget.Material3.Button"
             android:id="@+id/btn_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="20dp"
-            android:text="Acceder" />
+            android:text="Siguiente" />
 
     </LinearLayout>
 </LinearLayout>

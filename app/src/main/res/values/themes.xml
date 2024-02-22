@@ -6,4 +6,8 @@
     </style>
 
     <style name="Theme.ProyectoFinalDam" parent="Base.Theme.ProyectoFinalDam" />
+
+    <style name="HelperTextRed" parent="TextAppearance.Design.HelperText">
+        <item name="android:textColor">@color/red</item> <!-- Cambia "@color/red" al color rojo deseado -->
+    </style>
 </resources>
