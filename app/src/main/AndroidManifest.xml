@@ -12,9 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ProyectoFinalDam"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.AjustesFragment"
-            android:exported="false" />
+
         <activity
             android:name=".ui.MainActivity"
             android:exported="true">
