@@ -1,0 +1,69 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/principalFragment"
+        android:icon="@drawable/menu_hamburguesa"
+        android:title="Inicio" />
+
+    <item
+        android:id="@+id/menu_equipos"
+        android:title="Equipos">
+
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/equipoTecnicoFragment"
+                    android:icon="@drawable/ic_launcher_foreground"
+                    android:title="Equipo Técnico" />
+
+                <item
+                    android:id="@+id/jugadoresFragment"
+                    android:icon="@drawable/ic_launcher_foreground"
+                    android:title="Jugadores/as" />
+
+                <item
+                    android:id="@+id/calendarioFragment"
+                    android:icon="@drawable/ic_launcher_foreground"
+                    android:title="Calendario" />
+
+                <item
+                    android:id="@+id/fotosFragment"
+                    android:icon="@drawable/ic_launcher_foreground"
+                    android:title="Fotos" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/informacionFragment2"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Normativa" />
+
+    <item
+        android:id="@+id/gestionPartidosFragment"
+        android:icon="@drawable/ic_launcher_background"
+        android:title="GPartidos" />
+
+    <item
+        android:id="@+id/gestionEquiposFragment"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="GEquipos" />
+
+    <item
+        android:id="@+id/colaboradoresFragment2"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Colaboradores" />
+
+    <item
+        android:title=""
+        android:icon="@drawable/ic_launcher_foreground">
+
+        <menu>
+            <item
+                android:id="@+id/AjustesFragment"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="Ajustes" />
+        </menu>
+    </item>
+
+</menu>

@@ -59,5 +59,9 @@
         android:id="@+id/principalFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.PrincipalFragment"
         android:label="fragment_principal"
-        tools:layout="@layout/fragment_principal" />
+        tools:layout="@layout/fragment_principal" >
+        <action
+            android:id="@+id/action_principalFragment_to_contactoFragment"
+            app:destination="@id/contactoFragment" />
+    </fragment>
 </navigation>
