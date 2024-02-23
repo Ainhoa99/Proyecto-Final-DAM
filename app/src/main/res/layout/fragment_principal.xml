@@ -12,25 +12,42 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="480dp"
+        android:layout_height="558dp"
         android:layout_marginTop="5dp"
         android:layout_weight="1"
         app:layoutManager="LinearLayoutManager" />
     <!-- Buttons -->
 
 
-    <Button
-        android:id="@+id/contacto"
-        style="@style/Widget.Material3.Button.ElevatedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="270dp"
-        android:text="Contacto" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/prueba"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Contacto" />
+
+        <Button
+            android:id="@+id/contacto"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="90dp"
+            android:text="Contacto" />
+
+    </LinearLayout>
+
 
     <ViewFlipper
         android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:layout_height="250dp"
+        android:layout_marginTop="0dp"
+        android:layout_height="50dp"
         android:autoStart="true"
         android:flipInterval="2000"
         android:inAnimation="@android:anim/slide_in_left"
@@ -39,14 +56,23 @@
         <ImageView
             android:id="@+id/img1"
             android:layout_width="wrap_content"
-            android:layout_height="149dp"
-            android:src="@drawable/confirmar" />
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/alkihaizea" />
 
         <ImageView
             android:id="@+id/img2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/cancelar" />
+            android:scaleType="fitCenter"
+            android:src="@drawable/kiram" />
+
+        <ImageView
+            android:id="@+id/img3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:src="@drawable/motobussines" />
     </ViewFlipper>
 
 

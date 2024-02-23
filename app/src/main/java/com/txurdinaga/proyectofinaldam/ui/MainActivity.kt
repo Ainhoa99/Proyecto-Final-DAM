@@ -24,12 +24,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
         drawerLayout = binding.drawerLayout
         initNavigation()
 
 
-        supportActionBar?.title = "Unkina SBT"
+        supportActionBar?.apply {
+            setDisplayShowHomeEnabled(true)
+            setDisplayUseLogoEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            setCustomView(R.layout.custom_action_bar)
+            setDisplayShowCustomEnabled(true)
+        }
     }
 
     private fun initNavigation() {
