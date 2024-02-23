@@ -55,6 +55,11 @@
         android:title="Colaboradores" />
 
     <item
+        android:id="@+id/inscripcionFragment"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="Inscripciones" />
+
+    <item
         android:title=""
         android:icon="@drawable/ic_launcher_foreground">
 
