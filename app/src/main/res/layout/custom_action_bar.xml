@@ -8,19 +8,18 @@
         android:id="@+id/action_bar_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
+        android:textColor="@color/black"
         android:textSize="18sp"
         android:textStyle="bold"
         android:layout_gravity="center_vertical"
         android:layout_weight="1"
-        android:textColorHint="@color/black"
         android:text="Unkina SBT"/>
 
     <ImageView
         android:id="@+id/action_bar_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="89dp"
+        android:layout_height="115dp"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/logo" />
+        android:src="@drawable/unkina_sbt_logo" />
 
 </LinearLayout>
