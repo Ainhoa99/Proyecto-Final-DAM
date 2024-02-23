@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/inscripcion"
     tools:context=".ui.GestionEquiposFragment">
 
-    <TextView
-        android:id="@+id/titulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="40dp"
-        android:text="GESTIÓN DE EQUIPOS"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+        <Button
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:id="@+id/btn_alta"
+            android:layout_width="275dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Alta"
+            app:cornerRadius="8dp"/>
+        <Button
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:id="@+id/btn_baja"
+            android:layout_width="275dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Baja"
+            app:cornerRadius="8dp"/>
+        <Button
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:id="@+id/btn_modificacion"
+            android:layout_width="275dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Modificación"
+            app:cornerRadius="8dp"/>
+    </LinearLayout>
+</LinearLayout>
+
+
+
