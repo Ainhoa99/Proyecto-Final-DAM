@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity() {
 
 
         supportActionBar?.apply {
+            title="Unkina SBT"
             setDisplayShowHomeEnabled(true)
             setDisplayUseLogoEnabled(true)
             setDisplayHomeAsUpEnabled(true)
