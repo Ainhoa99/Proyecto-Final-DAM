@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/principalFragment">
+    app:startDestination="@id/inscripcionDosFragment">
 
     <fragment
-        android:id="@+id/inscripcionFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
-        android:label="fragment_inscripcion"
-        tools:layout="@layout/fragment_inscripcion" />
+        android:id="@+id/inscripcionDosFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionDosFragment"
+        android:label="fragment_inscripcion_dos"
+        tools:layout="@layout/fragment_inscripcion_dos" />
     <fragment
         android:id="@+id/gestionPartidosFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionPartidosFragment"
@@ -64,4 +64,10 @@
             android:id="@+id/action_principalFragment_to_contactoFragment"
             app:destination="@id/contactoFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/inscripcionFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
+        android:label="fragment_inscripcion"
+        tools:layout="@layout/fragment_inscripcion" />
 </navigation>
