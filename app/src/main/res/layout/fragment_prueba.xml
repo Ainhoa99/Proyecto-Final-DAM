@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ContactoFragment"
-    android:orientation="horizontal">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.PruebaFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +17,7 @@
             android:id="@+id/textViewContacto"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
-            android:text="CONTACTO"
+            android:text="PRUEBA"
             android:textSize="34sp"
             android:textStyle="bold"
             android:paddingBottom="15dp"/>
@@ -26,8 +25,7 @@
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/emailLayout"
             android:layout_width="275dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center_horizontal"
+            android:layout_height="70dp"
             android:hint="E-mail*"
             app:errorEnabled="true"
             android:layout_marginBottom="10dp">
@@ -41,35 +39,52 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/asuntoLayout"
+            android:id="@+id/nombreLayout"
             android:layout_width="275dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center_horizontal"
-            android:hint="Asunto*"
+            android:layout_height="70dp"
+            android:hint="Nombre Jugador/a*"
             app:errorEnabled="true"
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/asunto"
+                android:id="@+id/nombre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="text" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/mensajeLayout"
+            android:id="@+id/textInputLayoutDate"
             android:layout_width="275dp"
-            android:layout_height="250dp"
-            android:hint="Mensaje*"
-            app:errorEnabled="true"
+            android:layout_height="70dp"
+            android:hint="Selecciona una fecha*"
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/mensaje"
+                android:id="@+id/textInputEditTextDate"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="text" />
+                android:focusable="false"
+                android:inputType="none"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tlfnLayout"
+            android:layout_width="275dp"
+            android:layout_height="70dp"
+            android:hint="Número de Teléfono*"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tlfn"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="number" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,11 +94,9 @@
             android:layout_width="275dp"
             android:layout_height="70dp"
             android:text="ENVIAR"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="20dp"/>
 
 
     </LinearLayout>
-
-
 
 </LinearLayout>
