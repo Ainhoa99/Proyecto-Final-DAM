@@ -3,6 +3,9 @@ plugins {
     id("org.jetbrains.kotlin.android")
 
     id("androidx.navigation.safeargs.kotlin")
+
+    //room
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -56,5 +59,10 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
 
     implementation ("com.google.android.material:material:1.5.0")
+
+    //room
+    val room_version = "2.6.0"
+    implementation("androidx.room:room-runtime:$room_version")
+    ksp("androidx.room:room-compiler:$room_version")
 
 }
