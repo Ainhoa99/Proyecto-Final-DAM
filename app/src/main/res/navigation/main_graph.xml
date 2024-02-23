@@ -3,7 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
+<<<<<<< HEAD
     app:startDestination="@id/gestionEquiposFragment">
+=======
+    app:startDestination="@id/principalFragment">
+>>>>>>> 60d64a8a225c40094571fd6736459c5356820c18
 
     <fragment
         android:id="@+id/inscripcionDosFragment"
@@ -59,7 +63,12 @@
         android:id="@+id/principalFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.PrincipalFragment"
         android:label="fragment_principal"
-        tools:layout="@layout/fragment_principal" />
+        tools:layout="@layout/fragment_principal" >
+        <action
+            android:id="@+id/action_principalFragment_to_contactoFragment"
+            app:destination="@id/contactoFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/inscripcionFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"

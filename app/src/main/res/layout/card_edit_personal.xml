@@ -64,6 +64,7 @@
                 android:orientation="horizontal"
                 android:gravity="center"
                 android:layout_marginBottom="10dp">
+
                 <TextView
                     android:id="@+id/textViewFechaTitulo"
                     android:layout_width="wrap_content"
@@ -72,21 +73,13 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/fecha_nacLayout"
+                <TextView
+                    android:id="@+id/textViewFecha"
                     android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:hint=""
-                    android:gravity="center"
-                    app:errorEnabled="true">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/fecha_nac"
-                        android:layout_width="match_parent"
-                        android:layout_height="40dp"
-                        android:inputType="date" />
-
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="wrap_content"
+                    android:text="00/00/0000 "
+                    android:textSize="20sp"
+                    android:textStyle="" />
 
             </LinearLayout>
 
