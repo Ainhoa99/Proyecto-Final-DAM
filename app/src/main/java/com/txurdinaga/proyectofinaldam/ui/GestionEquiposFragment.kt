@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionEquiposBinding
 
@@ -73,12 +74,20 @@ class GestionEquiposFragment : Fragment() {
 
     private fun showEquiposDialog(selectedEquipo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_equipo, null)
+
         val equipoName = dialogView.findViewById<EditText>(R.id.name)
         val equipoLocation = dialogView.findViewById<EditText>(R.id.location)
         val equipoCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.category)
         val equipoLeague = dialogView.findViewById<AutoCompleteTextView>(R.id.league)
+        val equipoNameLayout = dialogView.findViewById<TextInputLayout>(R.id.nameLayout)
+        val equipoLocationLayout = dialogView.findViewById<TextInputLayout>(R.id.locationLayout)
+        val equipoCategoryLayout = dialogView.findViewById<TextInputLayout>(R.id.categoryLayout)
+        val equipoLeagueLayout = dialogView.findViewById<TextInputLayout>(R.id.leagueLayout)
+
+        var equipo: kkEquiposEntity? = null
         var equipoCategorySelected: String? = null
         var equipoLigaSelected: String? = null
+        var dialogTitle = "Alta de Equipo"
 
         // Adaptador para desplegables de categoria y liga
         var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoriasNameList)
@@ -87,16 +96,12 @@ class GestionEquiposFragment : Fragment() {
         equipoLeague.setAdapter(adapter)
 
 
-        if(selectedEquipo != "alta"){
-            //Aqui habra que hacer una llamada a la bbdd con el nombre del equipo para traer
-            //sus datos y cambiarlo
-            val equipo = database.kkequipostDao.getEquiposByName(selectedEquipo)
+        if(selectedEquipo != "alta"){//no es alta, MODIFICACION
+            equipo = database.kkequipostDao.getEquiposByName(selectedEquipo)
+            dialogTitle = "Modificación de Equipo"
 
             equipoName.setText(equipo.name)
             equipoLocation.setText(equipo.campo)
-            equipoCategory.setText(equipo.categoria.toString())
-            equipoLeague.setText(equipo.liga.toString())
-
         }
         equipoCategory.setOnItemClickListener { parent, view, position, id ->
             equipoCategorySelected = parent.getItemAtPosition(position).toString()
@@ -110,12 +115,55 @@ class GestionEquiposFragment : Fragment() {
         }
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Alta de Equipo")
+            .setTitle(dialogTitle)
             .setView(dialogView)
             .setPositiveButton("Aceptar") { dialog, _ ->
-                database.kkequipostDao.insert(
-                    kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1")
-                )
+                var allFieldsFilled = true
+
+                if (equipoName.text.toString().trim().isEmpty()) {
+                    equipoNameLayout.error = "Escribe un nombre"
+                    equipoNameLayout.requestFocus()
+                    allFieldsFilled = false
+                }else{//comprobar que esta nombre no este guardado ya
+                    val estaEquipo = database.kkequipostDao.getEquiposByName(equipoName.text.toString())
+                    if(estaEquipo != null){
+                        equipoNameLayout.error = "Ya existe este equipo"
+                        equipoNameLayout.requestFocus()
+                        allFieldsFilled = false
+                    }
+                }
+
+                if (equipoLocation.text.toString().trim().isEmpty()) {
+                    equipoLocationLayout.error = "Escribe un campo"
+                    equipoLocationLayout.requestFocus()
+                    allFieldsFilled = false
+                }
+                if (equipoCategorySelected == null) {
+                    equipoCategoryLayout.error = "Selecciona una categoria"
+                    equipoCategoryLayout.requestFocus()
+                    allFieldsFilled = false
+                }
+                if (equipoLigaSelected == null) {
+                    equipoLeagueLayout.error = "Selecciona una liga"
+                    equipoLeagueLayout.requestFocus()
+                    allFieldsFilled = false
+                }
+
+                if(allFieldsFilled){
+                    if (selectedEquipo == "alta") {
+                        database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1"))
+                    } else {
+                        if (equipo != null) {
+                            equipo.name = equipoName.text.toString()
+                            equipo.campo = equipoLocation.text.toString()
+                            equipo.categoria = equipoCategorySelected?.toInt()
+                            equipo.liga = equipoLigaSelected?.toInt()
+                            equipo.escudo = "EscudoNew"
+                            database.kkequipostDao.update(equipo)
+                        }
+                    }
+                    dialog.dismiss()
+                }
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
@@ -150,7 +198,7 @@ class GestionEquiposFragment : Fragment() {
         lv_equiposList.adapter = equiposListAdapter
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Baja de Equipo")
+            .setTitle("Seleccione el equipo")
             .setView(dialogView)
             .setPositiveButton("Aceptar") { dialog, _ -> dialog.cancel() }
             .create()
@@ -196,7 +244,10 @@ class GestionEquiposFragment : Fragment() {
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("¿Eliminar el equipo?")
             .setView(dialogView)
-            .setPositiveButton("Aceptar") { dialog, _ -> dialog.cancel() }
+            .setPositiveButton("Aceptar") {dialog, _ ->
+                val equipo = database.kkequipostDao.getEquiposByName(selectedEquipo)
+                database.kkequipostDao.delete(equipo)
+            }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
