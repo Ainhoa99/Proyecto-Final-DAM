@@ -11,6 +11,7 @@ import android.widget.AutoCompleteTextView
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.room.Room
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -74,6 +75,8 @@ class GestionEquiposFragment : Fragment() {
 
     private fun showEquiposDialog(selectedEquipo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_equipo, null)
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView)
 
         val equipoName = dialogView.findViewById<EditText>(R.id.name)
         val equipoLocation = dialogView.findViewById<EditText>(R.id.location)
@@ -96,13 +99,20 @@ class GestionEquiposFragment : Fragment() {
         equipoLeague.setAdapter(adapter)
 
 
-        if(selectedEquipo != "alta"){//no es alta, MODIFICACION
+        if(selectedEquipo != "alta"){//no es alta, es MODIFICACION
             equipo = database.kkequipostDao.getEquiposByName(selectedEquipo)
             dialogTitle = "Modificación de Equipo"
 
             equipoName.setText(equipo.name)
             equipoLocation.setText(equipo.campo)
         }
+
+        builder.setTitle(dialogTitle)
+        builder.setPositiveButton("Insertar", null)
+        builder.setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
+        val dialog = builder.create()
+        dialog.show()
+
         equipoCategory.setOnItemClickListener { parent, view, position, id ->
             equipoCategorySelected = parent.getItemAtPosition(position).toString()
             val categoria = categoriasList.find { it.name == equipoCategorySelected }
@@ -114,61 +124,56 @@ class GestionEquiposFragment : Fragment() {
             equipoLigaSelected = liga?.id.toString()
         }
 
-        val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle(dialogTitle)
-            .setView(dialogView)
-            .setPositiveButton("Aceptar") { dialog, _ ->
-                var allFieldsFilled = true
 
-                if (equipoName.text.toString().trim().isEmpty()) {
-                    equipoNameLayout.error = "Escribe un nombre"
+        val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+        positiveButton.setOnClickListener {
+            var allFieldsFilled = true
+
+            if (equipoName.text.toString().trim().isEmpty()) {
+                equipoNameLayout.error = "Escribe un nombre"
+                equipoNameLayout.requestFocus()
+                allFieldsFilled = false
+            }else{//comprobar que esta nombre no este guardado ya
+                val estaEquipo = database.kkequipostDao.getEquiposByName(equipoName.text.toString())
+                if(estaEquipo != null && selectedEquipo == "alta"){
+                    equipoNameLayout.error = "Ya existe este equipo"
                     equipoNameLayout.requestFocus()
                     allFieldsFilled = false
-                }else{//comprobar que esta nombre no este guardado ya
-                    val estaEquipo = database.kkequipostDao.getEquiposByName(equipoName.text.toString())
-                    if(estaEquipo != null){
-                        equipoNameLayout.error = "Ya existe este equipo"
-                        equipoNameLayout.requestFocus()
-                        allFieldsFilled = false
-                    }
-                }
-
-                if (equipoLocation.text.toString().trim().isEmpty()) {
-                    equipoLocationLayout.error = "Escribe un campo"
-                    equipoLocationLayout.requestFocus()
-                    allFieldsFilled = false
-                }
-                if (equipoCategorySelected == null) {
-                    equipoCategoryLayout.error = "Selecciona una categoria"
-                    equipoCategoryLayout.requestFocus()
-                    allFieldsFilled = false
-                }
-                if (equipoLigaSelected == null) {
-                    equipoLeagueLayout.error = "Selecciona una liga"
-                    equipoLeagueLayout.requestFocus()
-                    allFieldsFilled = false
-                }
-
-                if(allFieldsFilled){
-                    if (selectedEquipo == "alta") {
-                        database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1"))
-                    } else {
-                        if (equipo != null) {
-                            equipo.name = equipoName.text.toString()
-                            equipo.campo = equipoLocation.text.toString()
-                            equipo.categoria = equipoCategorySelected?.toInt()
-                            equipo.liga = equipoLigaSelected?.toInt()
-                            equipo.escudo = "EscudoNew"
-                            database.kkequipostDao.update(equipo)
-                        }
-                    }
-                    dialog.dismiss()
                 }
             }
-            .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
-            .create()
-        dialog.show()
 
+            if (equipoLocation.text.toString().trim().isEmpty()) {
+                equipoLocationLayout.error = "Escribe un campo"
+                equipoLocationLayout.requestFocus()
+                allFieldsFilled = false
+            }
+            if (equipoCategorySelected == null) {
+                equipoCategoryLayout.error = "Selecciona una categoria"
+                equipoCategoryLayout.requestFocus()
+                allFieldsFilled = false
+            }
+            if (equipoLigaSelected == null) {
+                equipoLeagueLayout.error = "Selecciona una liga"
+                equipoLeagueLayout.requestFocus()
+                allFieldsFilled = false
+            }
+
+            if(allFieldsFilled){
+                if (selectedEquipo == "alta") {
+                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1"))
+                } else {
+                    if (equipo != null) {
+                        equipo.name = equipoName.text.toString()
+                        equipo.campo = equipoLocation.text.toString()
+                        equipo.categoria = equipoCategorySelected?.toInt()
+                        equipo.liga = equipoLigaSelected?.toInt()
+                        equipo.escudo = "EscudoNew"
+                        database.kkequipostDao.update(equipo)
+                    }
+                }
+                dialog.dismiss()
+            }
+        }
     }
 
     private fun showModEquiposDialog(){
