@@ -3,7 +3,8 @@
     <item
         android:id="@+id/principalFragment"
         android:icon="@drawable/inicio"
-        android:title="Inicio" />
+        android:title="Inicio"
+        android:iconTint="@color/C3"/>
 
     <item
         android:id="@+id/menu_equipos"
@@ -13,12 +14,12 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/equipoTecnicoFragment"
-                    android:icon="@drawable/ic_launcher_foreground"
-                    android:title="Equipo Técnico" />
+                    android:icon="@drawable/equipo_tecnico"
+                    android:title="Equipo Técnico"/>
 
                 <item
                     android:id="@+id/jugadoresFragment"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/jugador"
                     android:title="Jugadores/as" />
 
                 <item
@@ -41,12 +42,12 @@
 
     <item
         android:id="@+id/gestionPartidosFragment"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/gpartido"
         android:title="GPartidos" />
 
     <item
         android:id="@+id/gestionEquiposFragment"
-        android:icon="@drawable/ic_launcher_foreground"
+        android:icon="@drawable/equipo"
         android:title="GEquipos" />
 
     <item

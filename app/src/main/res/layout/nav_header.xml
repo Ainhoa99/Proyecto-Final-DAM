@@ -6,7 +6,7 @@
     android:layout_height="80dp"
     android:gravity="bottom"
     android:padding="16dp"
-    android:background="@color/purple_700"
+    android:background="@color/C3"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView

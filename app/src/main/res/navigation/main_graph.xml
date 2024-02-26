@@ -66,13 +66,20 @@
         <action
             android:id="@+id/action_principalFragment_to_pruebaFragment"
             app:destination="@id/pruebaFragment" />
+        <action
+            android:id="@+id/action_principalFragment_to_inscripcionFragment"
+            app:destination="@id/inscripcionFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/inscripcionFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
         android:label="fragment_inscripcion"
-        tools:layout="@layout/fragment_inscripcion" />
+        tools:layout="@layout/fragment_inscripcion" >
+        <action
+            android:id="@+id/action_inscripcionFragment_to_inscripcionDosFragment"
+            app:destination="@id/inscripcionDosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/pruebaFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.PruebaFragment"
