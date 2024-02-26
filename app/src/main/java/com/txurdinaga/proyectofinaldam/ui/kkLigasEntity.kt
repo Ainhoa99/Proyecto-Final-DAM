@@ -13,12 +13,4 @@ data class kkLigasEntity(
 
     @ColumnInfo(name = "name")
     var name: String,
-
-    @ColumnInfo(name = "fase")
-    @NonNull
-    var fase: String,
-
-    @ColumnInfo(name = "grupo")
-    @NonNull
-    var grupo: String,
 )
