@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.core.content.FileProvider
 import java.io.File
 
-class Pdf(private val context: Context) {
+class Archivos(private val context: Context) {
     private var downloadID: Long = 0
 
     fun descargarPDF(url: String) {
@@ -55,7 +55,7 @@ class Pdf(private val context: Context) {
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
             context.startActivity(intent)
         } else {
-            Toast.makeText(context, "El archivo PDF no se encontrÃ³", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "El archivo PDF no se ha encontrado", Toast.LENGTH_SHORT).show()
         }
     }
 }
