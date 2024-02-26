@@ -49,6 +49,14 @@ class PrincipalFragment : Fragment() {
         }
 
 
+        binding.prueba.setOnClickListener {
+            findNavController().navigate(R.id.action_principalFragment_to_pruebaFragment)
+        }
+
+
+
+
+
     }
 
 

@@ -1,6 +1,8 @@
 package com.txurdinaga.proyectofinaldam.ui
 
 import android.os.Bundle
+import android.widget.ImageButton
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
@@ -35,6 +37,15 @@ class MainActivity : AppCompatActivity() {
             setDisplayHomeAsUpEnabled(true)
             setCustomView(R.layout.custom_action_bar)
             setDisplayShowCustomEnabled(true)
+        }
+
+
+        // Encuentra la imagen por su ID
+        var unkinaLogoImageView = findViewById<ImageView>(R.id.unkina_logo)
+
+        // Establece el OnClickListener para la imagen
+        unkinaLogoImageView.setOnClickListener {
+           // findNavController().navigate(R.id.)
         }
     }
 
