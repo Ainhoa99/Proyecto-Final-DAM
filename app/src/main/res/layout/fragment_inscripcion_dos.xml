@@ -118,7 +118,7 @@
             android:layout_width="275dp"
             android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:text="Certificado"
+            android:text="Certificado "
             app:cornerRadius="8dp"/>
 
         <Button

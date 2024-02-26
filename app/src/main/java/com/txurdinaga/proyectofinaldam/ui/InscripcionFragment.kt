@@ -1,24 +1,13 @@
 package com.txurdinaga.proyectofinaldam.ui
 
-import android.app.Activity
-import android.app.DownloadManager
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
-import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentInscripcionBinding
-import java.io.File
 
 
 class InscripcionFragment : Fragment() {
@@ -43,15 +32,19 @@ class InscripcionFragment : Fragment() {
         val url3 = "https://fen.org.es/MercadoAlimentosFEN/pdfs/manzana.pdf"
 
         binding.btnPdf1.setOnClickListener {
-            Pdf(requireContext()).descargarPDF(url1)
+            Archivos(requireContext()).descargarPDF(url1)
         }
 
         binding.btnPdf2.setOnClickListener {
-            Pdf(requireContext()).descargarPDF(url2)
+            Archivos(requireContext()).descargarPDF(url2)
         }
 
         binding.btnPdf3.setOnClickListener {
-            Pdf(requireContext()).descargarPDF(url3)
+            Archivos(requireContext()).descargarPDF(url3)
+        }
+
+        binding.btnNext.setOnClickListener {
+            findNavController().navigate(R.id.action_inscripcionFragment_to_inscripcionDosFragment)
         }
     }
 }
