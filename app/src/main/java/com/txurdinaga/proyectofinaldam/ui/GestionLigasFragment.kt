@@ -34,7 +34,7 @@ class GestionLigasFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Equipos"
+        binding.tvTitle.text = "Gestión de Ligas"
 
 
         //creamos la bbdd

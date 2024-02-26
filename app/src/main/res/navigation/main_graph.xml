@@ -85,15 +85,16 @@
     <fragment
         android:id="@+id/gestionLigasFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionLigasFragment"
-        android:label="GestionLigasFragment" />
+        android:label="GestionLigasFragment"
+        tools:layout="@layout/fragment_gestion"/>
     <fragment
         android:id="@+id/gestionCategoriasFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.util.GestionCategoriasFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionCategoriasFragment"
         android:label="fragment_gestion_categorias"
-        tools:layout="@layout/fragment_gestion_categorias" />
+        tools:layout="@layout/fragment_gestion" />
     <fragment
         android:id="@+id/gestionColaboradoresFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.util.GestionColaboradoresFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionColaboradoresFragment"
         android:label="fragment_gestion_colaboradores"
-        tools:layout="@layout/fragment_gestion_colaboradores" />
+        tools:layout="@layout/fragment_gestion" />
 </navigation>
