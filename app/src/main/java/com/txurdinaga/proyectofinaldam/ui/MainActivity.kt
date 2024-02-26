@@ -60,7 +60,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.inscripcionFragment,
                 R.id.gestionPartidosFragment,
                 R.id.colaboradoresFragment2,
-                R.id.informacionFragment2
+                R.id.informacionFragment2,
+                R.id.gestionLigasFragment,
+                R.id.gestionCategoriasFragment,
+                R.id.gestionColaboradoresFragment
+
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -73,7 +77,10 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.inscripcionFragment ||
                 destination.id == R.id.gestionPartidosFragment ||
                 destination.id == R.id.informacionFragment2 ||
-                destination.id == R.id.colaboradoresFragment2
+                destination.id == R.id.colaboradoresFragment2 ||
+                destination.id == R.id.gestionLigasFragment ||
+                destination.id == R.id.gestionCategoriasFragment ||
+                destination.id == R.id.gestionColaboradoresFragment
             ) {
                 supportActionBar?.title = "Unkina SBT" // Establecer el título deseado para los destinos específicos
             }

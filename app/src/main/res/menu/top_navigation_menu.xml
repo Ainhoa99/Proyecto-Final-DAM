@@ -51,6 +51,21 @@
         android:title="GEquipos" />
 
     <item
+        android:id="@+id/gestionCategoriasFragment"
+        android:icon="@drawable/gpartido"
+        android:title="GCategorias" />
+
+    <item
+        android:id="@+id/gestionColaboradoresFragment"
+        android:icon="@drawable/gpartido"
+        android:title="GColaboradores" />
+
+    <item
+        android:id="@+id/gestionLigasFragment"
+        android:icon="@drawable/gpartido"
+        android:title="GLigas" />
+
+    <item
         android:id="@+id/colaboradoresFragment2"
         android:icon="@drawable/ic_launcher_foreground"
         android:title="Colaboradores" />
