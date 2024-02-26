@@ -2,7 +2,7 @@
 
     <item
         android:id="@+id/principalFragment"
-        android:icon="@drawable/menu_hamburguesa"
+        android:icon="@drawable/inicio"
         android:title="Inicio" />
 
     <item
@@ -23,12 +23,12 @@
 
                 <item
                     android:id="@+id/calendarioFragment"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/calendar"
                     android:title="Calendario" />
 
                 <item
                     android:id="@+id/fotosFragment"
-                    android:icon="@drawable/ic_launcher_foreground"
+                    android:icon="@drawable/camera"
                     android:title="Fotos" />
             </group>
         </menu>
@@ -66,7 +66,7 @@
         <menu>
             <item
                 android:id="@+id/AjustesFragment"
-                android:icon="@drawable/ic_launcher_foreground"
+                android:icon="@drawable/ajustes"
                 android:title="Ajustes" />
         </menu>
     </item>

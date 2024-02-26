@@ -4,6 +4,7 @@
     <value>
       <entry key="app">
         <State>
+<<<<<<< HEAD
           <targetSelectedWithDropDown>
             <Target>
               <type value="QUICK_BOOT_TARGET" />
@@ -16,6 +17,20 @@
             </Target>
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-26T10:54:28.719869500Z" />
+=======
+          <runningDeviceTargetSelectedWithDropDown>
+            <Target>
+              <type value="RUNNING_DEVICE_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\ik_2DM3\.android\avd\Pixel_6_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-02-26T09:20:36.225120600Z" />
+>>>>>>> 748f2d8c39fffbd1729a576c5430b2cda5a87617
         </State>
       </entry>
     </value>

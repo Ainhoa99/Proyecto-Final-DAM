@@ -63,6 +63,9 @@
         <action
             android:id="@+id/action_principalFragment_to_contactoFragment"
             app:destination="@id/contactoFragment" />
+        <action
+            android:id="@+id/action_principalFragment_to_pruebaFragment"
+            app:destination="@id/pruebaFragment" />
     </fragment>
 
     <fragment
@@ -70,4 +73,9 @@
         android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionFragment"
         android:label="fragment_inscripcion"
         tools:layout="@layout/fragment_inscripcion" />
+    <fragment
+        android:id="@+id/pruebaFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.PruebaFragment"
+        android:label="fragment_prueba"
+        tools:layout="@layout/fragment_prueba" />
 </navigation>
