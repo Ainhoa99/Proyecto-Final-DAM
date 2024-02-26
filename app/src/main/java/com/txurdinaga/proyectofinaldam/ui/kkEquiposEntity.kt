@@ -37,6 +37,9 @@ data class kkEquiposEntity(
     var liga: Int?,
 
     @ColumnInfo(name = "escudo")
-    var escudo: String?
+    var escudo: String?,
+
+    @ColumnInfo(name = "isUnkina")
+    var isUnkina: Boolean
 
 )

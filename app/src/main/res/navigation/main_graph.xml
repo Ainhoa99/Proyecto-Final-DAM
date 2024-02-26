@@ -19,7 +19,7 @@
         android:id="@+id/gestionEquiposFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionEquiposFragment"
         android:label="fragment_gestion_equipos"
-        tools:layout="@layout/fragment_gestion_equipos" />
+        tools:layout="@layout/fragment_gestion" />
     <fragment
         android:id="@+id/contactoFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.ContactoFragment"

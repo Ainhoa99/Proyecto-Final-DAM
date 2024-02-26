@@ -13,8 +13,4 @@ data class kkCategoryEntity(
 
     @ColumnInfo(name = "name")
     var name: String,
-
-    @ColumnInfo(name = "genero")
-    @NonNull
-    var genero: String,
 )

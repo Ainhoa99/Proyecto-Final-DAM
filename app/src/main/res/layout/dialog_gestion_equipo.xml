@@ -77,4 +77,10 @@
         android:layout_gravity="center_horizontal"
         android:text="Escudo *"
         app:cornerRadius="8dp"/>
+    <CheckBox
+        android:id="@+id/check_isUnkina"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Equipo de Unkina"/>
 </LinearLayout>
