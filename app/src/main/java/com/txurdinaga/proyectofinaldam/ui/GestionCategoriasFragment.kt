@@ -13,7 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
-import com.txurdinaga.proyectofinaldam.ui.util.SearchList
+import com.txurdinaga.proyectofinaldam.util.SearchList
 
 
 class GestionCategoriasFragment : Fragment() {
