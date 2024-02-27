@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     id("androidx.navigation.safeargs.kotlin")
 
     //room
@@ -44,6 +44,7 @@ android {
 }
 
 dependencies {
+    val ktor_version = "2.3.8"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -65,5 +66,10 @@ dependencies {
     val room_version = "2.6.0"
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
+
+    // ktor
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
 }
