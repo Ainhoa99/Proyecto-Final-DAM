@@ -54,7 +54,7 @@ class GestionEquiposFragment : Fragment() {
         ligasList = database.kkligasDao.getAllTeachers()
         ligasNameList = ligasList.map { it.name }
 
-        //insertMockData()
+        insertMockData()
 
 
         binding.btnAlta.setOnClickListener() {
