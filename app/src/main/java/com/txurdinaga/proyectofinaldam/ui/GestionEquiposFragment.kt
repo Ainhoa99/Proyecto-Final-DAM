@@ -267,6 +267,18 @@ class GestionEquiposFragment : Fragment() {
         )
         equipos.forEach { database.kkequipostDao.insert(it) }
 
+        val fotos = listOf(
+            kkFotosEntity(title= "img_9116", temporada = "22-23", equipoId = 1, galeria = false),
+            kkFotosEntity( title = "img_9130", temporada = "23-24", equipoId = null, galeria = true),
+            kkFotosEntity(title = "img_9137", temporada = "22-23", equipoId = null, galeria = true),
+            kkFotosEntity(title = "img_9114", temporada = "23-24", equipoId = 3, galeria = false),
+            kkFotosEntity(title = "img_9362", temporada = "22-23", equipoId = 2, galeria = false),
+            kkFotosEntity(title = "img_9140", temporada = "24-25", equipoId = null, galeria = true),
+            kkFotosEntity(title = "img_9154", temporada = "22-23", equipoId = 3, galeria = false),
+            kkFotosEntity(title = "img_9159", temporada = "22-23", equipoId = 2, galeria = false),
+        )
+        fotos.forEach { database.kkfotosDao.insert(it) }
+
 
     }
 }

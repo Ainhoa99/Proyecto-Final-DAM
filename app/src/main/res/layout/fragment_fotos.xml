@@ -13,19 +13,36 @@
         android:orientation="vertical">
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/tfTemporadas"
+            android:id="@+id/tfSpinner"
             style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="50dp">
 
             <AutoCompleteTextView
-                android:id="@+id/temporadas"
+                android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
                 android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/msgFotosEmpty"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:text="No hay imagenes" />
+
+        <TextView
+            android:id="@+id/msgSelecciona"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:text="Selecciona una opción" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

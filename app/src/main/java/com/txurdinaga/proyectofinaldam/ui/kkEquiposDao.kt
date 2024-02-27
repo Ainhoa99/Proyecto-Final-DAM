@@ -28,4 +28,8 @@ interface kkEquiposDao {
 
     @Query("SELECT COUNT(*) FROM equipos WHERE name = :equiposName")
     fun countEquiposByName(equiposName: String): Int
+
+    @Query("SELECT * FROM equipos WHERE visible=true")
+    fun getVisibleEquipos(): List<kkEquiposEntity>
+
 }

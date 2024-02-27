@@ -122,12 +122,9 @@
             app:cornerRadius="8dp"/>
 
         <Button
-            style="@style/Widget.Material3.Button"
+            style="@style/AppButton"
             android:id="@+id/btn_inscribir"
-            android:layout_width="275dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
             android:text="Acceder" />
 
     </LinearLayout>
