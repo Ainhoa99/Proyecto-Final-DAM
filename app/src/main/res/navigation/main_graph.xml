@@ -41,7 +41,7 @@
         android:label="fragment_colaboradores"
         tools:layout="@layout/fragment_colaboradores" />
     <fragment
-        android:id="@+id/fotosFragment2"
+        android:id="@+id/fotosFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.FotosFragment"
         android:label="fragment_fotos"
         tools:layout="@layout/fragment_fotos" />
