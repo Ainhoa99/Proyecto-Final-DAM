@@ -10,10 +10,10 @@ import androidx.lifecycle.Observer
 import timber.log.Timber
 
 
-class NetworkConnectivityMonitor {
     class NetworkConnectivityMonitor(private val context: Context) {
 
-        private val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        private val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         private val networkCallback = object : ConnectivityManager.NetworkCallback() {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
@@ -48,7 +48,8 @@ class NetworkConnectivityMonitor {
         private fun isConnectedToInternet(): Boolean {
             val activeNetwork = connectivityManager.activeNetwork
             val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
-            return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
+            return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+                ?: false
         }
 
         private fun isConnectedToInternetDebug(): Boolean {
@@ -65,4 +66,5 @@ class NetworkConnectivityMonitor {
             return false
         }
 
-    }*/
+    }
+}*/
