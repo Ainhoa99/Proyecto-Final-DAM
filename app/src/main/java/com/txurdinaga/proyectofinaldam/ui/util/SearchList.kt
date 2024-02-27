@@ -38,6 +38,16 @@ class SearchList(context: Context?) {
                 listNames = lista.map { it.name }
                 title = "Alta de Liga"
             }
+            "categoria" -> {
+                val lista = database.kkcategoryDao.getAllTeachers()
+                listNames = lista.map { it.name }
+                title = "Alta de Categoria"
+            }
+            "patrocinador" -> {
+                val lista = database.kkPatrocinadoresDao.getAllTeachers()
+                listNames = lista.map { it.name }
+                title = "Alta de Patrocinador"
+            }
         }
         listAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, listNames)
         lv_List.adapter = listAdapter
