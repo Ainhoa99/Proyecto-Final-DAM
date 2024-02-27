@@ -94,6 +94,21 @@
                     android:icon="@drawable/inscripciones"
                     android:title="Inscripciones" />
 
+                <!-- Divisor -->
+                <item
+                    android:title=""
+                    android:enabled="false"
+                    app:showAsAction="always" />
+
+                <item
+                    android:id="@+id/loginFragment2"
+                    android:icon="@drawable/login"
+                    android:title="Login" />
+                <item
+                    android:id="@+id/fragment_cerrar_sesion"
+                    android:icon="@drawable/cerrar_sesion"
+                    android:title="Cerrar Sesión" />
+
             </group>
 
         </menu>
