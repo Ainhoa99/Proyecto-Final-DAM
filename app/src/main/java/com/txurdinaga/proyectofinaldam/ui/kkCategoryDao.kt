@@ -3,12 +3,13 @@ package com.txurdinaga.proyectofinaldam.ui
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 
 @Dao
 interface kkCategoryDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: kkCategoryEntity)
 
     @Update

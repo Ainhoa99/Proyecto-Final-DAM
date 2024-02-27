@@ -63,7 +63,7 @@ dependencies {
     implementation ("com.google.android.material:material:1.5.0")
 
     //room
-    val room_version = "2.6.0"
+    val room_version = "2.6.1"
     implementation("androidx.room:room-runtime:$room_version")
     ksp("androidx.room:room-compiler:$room_version")
 
@@ -72,4 +72,9 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
+    //Generar PDF
+    implementation ("androidx.appcompat:appcompat:1.6.1")
+    implementation ("com.google.code.gson:gson:2.10")
+    implementation ("com.itextpdf:itextg:5.5.10")
+    implementation ("com.itextpdf:itext7-core:7.1.15")
 }
