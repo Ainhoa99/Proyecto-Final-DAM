@@ -17,6 +17,12 @@ interface kkFotosDao {
     @Query("SELECT * FROM fotos")
     fun getAllFotos(): List<kkFotosEntity>
 
-    @Query("SELECT DISTINCT (temporada) FROM fotos")
+    @Query("SELECT DISTINCT (temporada) FROM fotos ORDER BY temporada DESC")
     fun getTemporadas(): List<String>
+
+    @Query("SELECT * FROM fotos WHERE equipoId = :equipoId")
+    fun getFotosByEquipo(equipoId:Int): List<kkFotosEntity>
+
+    @Query("SELECT * FROM fotos WHERE temporada = :temporada AND galeria=true")
+    fun getFotosByTemporada(temporada:String): List<kkFotosEntity>
 }
