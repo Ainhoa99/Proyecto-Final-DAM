@@ -1,4 +1,4 @@
-package com.txurdinaga.proyectofinaldam.ui.util
+package com.txurdinaga.proyectofinaldam.util
 
 import android.content.Context
 import android.text.Editable
