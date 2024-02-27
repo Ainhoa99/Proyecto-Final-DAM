@@ -48,6 +48,11 @@ class SearchList(context: Context?) {
                 listNames = lista.map { it.name }
                 title = "Alta de Patrocinador"
             }
+            "ocupacion" -> {
+                val lista = database.kkOcupacionesDao.getAllOcupaciones()
+                listNames = lista.map { it.name }
+                title = "Alta de Ocupación"
+            }
         }
         listAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, listNames)
         lv_List.adapter = listAdapter
@@ -98,6 +103,15 @@ class SearchList(context: Context?) {
                             it.name.contains(query, ignoreCase = true)
                 }.map { it.name }
             }
+            "ocupacion" -> {
+
+                var list = database.kkOcupacionesDao.getAllOcupaciones()
+                filteredList = list.filter {
+                    it.name.contains(query, ignoreCase = true) ||
+                            it.name.contains(query, ignoreCase = true)
+                }.map { it.name }
+            }
+
         }
 
         listAdapter.clear()

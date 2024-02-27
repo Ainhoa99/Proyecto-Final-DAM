@@ -66,6 +66,10 @@
                     android:id="@+id/gestionLigasFragment"
                     android:icon="@drawable/gligas"
                     android:title="GLigas" />
+                <item
+                    android:id="@+id/gestionOcupacionesFragment"
+                    android:icon="@drawable/gligas"
+                    android:title="GOcupacioens" />
 
                 <item
                     android:id="@+id/gestionPDFs"

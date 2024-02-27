@@ -106,4 +106,8 @@
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionPDFs"
         android:label="fragment_gestion_pdfs"
         tools:layout="@layout/fragment_gestion_pdfs" />
+    <fragment
+        android:id="@+id/gestionOcupacionesFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionOcupacionesFragment"
+        android:label="GestionOcupacionesFragment" />
 </navigation>
