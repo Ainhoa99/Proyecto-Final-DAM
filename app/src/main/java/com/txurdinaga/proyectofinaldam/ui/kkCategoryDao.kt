@@ -22,7 +22,7 @@ interface kkCategoryDao {
     fun getTeacherByName(categoryName: String): kkCategoryEntity
 
     @Query("SELECT * FROM category")
-    fun getAllTeachers(): List<kkCategoryEntity>
+    fun getAllCategorias(): List<kkCategoryEntity>
 
     @Query("SELECT COUNT(*) FROM category WHERE name = :categoryName")
     fun countTeachersByName(categoryName: String): Int

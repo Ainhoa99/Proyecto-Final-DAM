@@ -22,7 +22,7 @@ interface kkLigasDao {
     fun getTeacherByName(teacherName: String): kkLigasEntity
 
     @Query("SELECT * FROM ligas")
-    fun getAllTeachers(): List<kkLigasEntity>
+    fun getAllLigas(): List<kkLigasEntity>
 
     @Query("SELECT COUNT(*) FROM ligas WHERE name = :ligasName")
     fun countTeachersByName(ligasName: String): Int
