@@ -60,7 +60,7 @@
                 <item
                     android:id="@+id/gestionColaboradoresFragment"
                     android:icon="@drawable/gcolaboradores"
-                    android:title="GColaboradores" />
+                    android:title="GPatrocinadores" />
 
                 <item
                     android:id="@+id/gestionLigasFragment"
@@ -92,7 +92,7 @@
                 <item
                     android:id="@+id/colaboradoresFragment2"
                     android:icon="@drawable/colaboradores"
-                    android:title="Colaboradores" />
+                    android:title="Patrocinadores" />
 
                 <item
                     android:id="@+id/inscripcionFragment"
