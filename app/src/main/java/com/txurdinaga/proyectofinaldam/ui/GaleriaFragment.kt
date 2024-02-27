@@ -19,12 +19,12 @@ import com.txurdinaga.proyectofinaldam.databinding.FragmentFotosBinding
 
 
 
-class FotosFragment : Fragment(), ICardClickListener {
+class GaleriaFragment : Fragment(), ICardClickListener {
     private var _binding: FragmentFotosBinding? = null
     private val binding get() = _binding!!
     private lateinit var database: kkAppDatabase
 
-    var equipoSeleccionado = 0
+    var temporadaSeleccionada = ""
 
 
 
@@ -49,20 +49,19 @@ class FotosFragment : Fragment(), ICardClickListener {
 
         var fotos = database.kkfotosDao.getAllFotos()
 
-        var equipos = database.kkequipostDao.getVisibleEquipos()
-
+        var temporadas = database.kkfotosDao.getTemporadas()
 
         if (fotos.isNotEmpty()){
-            val ListEquipos = mutableListOf<String>()
-            equipos.forEach { equipo ->
-                ListEquipos.add(equipo.name)
+            val ListTemporadas = mutableListOf<String>()
+            temporadas.forEach { temporada ->
+                ListTemporadas.add(temporada)
             }
-            val spEquipos = binding.spinner
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquipos)
-            spEquipos.setAdapter(adapter)
+            val spTemporadas = binding.spinner
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListTemporadas)
+            spTemporadas.setAdapter(adapter)
 
 
-            spEquipos.setOnItemClickListener { parent, view, position, id ->
+            spTemporadas.setOnItemClickListener { parent, view, position, id ->
                 val msgFotosEmpty = binding.msgFotosEmpty
                 val msgSelecciona = binding.msgSelecciona
 
@@ -71,15 +70,14 @@ class FotosFragment : Fragment(), ICardClickListener {
                 // Aquí puedes hacer lo que necesites con el elemento seleccionado
                 // Por ejemplo, mostrar un Toast con el elemento seleccionado
                 Toast.makeText(requireContext(), "Seleccionaste: $selectedItem", Toast.LENGTH_SHORT).show()
-                val equipoByName =database.kkequipostDao.getEquiposByName(selectedItem)
-                equipoSeleccionado = equipoByName.id
-                val fotosByEquipo = database.kkfotosDao.getFotosByEquipo(equipoSeleccionado)
+                temporadaSeleccionada = selectedItem
+                val fotosByTemporada = database.kkfotosDao.getFotosByTemporada(selectedItem)
 
-                if (fotosByEquipo.isNotEmpty()){
+                if (fotosByTemporada.isNotEmpty()){
                     msgFotosEmpty.visibility = View.GONE
 
                     val dataset = mutableListOf<CardData>()
-                    fotosByEquipo.forEach { fotoEquipo ->
+                    fotosByTemporada.forEach { fotoEquipo ->
                         dataset.add(
                             CardData(
                                 fotoEquipo.title
@@ -124,7 +122,7 @@ class FotosFragment : Fragment(), ICardClickListener {
             .build()
 
 
-        val fotos = database.kkfotosDao.getFotosByEquipo(equipoSeleccionado)
+        val fotos = database.kkfotosDao.getFotosByTemporada(temporadaSeleccionada)
 
         if (fotos.isNotEmpty()) {
             val images = mutableListOf<Int>()

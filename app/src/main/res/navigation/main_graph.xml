@@ -97,4 +97,8 @@
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionColaboradoresFragment"
         android:label="fragment_gestion_colaboradores"
         tools:layout="@layout/fragment_gestion" />
+    <fragment
+        android:id="@+id/galeriaFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GaleriaFragment"
+        android:label="GaleriaFragment" />
 </navigation>
