@@ -76,7 +76,7 @@ class FotosFragment : Fragment(), ICardClickListener {
                 // Por ejemplo, mostrar un Toast con el elemento seleccionado
                 Toast.makeText(requireContext(), "Seleccionaste: $selectedItem", Toast.LENGTH_SHORT).show()
                 val equipoByName =database.kkequipostDao.getEquiposByName(selectedItem)
-                equipoSeleccionado = equipoByName.id
+                equipoSeleccionado = equipoByName.id.toInt()
                 val fotosByEquipo = database.kkfotosDao.getFotosByEquipo(equipoSeleccionado)
 
                 if (fotosByEquipo.isNotEmpty()){
