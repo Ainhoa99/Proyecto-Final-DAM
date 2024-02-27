@@ -71,13 +71,9 @@
             android:textSize="20dip" />
 
         <Button
-            style="@style/Widget.Material3.Button"
+            style="@style/AppButton"
             android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="20dp"
             android:text="Siguiente" />
 
     </LinearLayout>
