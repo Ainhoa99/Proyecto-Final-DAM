@@ -161,7 +161,7 @@ class GestionEquiposFragment : Fragment() {
 
             if(allFieldsFilled){
                 if (selectedEquipo == "alta") {
-                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1", check_isUnkina.isChecked))
+                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1", check_isUnkina.isChecked, true))
                 } else {
                     if (equipo != null) {
                         equipo.name = equipoName.text.toString()
@@ -252,15 +252,15 @@ class GestionEquiposFragment : Fragment() {
         ligas.forEach { database.kkligasDao.insert(it) }
         // Equipos
         val equipos = listOf(
-            kkEquiposEntity(1, "Equipo1", "campo1", 1, 1, "escudo1", true),
-            kkEquiposEntity(2, "Equipo2", "campo2", 2, 1, "escudo1", false),
-            kkEquiposEntity(3, "Equipo3", "campo3", 3, 2, "escudo1", false),
-            kkEquiposEntity(4, "Equipo4", "campo4", 2, 1, "escudo1", false),
-            kkEquiposEntity(5, "Equipo5", "campo5", 4, 2, "escudo1", true),
-            kkEquiposEntity(6, "Equipo6", "campo6", 1, 2, "escudo1", true),
-            kkEquiposEntity(7, "Equipo7", "campo7", 5, 3, "escudo1", true),
-            kkEquiposEntity(8, "Equipo8", "campo8", 3, 2, "escudo1", false),
-            kkEquiposEntity(9, "Equipo9", "campo9", 3, 3, "escudo1", false)
+            kkEquiposEntity(1, "Equipo1", "campo1", 1, 1, "escudo1", true, false),
+            kkEquiposEntity(2, "Equipo2", "campo2", 2, 1, "escudo1", false, false),
+            kkEquiposEntity(3, "Equipo3", "campo3", 3, 2, "escudo1", false, true),
+            kkEquiposEntity(4, "Equipo4", "campo4", 2, 1, "escudo1", false, true),
+            kkEquiposEntity(5, "Equipo5", "campo5", 4, 2, "escudo1", true, true),
+            kkEquiposEntity(6, "Equipo6", "campo6", 1, 2, "escudo1", true, true),
+            kkEquiposEntity(7, "Equipo7", "campo7", 5, 3, "escudo1", true, false),
+            kkEquiposEntity(8, "Equipo8", "campo8", 3, 2, "escudo1", false, false),
+            kkEquiposEntity(9, "Equipo9", "campo9", 3, 3, "escudo1", false, false)
 
         )
         equipos.forEach { database.kkequipostDao.insert(it) }
