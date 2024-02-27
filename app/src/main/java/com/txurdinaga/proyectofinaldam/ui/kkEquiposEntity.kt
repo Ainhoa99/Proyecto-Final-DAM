@@ -40,6 +40,9 @@ data class kkEquiposEntity(
     var escudo: String?,
 
     @ColumnInfo(name = "isUnkina")
-    var isUnkina: Boolean
+    var isUnkina: Boolean,
+
+    @ColumnInfo(name = "visible")
+    var visible: Boolean
 
 )
