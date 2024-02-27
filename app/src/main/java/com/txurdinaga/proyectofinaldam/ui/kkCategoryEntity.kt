@@ -9,8 +9,10 @@ import androidx.room.PrimaryKey
 data class kkCategoryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int,
+    @NonNull
+    var id: Int = 0,
 
     @ColumnInfo(name = "name")
+    @NonNull
     var name: String,
 )

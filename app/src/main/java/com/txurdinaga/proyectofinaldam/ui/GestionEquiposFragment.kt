@@ -234,36 +234,46 @@ class GestionEquiposFragment : Fragment() {
     private fun insertMockData() {
 
         val categorias = listOf(
-            kkCategoryEntity(1, "Categoria1"),
-            kkCategoryEntity(2, "Categoria2"),
-            kkCategoryEntity(3, "Categoria3"),
-            kkCategoryEntity(4, "Categoria4"),
-            kkCategoryEntity(5, "Categoria5"),
+            kkCategoryEntity(name = "Categoria1"),
+            kkCategoryEntity(name ="Categoria2"),
+            kkCategoryEntity(name = "Categoria3"),
+            kkCategoryEntity(name = "Categoria4"),
+            kkCategoryEntity(name =  "Categoria5"),
 
 
             )
         categorias.forEach { database.kkcategoryDao.insert(it) }
 
         val ligas = listOf(
-            kkLigasEntity(1, "Liga1"),
-            kkLigasEntity(2, "Liga2"),
-            kkLigasEntity(3, "Liga3"),
+            kkLigasEntity(name =  "Liga1"),
+            kkLigasEntity(name =  "Liga2"),
+            kkLigasEntity(name = "Liga3"),
 
 
             )
         ligas.forEach { database.kkligasDao.insert(it) }
+
+        val ocupaciones = listOf(
+            kkOcupacionesEntity(name =  "Ocupacion1"),
+            kkOcupacionesEntity(name = "Ocupacion2"),
+            kkOcupacionesEntity(name =  "Ocupacion3"),
+
+
+            )
+        ocupaciones.forEach { database.kkOcupacionesDao.insert(it) }
+
+
         // Equipos
         val equipos = listOf(
-            kkEquiposEntity(1, "Equipo1", "campo1", 1, 1, "escudo1", true, false),
-            kkEquiposEntity(2, "Equipo2", "campo2", 2, 1, "escudo1", false, false),
-            kkEquiposEntity(3, "Equipo3", "campo3", 3, 2, "escudo1", false, true),
-            kkEquiposEntity(4, "Equipo4", "campo4", 2, 1, "escudo1", false, true),
-            kkEquiposEntity(5, "Equipo5", "campo5", 4, 2, "escudo1", true, true),
-            kkEquiposEntity(6, "Equipo6", "campo6", 1, 2, "escudo1", true, true),
-            kkEquiposEntity(7, "Equipo7", "campo7", 5, 3, "escudo1", true, false),
-            kkEquiposEntity(8, "Equipo8", "campo8", 3, 2, "escudo1", false, false),
-            kkEquiposEntity(9, "Equipo9", "campo9", 3, 3, "escudo1", false, false)
-
+            kkEquiposEntity(name="Equipo1",campo= "campo1", categoria=1, liga=1, escudo="escudo1", isUnkina =  true, visible =  false),
+            kkEquiposEntity(name="Equipo2",campo= "campo2", categoria=2, liga=1, escudo="escudo1", isUnkina =  false, visible =  true),
+            kkEquiposEntity(name="Equipo3",campo= "campo3", categoria=3, liga=2, escudo="escudo1", isUnkina =  false, visible =  true),
+            kkEquiposEntity(name="Equipo4",campo= "campo4", categoria=2, liga=1, escudo="escudo1", isUnkina =  false, visible =  true),
+            kkEquiposEntity(name="Equipo5",campo= "campo5", categoria=4, liga=2, escudo="escudo1", isUnkina =  true, visible =  true),
+            kkEquiposEntity(name="Equipo6",campo= "campo6", categoria=1, liga=2, escudo="escudo1", isUnkina =  true, visible =  true),
+            kkEquiposEntity(name="Equipo7",campo= "campo7", categoria=5, liga=3, escudo="escudo1", isUnkina =  true, visible =  false),
+            kkEquiposEntity(name="Equipo8",campo= "campo8", categoria=3, liga=2, escudo="escudo1", isUnkina =  false, visible =  false),
+            kkEquiposEntity(name="Equipo9",campo= "campo9", categoria=3, liga=3, escudo="escudo1", isUnkina =  false, visible =  false),
         )
         equipos.forEach { database.kkequipostDao.insert(it) }
 

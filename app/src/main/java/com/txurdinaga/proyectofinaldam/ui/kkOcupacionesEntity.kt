@@ -9,7 +9,7 @@ import androidx.room.PrimaryKey
 data class kkOcupacionesEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Int = 0,
 
     @ColumnInfo(name = "name")
     var name: String,
