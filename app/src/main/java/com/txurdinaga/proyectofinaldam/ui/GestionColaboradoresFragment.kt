@@ -22,11 +22,6 @@ import com.txurdinaga.proyectofinaldam.ui.util.SearchList
 class GestionColaboradoresFragment : Fragment() {
     private var _binding: FragmentGestionBinding? = null
     private val binding get() = _binding!!
-    private lateinit var equiposListAdapter: ArrayAdapter<String>
-    private lateinit var categoriasList: List<kkCategoryEntity>
-    private lateinit var categoriasNameList: List<String>
-    private lateinit var ligasList: List<kkLigasEntity>
-    private lateinit var ligasNameList: List<String>
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
 

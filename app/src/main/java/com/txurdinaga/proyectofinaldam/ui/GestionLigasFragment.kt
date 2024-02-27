@@ -20,11 +20,6 @@ import com.txurdinaga.proyectofinaldam.ui.util.SearchList
 class GestionLigasFragment : Fragment() {
     private var _binding: FragmentGestionBinding? = null
     private val binding get() = _binding!!
-    private lateinit var ligasListAdapter: ArrayAdapter<String>
-    private lateinit var categoriasList: List<kkCategoryEntity>
-    private lateinit var categoriasNameList: List<String>
-    private lateinit var ligasList: List<kkLigasEntity>
-    private lateinit var ligasNameList: List<String>
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
 
@@ -47,28 +42,28 @@ class GestionLigasFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showEquiposDialog("alta")
+            showLigasDialog("alta")
         }
         binding.btnBaja.setOnClickListener() {
-            showBajaEquiposDialog { selectedLiga ->
+            showBajaLigasDialog { selectedLiga ->
                 showConfirmDeleteDialog(selectedLiga)
             }
         }
         binding.btnModificacion.setOnClickListener() {
-            showModEquiposDialog()
+            showModLigasDialog()
         }
 
         return binding.root
     }
 
-    private fun showEquiposDialog(selectedLiga: String) {
+    private fun showLigasDialog(selectedLiga: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
 
         var liga: kkLigasEntity? = null
         val ligaName = dialogView.findViewById<EditText>(R.id.name)
-        val equipoNameLayout = dialogView.findViewById<TextInputLayout>(R.id.nameLayout)
+        val ligaNameLayout = dialogView.findViewById<TextInputLayout>(R.id.nameLayout)
         var dialogTitle = "Alta de Liga"
 
 
@@ -91,14 +86,14 @@ class GestionLigasFragment : Fragment() {
             var allFieldsFilled = true
 
             if (ligaName.text.toString().trim().isEmpty()) {
-                equipoNameLayout.error = "Escribe un nombre"
-                equipoNameLayout.requestFocus()
+                ligaNameLayout.error = "Escribe un nombre"
+                ligaNameLayout.requestFocus()
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
                 val estaLiga = database.kkligasDao.getTeacherByName(ligaName.text.toString())
                 if(estaLiga != null && selectedLiga == "alta"){
-                    equipoNameLayout.error = "Ya existe esta liga"
-                    equipoNameLayout.requestFocus()
+                    ligaNameLayout.error = "Ya existe esta liga"
+                    ligaNameLayout.requestFocus()
                     allFieldsFilled = false
                 }
             }
@@ -117,16 +112,16 @@ class GestionLigasFragment : Fragment() {
         }
     }
 
-    private fun showModEquiposDialog(){
-        searchList.search(requireContext(), database, "equipo"){ ligasSelected ->
+    private fun showModLigasDialog(){
+        searchList.search(requireContext(), database, "liga"){ ligasSelected ->
             ligasSelected?.let {
-                showEquiposDialog(ligasSelected)
+                showLigasDialog(ligasSelected)
             }
         }
     }
 
-    private fun showBajaEquiposDialog(onLigasSelected: (String) -> Unit) {
-        searchList.search(requireContext(), database, "equipo") { ligasSelected ->
+    private fun showBajaLigasDialog(onLigasSelected: (String) -> Unit) {
+        searchList.search(requireContext(), database, "liga") { ligasSelected ->
             ligasSelected?.let {
                 onLigasSelected(it)
             }
