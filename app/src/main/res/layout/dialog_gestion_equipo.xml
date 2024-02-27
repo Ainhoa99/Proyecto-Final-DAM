@@ -76,11 +76,19 @@
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
         android:text="Escudo *"
-        app:cornerRadius="8dp"/>
+        app:cornerRadius="8dp"
+        app:strokeColor="@color/C2"
+        app:strokeWidth="3dp"/>
     <CheckBox
         android:id="@+id/check_isUnkina"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Equipo de Unkina"/>
+    <CheckBox
+        android:id="@+id/check_visible"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Es visible"/>
 </LinearLayout>

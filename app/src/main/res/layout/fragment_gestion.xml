@@ -19,33 +19,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="50dp"
+            android:layout_marginBottom="30dp"
             android:textSize="20dp">
         </TextView>
         <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
             android:id="@+id/btn_alta"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
             android:text="Alta"
-            app:cornerRadius="8dp"/>
+            style="@style/AppButton"/>
         <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/AppButton"
             android:id="@+id/btn_baja"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
+
             android:layout_gravity="center_horizontal"
             android:text="Baja"
-            app:cornerRadius="8dp"/>
+            />
         <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/AppButton"
             android:id="@+id/btn_modificacion"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
             android:layout_gravity="center_horizontal"
-            android:text="Modificación"
-            app:cornerRadius="8dp"/>
+            android:text="Modificación" />
     </LinearLayout>
 </LinearLayout>
 

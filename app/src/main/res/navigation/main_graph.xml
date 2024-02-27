@@ -41,7 +41,7 @@
         android:label="fragment_colaboradores"
         tools:layout="@layout/fragment_colaboradores" />
     <fragment
-        android:id="@+id/fotosFragment2"
+        android:id="@+id/fotosFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.FotosFragment"
         android:label="fragment_fotos"
         tools:layout="@layout/fragment_fotos" />
@@ -94,7 +94,20 @@
         tools:layout="@layout/fragment_gestion" />
     <fragment
         android:id="@+id/gestionColaboradoresFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.GestionColaboradoresFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionPatrocinadoresFragment"
         android:label="fragment_gestion_colaboradores"
         tools:layout="@layout/fragment_gestion" />
+    <fragment
+        android:id="@+id/galeriaFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GaleriaFragment"
+        android:label="GaleriaFragment" />
+    <fragment
+        android:id="@+id/gestionPDFs"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionPDFs"
+        android:label="fragment_gestion_pdfs"
+        tools:layout="@layout/fragment_gestion_pdfs" />
+    <fragment
+        android:id="@+id/gestionOcupacionesFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionOcupacionesFragment"
+        android:label="GestionOcupacionesFragment" />
 </navigation>

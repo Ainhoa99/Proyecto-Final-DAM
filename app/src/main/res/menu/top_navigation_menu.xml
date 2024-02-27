@@ -1,4 +1,5 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/principalFragment"
@@ -14,7 +15,7 @@
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/equipoTecnicoFragment"
-                    android:icon="@drawable/equipo_tecnico"
+                    android:icon="@drawable/equipo"
                     android:title="Equipo Técnico"/>
 
                 <item
@@ -24,68 +25,121 @@
 
                 <item
                     android:id="@+id/calendarioFragment"
-                    android:icon="@drawable/calendar"
+                    android:icon="@drawable/calendario"
                     android:title="Calendario" />
 
                 <item
                     android:id="@+id/fotosFragment"
-                    android:icon="@drawable/camera"
+                    android:icon="@drawable/camara"
                     android:title="Fotos" />
             </group>
         </menu>
     </item>
 
     <item
-        android:id="@+id/informacionFragment2"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="Normativa" />
-
-    <item
-        android:id="@+id/gestionPartidosFragment"
-        android:icon="@drawable/gpartido"
-        android:title="GPartidos" />
-
-    <item
-        android:id="@+id/gestionEquiposFragment"
-        android:icon="@drawable/equipo"
-        android:title="GEquipos" />
-
-    <item
-        android:id="@+id/gestionCategoriasFragment"
-        android:icon="@drawable/gpartido"
-        android:title="GCategorias" />
-
-    <item
-        android:id="@+id/gestionColaboradoresFragment"
-        android:icon="@drawable/gpartido"
-        android:title="GColaboradores" />
-
-    <item
-        android:id="@+id/gestionLigasFragment"
-        android:icon="@drawable/gpartido"
-        android:title="GLigas" />
-
-    <item
-        android:id="@+id/colaboradoresFragment2"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="Colaboradores" />
-
-    <item
-        android:id="@+id/inscripcionFragment"
-        android:icon="@drawable/ic_launcher_foreground"
-        android:title="Inscripciones" />
-
-    <item
-        android:title=""
-        android:icon="@drawable/ic_launcher_foreground">
+        android:id="@+id/menu_gestiones"
+        android:title="Gestiones">
 
         <menu>
-            <item
-                android:id="@+id/AjustesFragment"
-                android:icon="@drawable/ajustes"
-                android:title="Ajustes" />
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/gestionPartidosFragment"
+                    android:icon="@drawable/gpartidos"
+                    android:title="GPartidos" />
+
+                <item
+                    android:id="@+id/gestionEquiposFragment"
+                    android:icon="@drawable/gequipos"
+                    android:title="GEquipos" />
+
+                <item
+                    android:id="@+id/gestionCategoriasFragment"
+                    android:icon="@drawable/gcategorias"
+                    android:title="GCategorias" />
+
+                <item
+                    android:id="@+id/gestionColaboradoresFragment"
+                    android:icon="@drawable/gcolaboradores"
+                    android:title="GPatrocinadores" />
+
+                <item
+                    android:id="@+id/gestionLigasFragment"
+                    android:icon="@drawable/gligas"
+                    android:title="GLigas" />
+                <item
+                    android:id="@+id/gestionOcupacionesFragment"
+                    android:icon="@drawable/gligas"
+                    android:title="GOcupacioens" />
+
+                <item
+                    android:id="@+id/gestionPDFs"
+                    android:icon="@drawable/gligas"
+                    android:title="GPDFs" />
+            </group>
         </menu>
     </item>
+
+    <item
+        android:id="@+id/menu_otros"
+        android:title="Otros">
+
+        <menu>
+
+            <group android:checkableBehavior="single">
+
+                <item
+                    android:id="@+id/galeriaFragment"
+                    android:icon="@drawable/camara"
+                    android:title="Galería" />
+
+                <item
+                    android:id="@+id/informacionFragment2"
+                    android:icon="@drawable/normativa"
+                    android:title="Normativa" />
+
+
+                <item
+                    android:id="@+id/colaboradoresFragment2"
+                    android:icon="@drawable/colaboradores"
+                    android:title="Patrocinadores" />
+
+                <item
+                    android:id="@+id/inscripcionFragment"
+                    android:icon="@drawable/inscripciones"
+                    android:title="Inscripciones" />
+
+                <!-- Divisor -->
+                <item
+                    android:title=""
+                    android:enabled="false"
+                    app:showAsAction="always" />
+
+                <item
+                    android:id="@+id/loginFragment2"
+                    android:icon="@drawable/login"
+                    android:title="Login" />
+                <item
+                    android:id="@+id/fragment_cerrar_sesion"
+                    android:icon="@drawable/cerrar_sesion"
+                    android:title="Cerrar Sesión" />
+
+            </group>
+
+        </menu>
+    </item>
+
+    <!-- Divisor -->
+    <item
+        android:title=""
+        android:enabled="false"
+        app:showAsAction="always" />
+
+    <group>
+        <item
+            android:id="@+id/AjustesFragment"
+            android:icon="@drawable/ajustes"
+            android:title="Ajustes" />
+    </group>
 
 </menu>
 

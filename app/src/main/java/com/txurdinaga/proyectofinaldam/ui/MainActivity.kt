@@ -5,6 +5,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -13,7 +14,10 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.UserBuilder
+import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,7 +67,12 @@ class MainActivity : AppCompatActivity() {
                 R.id.informacionFragment2,
                 R.id.gestionLigasFragment,
                 R.id.gestionCategoriasFragment,
-                R.id.gestionColaboradoresFragment
+                R.id.gestionColaboradoresFragment,
+                R.id.fotosFragment,
+                R.id.loginFragment2,
+                R.id.galeriaFragment,
+                R.id.gestionPDFs,
+                R.id.gestionOcupacionesFragment
 
             ), drawerLayout
         )
@@ -80,7 +89,12 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.colaboradoresFragment2 ||
                 destination.id == R.id.gestionLigasFragment ||
                 destination.id == R.id.gestionCategoriasFragment ||
-                destination.id == R.id.gestionColaboradoresFragment
+                destination.id == R.id.gestionColaboradoresFragment ||
+                destination.id == R.id.fotosFragment ||
+                destination.id == R.id.loginFragment2 ||
+                destination.id == R.id.galeriaFragment ||
+                destination.id == R.id.gestionPDFs ||
+                destination.id == R.id.gestionOcupacionesFragment
             ) {
                 supportActionBar?.title = "Unkina SBT" // Establecer el título deseado para los destinos específicos
             }

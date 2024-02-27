@@ -32,7 +32,7 @@ interface IUserRepository {
     suspend fun delete(user: User)
 }
 private object Constants {
-    const val SERVER_URL = "http://10.0.2.2:8080"
+    const val SERVER_URL = "http://192.168.214.250:8080"
     const val API_ENTRY_POINT = "/api/v1"
 
     const val LOGIN_ROUTE = "/user/login"

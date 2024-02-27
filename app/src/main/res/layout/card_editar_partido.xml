@@ -79,14 +79,14 @@
                     android:textStyle="bold" />
 
 
-                <!--<Spinner
+                <Spinner
                     android:id="@+id/spnEquipoContrario"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="#FFFFFF"
-                    android:inputType="none" />-->
+                    android:inputType="none" />
 
-                <com.google.android.material.textfield.TextInputLayout
+                <!--<com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/spinner_layout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
@@ -99,8 +99,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="none" />
 
-                </com.google.android.material.textfield.TextInputLayout>
-
+                </com.google.android.material.textfield.TextInputLayout>-->
 
             </LinearLayout>
 
@@ -243,7 +242,7 @@
 
             <Button
                 android:id="@+id/btnConfirmar"
-                style="@style/Widget.Material3.Button.ElevatedButton"
+                style="@style/AppButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="CONFIRMAR" />

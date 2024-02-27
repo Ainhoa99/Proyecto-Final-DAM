@@ -27,9 +27,13 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Normativa1"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"
                 app:cornerRadius="8dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"/>
+
+
             <Button
                 style="@style/Widget.Material3.Button.ElevatedButton"
                 android:id="@+id/btn_pdf2"
@@ -37,6 +41,8 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Normativa2"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"
                 app:cornerRadius="8dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"/>
@@ -47,6 +53,8 @@
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
                 android:text="Normativa3"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"
                 app:cornerRadius="8dp"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"/>
@@ -63,21 +71,17 @@
 
         <TextView
             android:id="@+id/tv_infoText2"
-            android:layout_width="wrap_content"
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
+            android:layout_gravity="center"
             android:layout_marginTop="150dp"
             android:text="Cuando tenga todo lo anterior, puede continuar con la inscripción."
-            android:textSize="20dip" />
+            android:textSize="20dp" />
 
         <Button
-            style="@style/Widget.Material3.Button"
+            style="@style/AppButton"
             android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="4dp"
-            android:layout_marginTop="20dp"
             android:text="Siguiente" />
 
     </LinearLayout>

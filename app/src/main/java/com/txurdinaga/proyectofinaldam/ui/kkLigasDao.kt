@@ -3,12 +3,13 @@ package com.txurdinaga.proyectofinaldam.ui
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 
 @Dao
 interface kkLigasDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(ligas: kkLigasEntity)
 
     @Update
@@ -21,7 +22,7 @@ interface kkLigasDao {
     fun getTeacherByName(teacherName: String): kkLigasEntity
 
     @Query("SELECT * FROM ligas")
-    fun getAllTeachers(): List<kkLigasEntity>
+    fun getAllLigas(): List<kkLigasEntity>
 
     @Query("SELECT COUNT(*) FROM ligas WHERE name = :ligasName")
     fun countTeachersByName(ligasName: String): Int

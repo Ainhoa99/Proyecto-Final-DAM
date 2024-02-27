@@ -1,4 +1,4 @@
-package com.txurdinaga.proyectofinaldam.ui.util
+package com.txurdinaga.proyectofinaldam.util
 
 import android.content.Context
 import android.text.Editable
@@ -34,9 +34,24 @@ class SearchList(context: Context?) {
                 title = "Alta de Equipo"
             }
             "liga" -> {
-                val lista = database.kkligasDao.getAllTeachers()
+                val lista = database.kkligasDao.getAllLigas()
                 listNames = lista.map { it.name }
                 title = "Alta de Liga"
+            }
+            "categoria" -> {
+                val lista = database.kkcategoryDao.getAllCategorias()
+                listNames = lista.map { it.name }
+                title = "Alta de Categoria"
+            }
+            "patrocinador" -> {
+                val lista = database.kkPatrocinadoresDao.getAllTeachers()
+                listNames = lista.map { it.name }
+                title = "Alta de Patrocinador"
+            }
+            "ocupacion" -> {
+                val lista = database.kkOcupacionesDao.getAllOcupaciones()
+                listNames = lista.map { it.name }
+                title = "Alta de Ocupación"
             }
         }
         listAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, listNames)
@@ -82,12 +97,21 @@ class SearchList(context: Context?) {
             }
             "liga" -> {
 
-                var list = database.kkligasDao.getAllTeachers()
+                var list = database.kkligasDao.getAllLigas()
                 filteredList = list.filter {
                     it.name.contains(query, ignoreCase = true) ||
                             it.name.contains(query, ignoreCase = true)
                 }.map { it.name }
             }
+            "ocupacion" -> {
+
+                var list = database.kkOcupacionesDao.getAllOcupaciones()
+                filteredList = list.filter {
+                    it.name.contains(query, ignoreCase = true) ||
+                            it.name.contains(query, ignoreCase = true)
+                }.map { it.name }
+            }
+
         }
 
         listAdapter.clear()

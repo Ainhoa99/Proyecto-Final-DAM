@@ -87,9 +87,7 @@
 
         <Button
             android:id="@+id/buttonEnviar"
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:layout_width="275dp"
-            android:layout_height="70dp"
+            style="@style/AppButton"
             android:text="ENVIAR" />
 
 
