@@ -63,7 +63,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.informacionFragment2,
                 R.id.gestionLigasFragment,
                 R.id.gestionCategoriasFragment,
-                R.id.gestionColaboradoresFragment
+                R.id.gestionColaboradoresFragment,
+                R.id.fotosFragment
 
             ), drawerLayout
         )
@@ -80,7 +81,8 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.colaboradoresFragment2 ||
                 destination.id == R.id.gestionLigasFragment ||
                 destination.id == R.id.gestionCategoriasFragment ||
-                destination.id == R.id.gestionColaboradoresFragment
+                destination.id == R.id.gestionColaboradoresFragment ||
+                destination.id == R.id.fotosFragment
             ) {
                 supportActionBar?.title = "Unkina SBT" // Establecer el título deseado para los destinos específicos
             }
