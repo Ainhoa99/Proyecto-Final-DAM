@@ -16,7 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
-import com.txurdinaga.proyectofinaldam.ui.util.SearchList
+import com.txurdinaga.proyectofinaldam.util.SearchList
 
 
 class GestionEquiposFragment : Fragment() {
@@ -86,6 +86,7 @@ class GestionEquiposFragment : Fragment() {
         val equipoCategoryLayout = dialogView.findViewById<TextInputLayout>(R.id.categoryLayout)
         val equipoLeagueLayout = dialogView.findViewById<TextInputLayout>(R.id.leagueLayout)
         val check_isUnkina = dialogView.findViewById<CheckBox>(R.id.check_isUnkina)
+        val check_visible = dialogView.findViewById<CheckBox>(R.id.check_visible)
 
         var equipo: kkEquiposEntity? = null
         var equipoCategorySelected: String? = null
@@ -106,6 +107,7 @@ class GestionEquiposFragment : Fragment() {
             equipoName.setText(equipo.name)
             equipoLocation.setText(equipo.campo)
             check_isUnkina.isChecked = equipo.isUnkina
+            check_visible.isChecked = equipo.visible
         }
 
         builder.setTitle(dialogTitle)
@@ -161,7 +163,7 @@ class GestionEquiposFragment : Fragment() {
 
             if(allFieldsFilled){
                 if (selectedEquipo == "alta") {
-                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1", check_isUnkina.isChecked, true))
+                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1", check_isUnkina.isChecked, check_visible.isChecked))
                 } else {
                     if (equipo != null) {
                         equipo.name = equipoName.text.toString()

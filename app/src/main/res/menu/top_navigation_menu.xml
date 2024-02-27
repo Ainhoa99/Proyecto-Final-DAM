@@ -60,7 +60,7 @@
                 <item
                     android:id="@+id/gestionColaboradoresFragment"
                     android:icon="@drawable/gcolaboradores"
-                    android:title="GColaboradores" />
+                    android:title="GPatrocinadores" />
 
                 <item
                     android:id="@+id/gestionLigasFragment"
@@ -92,12 +92,27 @@
                 <item
                     android:id="@+id/colaboradoresFragment2"
                     android:icon="@drawable/colaboradores"
-                    android:title="Colaboradores" />
+                    android:title="Patrocinadores" />
 
                 <item
                     android:id="@+id/inscripcionFragment"
                     android:icon="@drawable/inscripciones"
                     android:title="Inscripciones" />
+
+                <!-- Divisor -->
+                <item
+                    android:title=""
+                    android:enabled="false"
+                    app:showAsAction="always" />
+
+                <item
+                    android:id="@+id/loginFragment2"
+                    android:icon="@drawable/login"
+                    android:title="Login" />
+                <item
+                    android:id="@+id/fragment_cerrar_sesion"
+                    android:icon="@drawable/cerrar_sesion"
+                    android:title="Cerrar Sesión" />
 
             </group>
 
