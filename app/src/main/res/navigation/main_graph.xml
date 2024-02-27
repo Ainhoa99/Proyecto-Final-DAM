@@ -94,7 +94,7 @@
         tools:layout="@layout/fragment_gestion" />
     <fragment
         android:id="@+id/gestionColaboradoresFragment"
-        android:name="com.txurdinaga.proyectofinaldam.ui.GestionColaboradoresFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionPatrocinadoresFragment"
         android:label="fragment_gestion_colaboradores"
         tools:layout="@layout/fragment_gestion" />
     <fragment
