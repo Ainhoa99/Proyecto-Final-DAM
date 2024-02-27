@@ -59,8 +59,12 @@ class FotosFragment : Fragment(), ICardClickListener {
             }
             val spEquipos = binding.spinner
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquipos)
-            spEquipos.setAdapter(adapter)
+            Handler(Looper.getMainLooper()).postDelayed({
+                spEquipos.setAdapter(adapter)
+                binding.spinner.setText("Selecciona un equipo", false)
+                spEquipos.setAdapter(adapter)
 
+            }, 100)
 
             spEquipos.setOnItemClickListener { parent, view, position, id ->
                 val msgFotosEmpty = binding.msgFotosEmpty
