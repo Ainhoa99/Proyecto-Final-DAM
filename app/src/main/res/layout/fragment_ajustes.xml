@@ -135,9 +135,10 @@
 
         <Button
             android:id="@+id/buttonEnviar"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/AppButton"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="left"
             android:text="CONFIRMAR" />
 
     </LinearLayout>

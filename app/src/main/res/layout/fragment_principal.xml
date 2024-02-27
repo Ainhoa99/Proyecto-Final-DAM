@@ -21,25 +21,28 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="12dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/prueba"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/AppButton"
             android:layout_width="150dp"
+            android:text="Prueba"
+            android:layout_marginBottom="0dp"/>
+
+        <Space
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="0dp"
-            android:text="Prueba" />
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/contacto"
-            style="@style/Widget.Material3.Button.ElevatedButton"
+            style="@style/AppButton"
             android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:text="Contacto" />
+            android:text="Contacto"
+            android:layout_marginBottom="0dp"/>
 
     </LinearLayout>
 
