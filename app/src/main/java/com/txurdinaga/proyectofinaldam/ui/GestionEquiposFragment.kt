@@ -1,13 +1,22 @@
 package com.txurdinaga.proyectofinaldam.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -17,6 +26,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
 import com.txurdinaga.proyectofinaldam.util.SearchList
+import java.io.ByteArrayOutputStream
 
 
 class GestionEquiposFragment : Fragment() {
@@ -29,6 +39,8 @@ class GestionEquiposFragment : Fragment() {
     private lateinit var ligasNameList: List<String>
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
+    private val PICK_IMAGE_REQUEST = 1
+    private lateinit var imageString: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,6 +84,15 @@ class GestionEquiposFragment : Fragment() {
         return binding.root
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            val imageUri = data.data
+            imageString = convertirImagenABase64(imageUri!!)
+        }
+    }
+
     private fun showEquiposDialog(selectedEquipo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_equipo, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
@@ -87,6 +108,7 @@ class GestionEquiposFragment : Fragment() {
         val equipoLeagueLayout = dialogView.findViewById<TextInputLayout>(R.id.leagueLayout)
         val check_isUnkina = dialogView.findViewById<CheckBox>(R.id.check_isUnkina)
         val check_visible = dialogView.findViewById<CheckBox>(R.id.check_visible)
+        val btn_shield = dialogView.findViewById<Button>(R.id.btn_shield)
 
         var equipo: kkEquiposEntity? = null
         var equipoCategorySelected: String? = null
@@ -127,6 +149,11 @@ class GestionEquiposFragment : Fragment() {
             equipoLigaSelected = liga?.id.toString()
         }
 
+        btn_shield.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        }
+
 
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
         positiveButton.setOnClickListener {
@@ -136,14 +163,14 @@ class GestionEquiposFragment : Fragment() {
                 equipoNameLayout.error = "Escribe un nombre"
                 equipoNameLayout.requestFocus()
                 allFieldsFilled = false
-            }else{//comprobar que esta nombre no este guardado ya
+            }/*else{//comprobar que esta nombre no este guardado ya
                 val estaEquipo = database.kkequipostDao.getEquiposByName(equipoName.text.toString())
                 if(estaEquipo != null && selectedEquipo == "alta"){
                     equipoNameLayout.error = "Ya existe este equipo"
                     equipoNameLayout.requestFocus()
                     allFieldsFilled = false
                 }
-            }
+            }*/
 
             if (equipoLocation.text.toString().trim().isEmpty()) {
                 equipoLocationLayout.error = "Escribe un campo"
@@ -160,10 +187,13 @@ class GestionEquiposFragment : Fragment() {
                 equipoLeagueLayout.requestFocus()
                 allFieldsFilled = false
             }
+            if (imageString == null) {
+                allFieldsFilled = false
+            }
 
             if(allFieldsFilled){
                 if (selectedEquipo == "alta") {
-                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), "escudo1", check_isUnkina.isChecked, check_visible.isChecked))
+                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), imageString, check_isUnkina.isChecked, check_visible.isChecked))
                 } else {
                     if (equipo != null) {
                         equipo.name = equipoName.text.toString()
@@ -216,6 +246,24 @@ class GestionEquiposFragment : Fragment() {
         dialog.show()
 
         tv_name.text = selectedEquipo
+    }
+
+
+    private fun convertirImagenABase64(imageUri: Uri): String {
+        val inputStream = requireActivity().contentResolver.openInputStream(imageUri)
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+    private fun convertirBase64AImageView(base64String: String): Bitmap? {
+        if (base64String.isNotEmpty()) {
+            val decodedString = Base64.decode(base64String, Base64.DEFAULT)
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        }
+        return null
     }
 
 

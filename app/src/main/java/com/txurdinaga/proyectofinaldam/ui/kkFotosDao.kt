@@ -14,6 +14,9 @@ interface kkFotosDao {
     @Update
     fun update(foto: kkFotosEntity)
 
+    @Delete
+    fun delete(ligas: kkFotosEntity)
+
     @Query("SELECT * FROM fotos")
     fun getAllFotos(): List<kkFotosEntity>
 
@@ -25,4 +28,7 @@ interface kkFotosDao {
 
     @Query("SELECT * FROM fotos WHERE temporada = :temporada AND galeria=true")
     fun getFotosByTemporada(temporada:String): List<kkFotosEntity>
+
+    @Query("SELECT * FROM fotos WHERE title = :name")
+    fun getFotosByTitle(name:String): kkFotosEntity
 }
