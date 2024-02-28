@@ -1,5 +1,6 @@
 package com.txurdinaga.proyectofinaldam.ui
 
+import android.app.DatePickerDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
@@ -9,14 +10,24 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.timepicker.MaterialTimePicker
+import com.google.android.material.timepicker.TimeFormat
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentFotosBinding
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
 
 class PersonalFragment : Fragment(), ICardClickListener {
     private var _binding: FragmentFotosBinding? = null
@@ -40,6 +51,13 @@ class PersonalFragment : Fragment(), ICardClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
+        val addPlayer = binding.add
+        addPlayer.visibility = View.VISIBLE
+
+        addPlayer.setOnClickListener {
+            showDialog(null, null)
+        }
 
         database = Room.databaseBuilder(
             view.context, kkAppDatabase::class.java, kkAppDatabase.DATABASE_NAME)
@@ -90,22 +108,25 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     val datasetJugadores = mutableListOf<CardData>()
                     val datasetEquipoTecnico = mutableListOf<CardData>()
 
-                    usersByEquipo.forEach { fotoEquipo ->
-                        var ocupacion = database.kkOcupacionesDao.getOcupacionById(fotoEquipo.id)
+                    usersByEquipo.forEach { user ->
+                        var ocupacion = database.kkOcupacionesDao.getOcupacionById(user.ocupacionId)
 
-                        if (fotoEquipo.ocupacionId == 1){
+                        if (user.ocupacionId == 1){
                             datasetJugadores.add(
                                 CardData(
-                                    fotoEquipo.foto,
-                                    fotoEquipo.nombre,
+                                    user.foto,
+                                    user.id,
+                                    user.nombre,
                                     ocupacion.name
+
                                 )
                             )
                         } else{
                             datasetEquipoTecnico.add(
                                 CardData(
-                                    fotoEquipo.foto,
-                                    fotoEquipo.nombre,
+                                    user.foto,
+                                    user.id,
+                                    user.nombre,
                                     ocupacion.name
                                 )
                             )
@@ -149,9 +170,70 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
 
     override fun onCardClick(position: Int, cardData: CardData) {
-        TODO("Not yet implemented")
+        showDialog(cardData, position)
     }
 
+    private fun showDialog(cardData: CardData?, position: Int?) {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.card_edit_personal, null)
+        val builder = MaterialAlertDialogBuilder(requireContext())
+        builder.setView(dialogView)
+
+
+        var imageViewDate = dialogView.findViewById<TextView>(R.id.textViewFecha)
+            .apply {
+            setOnClickListener { showDatePickerDialog(this) }
+        }
+
+        if (cardData!= null && position!=null){
+            if (cardData.id !=null){
+                val user = database.kkUsersDao.getUsersById(cardData.id)
+                var name = dialogView.findViewById<EditText>(R.id.textViewNombre)
+                var apellido = dialogView.findViewById<EditText>(R.id.textViewApellidos)
+                var img = dialogView.findViewById<ImageView>(R.id.foto)
+                var fecha = dialogView.findViewById<EditText>(R.id.textViewFecha)
+                var email = dialogView.findViewById<TextInputEditText>(R.id.email)
+
+
+                name.setText(user.nombre)
+                apellido.setText(user.apellido)
+                img.setImageResource(resources.getIdentifier(user.foto, "drawable", requireContext().packageName))
+                fecha.setText(user.fecha_nacimiento)
+                email.setText(user.mail)
+
+            }
+        }
+
+        val dialog = builder.create()
+        dialog.show()
+
+    }
+
+    private fun showDatePickerDialog(txtInsertarFecha: TextView) {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // Establecer el idioma de toda la aplicación en español
+        Locale.setDefault(Locale("es", "ES"))
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, yearSelected, monthOfYear, dayOfMonth ->
+                // Formatear la fecha seleccionada como desees
+                val fechaSeleccionada = "$dayOfMonth/${monthOfYear + 1}/$yearSelected"
+                txtInsertarFecha.text = fechaSeleccionada
+            },
+            year,
+            month,
+            day
+        )
+
+        // Configurar el primer día de la semana en domingo
+        datePickerDialog.datePicker.firstDayOfWeek = Calendar.SUNDAY
+
+        datePickerDialog.show()
+    }
 
     override fun onDestroyView() {
         requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);

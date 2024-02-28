@@ -23,4 +23,7 @@ interface kkUsersDao {
     @Query("SELECT * FROM users WHERE equipoId = :equipoId")
     fun getUsersByEquipo(equipoId:Int): List<kkUsersEntity>
 
+    @Query("SELECT * FROM users WHERE id = :id")
+    fun getUsersById(id:Int): kkUsersEntity
+
 }

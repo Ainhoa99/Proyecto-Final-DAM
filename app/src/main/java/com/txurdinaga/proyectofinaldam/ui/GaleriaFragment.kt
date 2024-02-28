@@ -92,6 +92,7 @@ class GaleriaFragment : Fragment(), ICardClickListener {
                             CardData(
                                 fotoEquipo.title,
                                 null,
+                                null,
                                 null
                             )
                         )
