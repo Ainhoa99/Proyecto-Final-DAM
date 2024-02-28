@@ -34,12 +34,12 @@ class SearchList(context: Context?) {
                 title = "Alta de Equipo"
             }
             "liga" -> {
-                val lista = database.kkligasDao.getAllTeachers()
+                val lista = database.kkligasDao.getAllLigas()
                 listNames = lista.map { it.name }
                 title = "Alta de Liga"
             }
             "categoria" -> {
-                val lista = database.kkcategoryDao.getAllTeachers()
+                val lista = database.kkcategoryDao.getAllCategorias()
                 listNames = lista.map { it.name }
                 title = "Alta de Categoria"
             }
@@ -97,7 +97,7 @@ class SearchList(context: Context?) {
             }
             "liga" -> {
 
-                var list = database.kkligasDao.getAllTeachers()
+                var list = database.kkligasDao.getAllLigas()
                 filteredList = list.filter {
                     it.name.contains(query, ignoreCase = true) ||
                             it.name.contains(query, ignoreCase = true)

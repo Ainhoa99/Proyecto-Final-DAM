@@ -68,7 +68,7 @@ class GestionLigasFragment : Fragment() {
 
 
         if(selectedLiga != "alta"){//no es alta, es MODIFICACION
-            liga = database.kkligasDao.getTeacherByName(selectedLiga)
+            liga = database.kkligasDao.getLigaByName(selectedLiga)
             dialogTitle = "Modificación de Liga"
 
             ligaName.setText(liga.name)
@@ -90,7 +90,7 @@ class GestionLigasFragment : Fragment() {
                 ligaNameLayout.requestFocus()
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
-                val estaLiga = database.kkligasDao.getTeacherByName(ligaName.text.toString())
+                val estaLiga = database.kkligasDao.getLigaByName(ligaName.text.toString())
                 if(estaLiga != null && selectedLiga == "alta"){
                     ligaNameLayout.error = "Ya existe esta liga"
                     ligaNameLayout.requestFocus()
@@ -138,7 +138,7 @@ class GestionLigasFragment : Fragment() {
             .setTitle("¿Eliminar la liga?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val liga = database.kkligasDao.getTeacherByName(selectedLiga)
+                val liga = database.kkligasDao.getLigaByName(selectedLiga)
                 database.kkligasDao.delete(liga)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }

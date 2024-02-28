@@ -46,3 +46,8 @@ data class kkEquiposEntity(
     var visible: Boolean
 
 )
+{
+    override fun toString(): String {
+        return name
+    }
+}

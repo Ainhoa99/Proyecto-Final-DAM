@@ -14,3 +14,9 @@ data class kkLigasEntity(
     @ColumnInfo(name = "name")
     var name: String,
 )
+
+{
+    override fun toString(): String {
+        return name
+    }
+}
