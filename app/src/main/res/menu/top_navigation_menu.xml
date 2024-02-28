@@ -22,7 +22,7 @@
                     android:title="Equipo Técnico"/>
 
                 <item
-                    android:id="@+id/jugadoresFragment"
+                    android:id="@+id/personalFragment"
                     android:icon="@drawable/jugador"
                     android:title="Jugadores/as" />
 

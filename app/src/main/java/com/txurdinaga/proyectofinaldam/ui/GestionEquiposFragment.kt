@@ -342,17 +342,25 @@ class GestionEquiposFragment : Fragment() {
         equipos.forEach { database.kkequipostDao.insert(it) }
 
         val fotos = listOf(
-            kkFotosEntity(title= "img_9116", temporada = "22-23", equipoId = 1, galeria = false),
+            kkFotosEntity(title= "img_9116", temporada = "22-23", equipoId = 2, galeria = false),
             kkFotosEntity( title = "img_9130", temporada = "23-24", equipoId = null, galeria = true),
             kkFotosEntity(title = "img_9137", temporada = "22-23", equipoId = null, galeria = true),
-            kkFotosEntity(title = "img_9114", temporada = "23-24", equipoId = 3, galeria = false),
+            kkFotosEntity(title = "img_9114", temporada = "23-24", equipoId = 2, galeria = false),
             kkFotosEntity(title = "img_9362", temporada = "22-23", equipoId = 2, galeria = false),
             kkFotosEntity(title = "img_9140", temporada = "24-25", equipoId = null, galeria = true),
-            kkFotosEntity(title = "img_9154", temporada = "22-23", equipoId = 3, galeria = false),
+            kkFotosEntity(title = "img_9154", temporada = "22-23", equipoId = 2, galeria = false),
             kkFotosEntity(title = "img_9159", temporada = "22-23", equipoId = 2, galeria = false),
         )
         fotos.forEach { database.kkfotosDao.insert(it) }
 
+
+        val users = listOf(
+            kkUsersEntity(foto= "sol", nombre = "Ainhoa", apellido = "Lopez", mail = "ainhoa@mail.com", password = "xxx", fecha_nacimiento = "28-09-1999", equipoId = 2, ocupacionId = 2, admin = true, activo = true),
+            kkUsersEntity(foto= "luna", nombre = "Mario", apellido = "Gomez", mail = "mario@mail.com", password = "xxx", fecha_nacimiento = "15-12-2001", equipoId = 2, ocupacionId = 1, admin = true, activo = true),
+            kkUsersEntity(foto= "img_9116", nombre = "Sergio", apellido = "Perez", mail = "sergio@mail.com", password = "xxx", fecha_nacimiento = "15-12-2001", equipoId = 2, ocupacionId = 1, admin = true, activo = true),
+
+        )
+        users.forEach { database.kkUsersDao.insert(it) }
 
     }
 }

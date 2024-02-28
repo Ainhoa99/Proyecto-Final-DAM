@@ -90,7 +90,9 @@ class GaleriaFragment : Fragment(), ICardClickListener {
                     fotosByTemporada.forEach { fotoEquipo ->
                         dataset.add(
                             CardData(
-                                fotoEquipo.title
+                                fotoEquipo.title,
+                                null,
+                                null
                             )
                         )
                     }
