@@ -1,6 +1,12 @@
 package com.txurdinaga.proyectofinaldam.ui
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +22,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
 import com.txurdinaga.proyectofinaldam.util.SearchList
+import java.io.ByteArrayOutputStream
 
 
 class GestionPatrocinadoresFragment : Fragment() {
@@ -23,6 +30,8 @@ class GestionPatrocinadoresFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
+    private val PICK_IMAGE_REQUEST = 1
+    private lateinit var imageString: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +64,19 @@ class GestionPatrocinadoresFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            val imageUri = data.data
+            //Imagen.visibility = ImageView.VISIBLE
+            //Imagen.setImageURI(imageUri)
+
+            imageString = convertirImagenABase64(imageUri!!)
+        }
+
     }
 
     private fun showPatrocinadoresDialog(selectedPatrocinador: String) {
@@ -110,7 +132,7 @@ class GestionPatrocinadoresFragment : Fragment() {
 
             if(allFieldsFilled){
                 if (selectedPatrocinador == "alta") {
-                    database.kkPatrocinadoresDao.insert(kkPatrocinadoresEntity(0, patrocinadorName.text.toString(), "foto", check_isPatrocinador.isChecked, check_activo.isChecked, patrocinadorMoney.text.toString().toDouble()))
+                    database.kkPatrocinadoresDao.insert(kkPatrocinadoresEntity(0, patrocinadorName.text.toString(), imageString, check_isPatrocinador.isChecked, check_activo.isChecked, patrocinadorMoney.text.toString().toDouble()))
                 } else {
                     if (patrocinador != null) {
                         patrocinador.name = patrocinadorName.text.toString()
@@ -156,5 +178,22 @@ class GestionPatrocinadoresFragment : Fragment() {
         dialog.show()
 
         tv_name.text = selectedPatrocinador
+    }
+
+    private fun convertirImagenABase64(imageUri: Uri): String {
+        val inputStream = requireActivity().contentResolver.openInputStream(imageUri)
+        val bitmap = BitmapFactory.decodeStream(inputStream)
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        val byteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
+    private fun convertirBase64AImageView(base64String: String): Bitmap? {
+        if (base64String.isNotEmpty()) {
+            val decodedString = Base64.decode(base64String, Base64.DEFAULT)
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
+        }
+        return null
     }
 }
