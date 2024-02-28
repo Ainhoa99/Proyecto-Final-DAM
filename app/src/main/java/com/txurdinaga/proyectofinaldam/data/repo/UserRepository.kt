@@ -6,6 +6,8 @@ import com.txurdinaga.proyectofinaldam.data.repo.Constants.API_ENTRY_POINT
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.LOGIN_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.REGISTER_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.SERVER_URL
+import com.txurdinaga.proyectofinaldam.util.LoginError
+import com.txurdinaga.proyectofinaldam.util.RegisterError
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
@@ -26,7 +28,7 @@ import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
 interface IUserRepository {
-    suspend fun login(email: String, password: String): String?
+    suspend fun login(email: String, password: String): String
     suspend fun register(user: User)
     suspend fun update(user: User)
     suspend fun delete(user: User)
@@ -51,7 +53,7 @@ class UserRepository() : IUserRepository {
         }
     }
 
-    override suspend fun login(email: String, password: String): String? {
+    override suspend fun login(email: String, password: String): String {
         val response: HttpResponse = withContext(Dispatchers.IO){
             client.post("$SERVER_URL$API_ENTRY_POINT$LOGIN_ROUTE") {
                 contentType(ContentType.Application.Json)
@@ -62,11 +64,11 @@ class UserRepository() : IUserRepository {
         if (response.status.isSuccess()) {
             Log.d("USER_REPOSITORY", "LOGIN: SUCCESS")
             val user = Json.parseToJsonElement(response.bodyAsText()).jsonObject["user"]?.jsonObject
-            return user?.get("token")?.jsonPrimitive?.content
+            return user?.get("token")?.jsonPrimitive?.content ?: throw LoginError()
+        } else {
+            Log.d("USER_REPOSITORY", "LOGIN: ERROR")
+            throw LoginError()
         }
-
-        Log.d("USER_REPOSITORY", "LOGIN: ERROR")
-        return null
     }
 
     override suspend fun register(user: User) {
@@ -80,6 +82,7 @@ class UserRepository() : IUserRepository {
             Log.d("USER_REPOSITORY", "REGISTER: SUCCESS")
         } else {
             Log.d("USER_REPOSITORY", "REGISTER: ERROR")
+            throw RegisterError()
         }
     }
 
