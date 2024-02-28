@@ -9,11 +9,14 @@ import androidx.room.PrimaryKey
 data class kkCategoryEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Long,
+    @NonNull
+    var id: Int = 0,
 
     @ColumnInfo(name = "name")
+    @NonNull
     var name: String,
-) {
+)
+{
     override fun toString(): String {
         return name
     }

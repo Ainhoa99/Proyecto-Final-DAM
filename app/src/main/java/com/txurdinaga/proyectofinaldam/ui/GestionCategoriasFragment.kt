@@ -67,7 +67,7 @@ class GestionCategoriasFragment : Fragment() {
 
 
         if(selectedCategoria != "alta"){//no es alta, es MODIFICACION
-            categoria = database.kkcategoryDao.getTeacherByName(selectedCategoria)
+            categoria = database.kkcategoryDao.getCategoryByName(selectedCategoria)
             dialogTitle = "Modificación de Categoria"
 
             categoriaName.setText(categoria.name)
@@ -89,7 +89,7 @@ class GestionCategoriasFragment : Fragment() {
                 categoriaNameLayout.requestFocus()
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
-                val estaCategoria = database.kkcategoryDao.getTeacherByName(categoriaName.text.toString())
+                val estaCategoria = database.kkcategoryDao.getCategoryByName(categoriaName.text.toString())
                 if(estaCategoria != null && selectedCategoria == "alta"){
                     categoriaNameLayout.error = "Ya existe esta categoria"
                     categoriaNameLayout.requestFocus()
@@ -137,7 +137,7 @@ class GestionCategoriasFragment : Fragment() {
             .setTitle("¿Eliminar la categoria?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val categoria = database.kkcategoryDao.getTeacherByName(selectedCategoria)
+                val categoria = database.kkcategoryDao.getCategoryByName(selectedCategoria)
                 database.kkcategoryDao.delete(categoria)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }

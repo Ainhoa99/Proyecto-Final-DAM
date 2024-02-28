@@ -19,12 +19,12 @@ interface kkLigasDao {
     fun delete(ligas: kkLigasEntity)
 
     @Query("SELECT * FROM ligas WHERE name = :teacherName")
-    fun getTeacherByName(teacherName: String): kkLigasEntity
+    fun getLigaByName(teacherName: String): kkLigasEntity
 
     @Query("SELECT * FROM ligas")
     fun getAllLigas(): List<kkLigasEntity>
 
     @Query("SELECT COUNT(*) FROM ligas WHERE name = :ligasName")
-    fun countTeachersByName(ligasName: String): Int
+    fun countLigasByName(ligasName: String): Int
 
 }

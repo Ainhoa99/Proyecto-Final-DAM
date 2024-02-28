@@ -392,97 +392,96 @@ class PdfGenerator(private val context: Context) {
         fileOutputStream.close()
     }
 
-  /*  private fun mostrarPartidoVacio() {
-        for (equipo in listaEquipos) {
-            val table = PdfPTable(7)
-            table.spacingAfter = 35f // Ajusta el valor según tus necesidades
-            val cellTitulo = PdfPCell(
-                Phrase(
-                    categorias.find { it.id == equipo.categoria }.toString(),
-                    Font(
-                        Font.FontFamily.HELVETICA,
-                        20f,
-                        Font.BOLDITALIC,
-                        BaseColor(ContextCompat.getColor(context, R.color.blue))
-                    )
-                )
-            )
-            cellTitulo.colspan = 7
-            cellTitulo.horizontalAlignment = Element.ALIGN_CENTER
-            cellTitulo.setPadding(5f)
-            cellTitulo.minimumHeight = 20f
-            table.addCell(cellTitulo)
+    /*  private fun mostrarPartidoVacio() {
+          for (equipo in listaEquipos) {
+              val table = PdfPTable(7)
+              table.spacingAfter = 35f // Ajusta el valor según tus necesidades
+              val cellTitulo = PdfPCell(
+                  Phrase(
+                      categorias.find { it.id == equipo.categoria }.toString(),
+                      Font(
+                          Font.FontFamily.HELVETICA,
+                          20f,
+                          Font.BOLDITALIC,
+                          BaseColor(ContextCompat.getColor(context, R.color.blue))
+                      )
+                  )
+              )
+              cellTitulo.colspan = 7
+              cellTitulo.horizontalAlignment = Element.ALIGN_CENTER
+              cellTitulo.setPadding(5f)
+              cellTitulo.minimumHeight = 20f
+              table.addCell(cellTitulo)
 
-            val txtFecha = PdfPCell(Phrase("Fecha"))
-            txtFecha.horizontalAlignment = Element.ALIGN_CENTER
-            table.addCell(txtFecha)
+              val txtFecha = PdfPCell(Phrase("Fecha"))
+              txtFecha.horizontalAlignment = Element.ALIGN_CENTER
+              table.addCell(txtFecha)
 
-            val txtHora = PdfPCell(Phrase("Hora"))
-            txtHora.horizontalAlignment = Element.ALIGN_CENTER
-            table.addCell(txtHora)
+              val txtHora = PdfPCell(Phrase("Hora"))
+              txtHora.horizontalAlignment = Element.ALIGN_CENTER
+              table.addCell(txtHora)
 
-            val txtLugar = PdfPCell(Phrase("Lugar"))
-            txtLugar.horizontalAlignment = Element.ALIGN_CENTER
-            table.addCell(txtLugar)
+              val txtLugar = PdfPCell(Phrase("Lugar"))
+              txtLugar.horizontalAlignment = Element.ALIGN_CENTER
+              table.addCell(txtLugar)
 
-            val txtLugarMostrar = PdfPCell(Phrase(""))
-            txtLugarMostrar.horizontalAlignment = Element.ALIGN_CENTER
-            txtLugarMostrar.colspan = 4
-            table.addCell(txtLugarMostrar)
-            val txtFechaMostrar = PdfPCell(
-                Phrase(
-                    "",
-                    Font(
-                        Font.FontFamily.TIMES_ROMAN,
-                        11.5f,
-                        Font.NORMAL,
-                        BaseColor(ContextCompat.getColor(context, R.color.black))
-                    )
-                )
-            )
-            txtFechaMostrar.horizontalAlignment = Element.ALIGN_CENTER
-            var colorInt = ContextCompat.getColor(context, R.color.lighterRed)
-            txtFechaMostrar.backgroundColor = BaseColor(colorInt)
-            txtFechaMostrar.setPadding(2.5f)
-            txtFechaMostrar.minimumHeight = 20f
+              val txtLugarMostrar = PdfPCell(Phrase(""))
+              txtLugarMostrar.horizontalAlignment = Element.ALIGN_CENTER
+              txtLugarMostrar.colspan = 4
+              table.addCell(txtLugarMostrar)
+              val txtFechaMostrar = PdfPCell(
+                  Phrase(
+                      "",
+                      Font(
+                          Font.FontFamily.TIMES_ROMAN,
+                          11.5f,
+                          Font.NORMAL,
+                          BaseColor(ContextCompat.getColor(context, R.color.black))
+                      )
+                  )
+              )
+              txtFechaMostrar.horizontalAlignment = Element.ALIGN_CENTER
+              var colorInt = ContextCompat.getColor(context, R.color.lighterRed)
+              txtFechaMostrar.backgroundColor = BaseColor(colorInt)
+              txtFechaMostrar.setPadding(2.5f)
+              txtFechaMostrar.minimumHeight = 20f
 
-            table.addCell(txtFechaMostrar)
+              table.addCell(txtFechaMostrar)
 
-            val txtHoraMostrar = PdfPCell(
-                Phrase(
-                    "",
-                    Font(
-                        Font.FontFamily.TIMES_ROMAN,
-                        11.5f,
-                        Font.NORMAL,
-                        BaseColor(ContextCompat.getColor(context, R.color.black))
-                    )
-                )
-            )
-            colorInt = ContextCompat.getColor(context, R.color.lightestRed)
-            txtHoraMostrar.backgroundColor = BaseColor(colorInt)
+              val txtHoraMostrar = PdfPCell(
+                  Phrase(
+                      "",
+                      Font(
+                          Font.FontFamily.TIMES_ROMAN,
+                          11.5f,
+                          Font.NORMAL,
+                          BaseColor(ContextCompat.getColor(context, R.color.black))
+                      )
+                  )
+              )
+              colorInt = ContextCompat.getColor(context, R.color.lightestRed)
+              txtHoraMostrar.backgroundColor = BaseColor(colorInt)
 
-            txtHoraMostrar.horizontalAlignment = Element.ALIGN_CENTER
-            table.addCell(txtHoraMostrar)
+              txtHoraMostrar.horizontalAlignment = Element.ALIGN_CENTER
+              table.addCell(txtHoraMostrar)
 
-            val txtEquipos = PdfPCell(
-                Phrase(
-                    equipo.nombre,
-                    Font(
-                        Font.FontFamily.HELVETICA,
-                        12.5f,
-                        Font.NORMAL,
-                        BaseColor(ContextCompat.getColor(context, R.color.black))
-                    )
-                )
-            )
-            txtEquipos.horizontalAlignment = Element.ALIGN_CENTER
-            txtEquipos.colspan = 5
-            table.addCell(txtEquipos)
+              val txtEquipos = PdfPCell(
+                  Phrase(
+                      equipo.nombre,
+                      Font(
+                          Font.FontFamily.HELVETICA,
+                          12.5f,
+                          Font.NORMAL,
+                          BaseColor(ContextCompat.getColor(context, R.color.black))
+                      )
+                  )
+              )
+              txtEquipos.horizontalAlignment = Element.ALIGN_CENTER
+              txtEquipos.colspan = 5
+              table.addCell(txtEquipos)
 
-            document.add(table)
-        }
-    }*/
+              document.add(table)
+          }
+      }*/
 
 }
-

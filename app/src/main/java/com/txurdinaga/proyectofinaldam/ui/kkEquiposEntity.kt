@@ -22,7 +22,7 @@ import androidx.room.PrimaryKey
 data class kkEquiposEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Long,
+    var id: Int = 0,
 
     @ColumnInfo(name = "name")
     var name: String,
@@ -31,10 +31,10 @@ data class kkEquiposEntity(
     var campo: String?,
 
     @ColumnInfo(name = "categoria")
-    var categoria: Long?,
+    var categoria: Int?,
 
     @ColumnInfo(name = "liga")
-    var liga: Long?,
+    var liga: Int?,
 
     @ColumnInfo(name = "escudo")
     var escudo: String?,
@@ -45,7 +45,8 @@ data class kkEquiposEntity(
     @ColumnInfo(name = "visible")
     var visible: Boolean
 
-) {
+)
+{
     override fun toString(): String {
         return name
     }
