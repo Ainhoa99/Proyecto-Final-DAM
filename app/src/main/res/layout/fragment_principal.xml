@@ -33,7 +33,10 @@
             android:src="@drawable/jugadora_prueba"
             android:scaleType="fitCenter"
             android:layout_marginLeft="5dp"/>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6648aaa25f251e2c0fb3e5c63a45c97161586ad4
 
         <Space
             android:layout_width="wrap_content"
@@ -47,9 +50,13 @@
             android:layout_height="70dp"
             android:src="@drawable/servicio_al_cliente"
             android:scaleType="fitCenter"
+<<<<<<< HEAD
             android:layout_marginRight="5dp"
             android:layout_marginBottom="0dp"
             android:text="Contacto" />
+=======
+            android:layout_marginRight="5dp"/>
+>>>>>>> 6648aaa25f251e2c0fb3e5c63a45c97161586ad4
 
         <!--<ImageView
             android:id="@+id/contactoimg"
@@ -58,6 +65,10 @@
             android:scaleType="centerCrop"
             android:src="@drawable/contacto" />-->
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6648aaa25f251e2c0fb3e5c63a45c97161586ad4
     </LinearLayout>
 
 

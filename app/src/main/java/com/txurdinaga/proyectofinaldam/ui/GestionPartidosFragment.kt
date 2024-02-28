@@ -193,10 +193,6 @@ class GestionPartidosFragment : Fragment() {
                     txtFecha.text = SimpleDateFormat("dd/MM/yyyy").format(Date(it.fecha))
                     txtHora.text = SimpleDateFormat("HH:mm").format(Date(it.hora))
                     findViewById<CheckBox>(R.id.chkLocal).isChecked = it.local.equals("Usansolo")
-                    val equipo2 = equipos.find { equipo2 -> equipo2.id == it.id_equipo2 }
-                    val position =
-                        (spnEquipoContrario.adapter as ArrayAdapter<kkEquiposEntity>).getPosition(equipo2)
-                    spnEquipoContrario.setSelection(position)
                     if (it.puntos1 != null) {
                         txtPuntos1.text = it.puntos1.toString().toEditable()
                         txtPuntos2.text = it.puntos2.toString().toEditable()
