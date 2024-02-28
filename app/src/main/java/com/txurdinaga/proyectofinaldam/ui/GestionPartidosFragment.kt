@@ -11,6 +11,7 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
@@ -45,6 +46,9 @@ class GestionPartidosFragment : Fragment() {
     lateinit var equiposUnkina: List<kkEquiposEntity>
     lateinit var equipos: List<kkEquiposEntity>
 
+    lateinit var selectedItemEquipo :kkEquiposEntity
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,14 +63,10 @@ class GestionPartidosFragment : Fragment() {
             .build()
         /*eliminarCategorias()
                 eliminarLigas()*/
-        añadirCategorias()
-        añadirLigas()
 
         categorias = database.kkcategoryDao.getAllCategorias()
         ligas = database.kkligasDao.getAllLigas()
 
-        //eliminarEquipos()
-        añadirEquipos()
         equiposUnkina = database.kkequipostDao.getAllEquipos().filter { it.isUnkina }
         equipos = database.kkequipostDao.getAllEquipos().filter { !it.isUnkina }
 
@@ -169,27 +169,16 @@ class GestionPartidosFragment : Fragment() {
                 setOnClickListener { showTimePickerDialog(this) }
             }
 
-            val spnEquipoContrario = findViewById<Spinner>(R.id.spnEquipoContrario)
+            val spnEquipoContrario = findViewById<AutoCompleteTextView>(R.id.spnEquipoContrario)
 
-            val adapter = ArrayAdapter(
-                context,
-                android.R.layout.simple_spinner_item,
-                equipos.filter { it.liga == equipo.liga }
-            )
+            var ListaEquiposCont = equipos.filter { it.liga == equipo.liga }
 
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spnEquipoContrario.adapter = adapter
+            var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListaEquiposCont)
 
-            spnEquipoContrario.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                    // Handle item selection here
-                    // Do something with the selectedEquipo if needed
-                }
+            spnEquipoContrario.setAdapter(adapter)
 
-                override fun onNothingSelected(parent: AdapterView<*>?) {
-                    // Handle case where nothing is selected
-                }
-            }
+
+
 
             findViewById<TextView>(R.id.txtCategoria).text =
                 categorias.find { it.id == equipo.categoria }.toString()
@@ -199,7 +188,7 @@ class GestionPartidosFragment : Fragment() {
             val txtPuntos2 = findViewById<EditText>(R.id.etnPuntosContra)
 
             if (tag != 0) {
-                val partido = listaPartidos.find { it.id == tag.toLong() }
+                val partido = listaPartidos.find { it.id == tag }
                 partido?.let {
                     txtFecha.text = SimpleDateFormat("dd/MM/yyyy").format(Date(it.fecha))
                     txtHora.text = SimpleDateFormat("HH:mm").format(Date(it.hora))
@@ -215,6 +204,11 @@ class GestionPartidosFragment : Fragment() {
                 }
             }
 
+            spnEquipoContrario.setOnItemClickListener { parent, view, position, id ->
+                selectedItemEquipo = parent.getItemAtPosition(position) as kkEquiposEntity
+
+            }
+
             // Evitar que el pop-up se cierre al tocar fuera de él
             setCanceledOnTouchOutside(false)
 
@@ -225,10 +219,10 @@ class GestionPartidosFragment : Fragment() {
                 val local: String? = if (findViewById<CheckBox>(R.id.chkLocal).isChecked) {
                     equipo.campo
                 } else {
-                    (spnEquipoContrario.selectedItem as? kkEquiposEntity)?.campo ?: ""
+                    (selectedItemEquipo as? kkEquiposEntity)?.campo ?: ""
                 }
 
-                val equipoContrario = spnEquipoContrario.selectedItem as? kkEquiposEntity
+                val equipoContrario = selectedItemEquipo as? kkEquiposEntity
                 if (equipoContrario != null) {
                     if (txtFecha.text.isEmpty()) {
                         txtFecha.setBackgroundResource(R.drawable.borde_error)
@@ -268,7 +262,7 @@ class GestionPartidosFragment : Fragment() {
                                 database.kkpartidosDao.insertarPartido(partido)
                             } else {
                                 val partido = kkPartidosEntity(
-                                    id = tag.toLong(),
+                                    id = tag,
                                     id_equipo1 = equipo.id,
                                     id_equipo2 = equipoContrario.id,
                                     puntos1 = puntos1,
@@ -411,363 +405,5 @@ class GestionPartidosFragment : Fragment() {
         // Obtener el número de semana
         return calendar.get(Calendar.WEEK_OF_YEAR)
     }
-    /*private fun eliminarLigas() {
-        database.kkligasDao.deleteLigas()
-    }*/
 
-    private fun añadirLigas() {
-        database.kkligasDao.insert(kkLigasEntity(id = 1, name = "Senior Masculina"))
-        database.kkligasDao.insert(kkLigasEntity(id = 2, name = "Junior Cadete Mixto Escolar"))
-        database.kkligasDao.insert(kkLigasEntity(id = 3, name = "Infantil Fem.B"))
-        database.kkligasDao.insert(kkLigasEntity(id = 4, name = "Minibasket Femenino D"))
-        database.kkligasDao.insert(kkLigasEntity(id = 5, name = "Premini 3x3 5x5 D"))
-    }
-
-    /*private fun eliminarCategorias() {
-        database.kkcategoryDao.deleteCategorias()
-
-    }*/
-
-    private fun añadirCategorias() {
-        database.kkcategoryDao.insert(kkCategoryEntity(id = 1, name = "Senior Masculina"))
-        database.kkcategoryDao.insert(kkCategoryEntity(id = 2, name = "Junior Cadete Mixto Escolar"))
-        database.kkcategoryDao.insert(kkCategoryEntity(id = 3, name = "Infantil Femenino B"))
-        database.kkcategoryDao.insert(kkCategoryEntity(id = 4, name = "Minibasket Femenino D"))
-        database.kkcategoryDao.insert(kkCategoryEntity(id = 5, name = "Premini 3x3 5x5 D"))
-    }
-
-    /*private fun eliminarEquipos() {
-        database.kkequipostDao.deleteEquipo()
-    }*/
-
-    private fun añadirEquipos() {
-        // Buscar los ids de categoría y liga para Senior Masculino
-        val seniorMasculinoCategoriaId = categorias.find { it.id.toInt() == 1 }?.id ?: 0
-        val seniorMasculinoLigaId = ligas.find { it.id.toInt() == 1 }?.id ?: 0
-
-        // Buscar los ids de categoría y liga para Junior Masculino
-        val juniorMasculinoCategoriaId = categorias.find { it.id.toInt() == 2 }?.id ?: 0
-        val juniorMasculinoLigaId = ligas.find { it.id.toInt() == 2 }?.id ?: 0
-
-        // Buscar los ids de categoría y liga para Senior Masculino
-        val infantilFemeninoCategoriaId = categorias.find { it.id.toInt() == 3 }?.id ?: 0
-        val infantilFemeninoLigaId = ligas.find { it.id.toInt() == 3 }?.id ?: 0
-
-        // Buscar los ids de categoría y liga para Junior Masculino
-        val minibasketFemeninoCategoriaId = categorias.find { it.id.toInt() == 4 }?.id ?: 0
-        val minibasketFemeninoLigaId = ligas.find { it.id.toInt() == 4 }?.id ?: 0
-
-        // Buscar los ids de categoría y liga para Senior Masculino
-        val preminiCategoriaId = categorias.find { it.id.toInt() == 5 }?.id ?: 0
-        val preminiLigaId = ligas.find { it.id.toInt() == 5 }?.id ?: 0
-
-
-        // Crear instancias de Equipo y insertar en la base de datos
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 1,
-                name = "UNKINAKO 2",
-                campo = "Usansolo",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = true,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 2,
-                name = "ALKIHAIZEA UNKINA",
-                campo = "Usansolo",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = true,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 3,
-                name = "KIRAM UNKINA",
-                campo = "Usansolo",
-                categoria = infantilFemeninoCategoriaId,
-                liga = infantilFemeninoLigaId,
-                escudo = "",
-                isUnkina = true,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 4,
-                name = "KIRAM UNKINA",
-                campo = "Usansolo",
-                categoria = minibasketFemeninoCategoriaId,
-                liga = minibasketFemeninoLigaId,
-                escudo = "",
-                isUnkina = true,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 5,
-                name = "UNKINA 14",
-                campo = "Usansolo",
-                categoria = preminiCategoriaId,
-                liga = preminiLigaId,
-                escudo = "",
-                isUnkina = true,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 6,
-                name = "UNKINA 15",
-                campo = "Usansolo",
-                categoria = preminiCategoriaId,
-                liga = preminiLigaId,
-                escudo = "",
-                isUnkina = true,
-                visible = true
-            )
-        )
-
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 7,
-                name = "Erandio Altzaga",
-                campo = "Erandio",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 8,
-                name = "Erandio Altzaga",
-                campo = "Erandio",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 9,
-                name = "Gaztelueta",
-                campo = "Leioa",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 10,
-                name = "Gaztelueta",
-                campo = "Leioa",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 11,
-                name = "Berangoko Hontzuriak",
-                campo = "Berango",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 12,
-                name = "Berangoko Hontzuriak",
-                campo = "Berango",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 13,
-                name = "Udalaitz",
-                campo = "Elorrio",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 14,
-                name = "Udalaitz",
-                campo = "Elorrio",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 15,
-                name = "Trapaga Saskibaloia",
-                campo = "Trapaga",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 16,
-                name = "Trapaga Saskibaloia",
-                campo = "Trapaga",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 17,
-                name = "Kibuc Basauri",
-                campo = "Basauri",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 18,
-                name = "Kibuc Basauri",
-                campo = "Basauri",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 19,
-                name = "Tabirako San Antonio",
-                campo = "Durango",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 20,
-                name = "Tabirako Kurutxiaga",
-                campo = "Durango",
-                categoria = infantilFemeninoCategoriaId,
-                liga = infantilFemeninoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 21,
-                name = "Urdaneta",
-                campo = "Loiu",
-                categoria = minibasketFemeninoCategoriaId,
-                liga = minibasketFemeninoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 22,
-                name = "Tabirako San Antonio",
-                campo = "Durango",
-                categoria = preminiCategoriaId,
-                liga = preminiLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 23,
-                name = "Tabirako San Antonio",
-                campo = "Loiu",
-                categoria = preminiCategoriaId,
-                liga = preminiLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 23,
-                name = "Uribike Ugeraga",
-                campo = "Sopelana",
-                categoria = seniorMasculinoCategoriaId,
-                liga = seniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-        database.kkequipostDao.insert(
-            kkEquiposEntity(
-                id = 24,
-                name = "Berriz SBT",
-                campo = "Berriz",
-                categoria = juniorMasculinoCategoriaId,
-                liga = juniorMasculinoLigaId,
-                escudo = "",
-                isUnkina = false,
-                visible = true
-            )
-        )
-    }
 }

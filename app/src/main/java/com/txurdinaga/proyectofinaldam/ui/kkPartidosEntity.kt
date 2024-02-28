@@ -8,13 +8,13 @@ import androidx.room.PrimaryKey
 data class kkPartidosEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Long = 0,
+    var id: Int = 0,
 
     @ColumnInfo(name = "id_equipo_1")
-    var id_equipo1: Long,
+    var id_equipo1: Int,
 
     @ColumnInfo(name = "id_equipo_2")
-    var id_equipo2: Long,
+    var id_equipo2: Int,
 
     @ColumnInfo(name = "puntos_equipo_1")
     var puntos1: Int?,
