@@ -12,6 +12,7 @@ import com.txurdinaga.proyectofinaldam.ui.MainActivity
 class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_splash_screen)
 
         val imageView: ImageView = findViewById(R.id.logo)
