@@ -18,10 +18,15 @@ class CardAdapter(private val dataSet: List<CardData>, private val clickListener
     class ViewHolder(view: View, clickListener: ICardClickListener) : RecyclerView.ViewHolder(view) {
         val materialCardView: MaterialCardView
         val image: ImageView
+        val name: TextView
+        val ocupacion: TextView
+
         var cardData: CardData? = null
         init {
             materialCardView = view.findViewById(R.id.materialCardView)
             image = view.findViewById(R.id.image)
+            name = view.findViewById(R.id.name)
+            ocupacion = view.findViewById(R.id.rol)
 
             // Click listener for the whole card
             materialCardView.setOnClickListener {
@@ -50,6 +55,16 @@ class CardAdapter(private val dataSet: List<CardData>, private val clickListener
         val currentCard = dataSet[position]
         val resourceId = holder.itemView.context.resources.getIdentifier(currentCard.title, "drawable", holder.itemView.context.packageName)
         holder.image.setImageResource(resourceId)
+        if(currentCard.nombre!=null){
+            holder.name.text = currentCard.nombre.toString()
+            holder.name.visibility = View.VISIBLE
+        }
+
+        if(currentCard.ocupacion!=null){
+            holder.ocupacion.text = currentCard.ocupacion.toString()
+            holder.ocupacion.visibility = View.VISIBLE
+        }
+
 
         // Set CardData in the ViewHolder
         holder.cardData = currentCard

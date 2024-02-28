@@ -69,8 +69,11 @@ class PersonalFragment : Fragment(), ICardClickListener {
             spEquipos.setOnItemClickListener { parent, view, position, id ->
                 val msgFotosEmpty = binding.msgFotosEmpty
                 val msgSelecciona = binding.msgSelecciona
+                val msgJugadores = binding.msgJugadores
+                val msgEqTecnico = binding.msgEqTecnico
 
                 msgSelecciona.visibility = View.GONE
+
                 val selectedItem = parent.getItemAtPosition(position) as kkEquiposEntity
                 // Aquí puedes hacer lo que necesites con el elemento seleccionado
                 // Por ejemplo, mostrar un Toast con el elemento seleccionado
@@ -80,20 +83,35 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
                 if (usersByEquipo.isNotEmpty()){
                     msgFotosEmpty.visibility = View.GONE
+                    msgJugadores.visibility = View.VISIBLE
+                    msgEqTecnico.visibility = View.VISIBLE
+                    val rvEquipoTecnico = binding.recyclerViewEquipoTecnico
+                    rvEquipoTecnico.visibility = View.VISIBLE
+                    val datasetJugadores = mutableListOf<CardData>()
+                    val datasetEquipoTecnico = mutableListOf<CardData>()
 
-                    val dataset = mutableListOf<CardData>()
                     usersByEquipo.forEach { fotoEquipo ->
-                        dataset.add(
-                            CardData(
-                                fotoEquipo.foto,
-                                fotoEquipo.nombre,
-                                fotoEquipo.ocupacionId
+                        if (fotoEquipo.ocupacionId == 1){
+                            datasetJugadores.add(
+                                CardData(
+                                    fotoEquipo.foto,
+                                    fotoEquipo.nombre,
+                                    fotoEquipo.ocupacionId
+                                )
                             )
-                        )
+                        } else{
+                            datasetEquipoTecnico.add(
+                                CardData(
+                                    fotoEquipo.foto,
+                                    fotoEquipo.nombre,
+                                    fotoEquipo.ocupacionId
+                                )
+                            )
+                        }
                     }
 
 
-                    val cardAdapter = CardAdapter(dataset, this)
+                    val cardAdapter = CardAdapter(datasetJugadores, this)
                     val recyclerView: RecyclerView = binding.recyclerView
                     recyclerView.adapter = cardAdapter
                     recyclerView.setHasFixedSize(true);
@@ -104,11 +122,21 @@ class PersonalFragment : Fragment(), ICardClickListener {
                         // Establecemos el spanCount deseado
                         spanCount = 3
                     }
+
+                    val cardAdapterEquipoTecnico = CardAdapter(datasetEquipoTecnico, this)
+                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                    recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
+                    recyclerViewEquipoTecnico.setHasFixedSize(true);
+                    recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
                 } else{
                     msgFotosEmpty.visibility = View.VISIBLE
+                    msgJugadores.visibility = View.GONE
+                    msgEqTecnico.visibility = View.GONE
                     val emptyAdapter = CardAdapter(emptyList(), this)
                     val recyclerView: RecyclerView = binding.recyclerView
                     recyclerView.adapter = emptyAdapter
+                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                    recyclerViewEquipoTecnico.adapter = emptyAdapter
                 }
 
             }
