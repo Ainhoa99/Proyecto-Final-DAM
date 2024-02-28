@@ -20,6 +20,7 @@ import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
+import io.ktor.client.statement.readText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -108,9 +109,11 @@ class CategoryRepository() : ICategoryRepository {
             }
         }
         if (response.status.isSuccess()) {
-            Log.d("CATEGORY_REPOSITORY", "DELETE: SUCCESS")
+            Log.d("CATEGORY_REPOSITORY", "GET ALL: SUCCESS")
+            val responseBody = response.bodyAsText()
+            return Json.decodeFromString<List<Category>>(responseBody)
         } else {
-            Log.d("CATEGORY_REPOSITORY", "DELETE: ERROR")
+            Log.d("CATEGORY_REPOSITORY", "GET ALL: ERROR")
             throw RegisterError()
         }
     }
