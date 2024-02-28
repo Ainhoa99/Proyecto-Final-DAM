@@ -8,7 +8,6 @@ import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import timber.log.Timber
 
 
     class NetworkConnectivityMonitor(private val context: Context) {

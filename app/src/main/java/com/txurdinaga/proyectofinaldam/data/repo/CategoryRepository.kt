@@ -8,13 +8,18 @@ import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.DELETE_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.GET_ALL_CATEGORIES
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.SERVER_URL
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.UPDATE_ROUTE
+import com.txurdinaga.proyectofinaldam.util.CreateError
+import com.txurdinaga.proyectofinaldam.util.GetAllError
 import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.RegisterError
+import com.txurdinaga.proyectofinaldam.util.Token
+import com.txurdinaga.proyectofinaldam.util.UpdateError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete
 import io.ktor.client.request.get
+import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.put
 import io.ktor.client.request.setBody
@@ -22,6 +27,7 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.client.statement.readText
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
@@ -57,6 +63,8 @@ class CategoryRepository() : ICategoryRepository {
         }
     }
 
+    private val token = Token.getToken()
+
     override suspend fun create(category: Category) {
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("$SERVER_URL$API_ENTRY_POINT}$CREATE_ROUTE") {
@@ -68,7 +76,7 @@ class CategoryRepository() : ICategoryRepository {
             Log.d("CATEGORY_REPOSITORY", "CREATE: SUCCESS")
         } else {
             Log.d("CATEGORY_REPOSITORY", "CREATE: ERROR")
-            throw RegisterError()
+            throw CreateError()
         }
     }
 
@@ -83,7 +91,7 @@ class CategoryRepository() : ICategoryRepository {
             Log.d("CATEGORY_REPOSITORY", "CREATE: SUCCESS")
         } else {
             Log.d("CATEGORY_REPOSITORY", "CREATE: ERROR")
-            throw RegisterError()
+            throw UpdateError()
         }
     }
 
@@ -105,6 +113,10 @@ class CategoryRepository() : ICategoryRepository {
     override suspend fun getAllCategories(): List<Category> {
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT}$GET_ALL_CATEGORIES") {
+                header(
+                    HttpHeaders.Authorization,
+                    "Bearer $token"
+                )
                 contentType(ContentType.Application.Json)
             }
         }
@@ -114,7 +126,7 @@ class CategoryRepository() : ICategoryRepository {
             return Json.decodeFromString<List<Category>>(responseBody)
         } else {
             Log.d("CATEGORY_REPOSITORY", "GET ALL: ERROR")
-            throw RegisterError()
+            throw GetAllError()
         }
     }
 
