@@ -20,7 +20,6 @@ import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
 import com.txurdinaga.proyectofinaldam.ui.util.NetworkConnectivityMonitor
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 

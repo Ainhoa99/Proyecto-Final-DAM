@@ -12,52 +12,57 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center_horizontal">
+            android:layout_gravity="center_horizontal"
+            android:orientation="horizontal">
 
             <Button
-                style="@style/Widget.Material3.Button.ElevatedButton"
                 android:id="@+id/btn_pdf1"
-                android:layout_width="wrap_content"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
                 android:text="Normativa1"
-                app:strokeColor="@color/C2"
-                app:strokeWidth="3dp"
                 app:cornerRadius="8dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"/>
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp" />
 
 
             <Button
-                style="@style/Widget.Material3.Button.ElevatedButton"
                 android:id="@+id/btn_pdf2"
-                android:layout_width="wrap_content"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
-                android:text="Normativa2"
-                app:strokeColor="@color/C2"
-                app:strokeWidth="3dp"
-                app:cornerRadius="8dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"/>
-            <Button
                 style="@style/Widget.Material3.Button.ElevatedButton"
-                android:id="@+id/btn_pdf3"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Normativa3"
-                app:strokeColor="@color/C2"
-                app:strokeWidth="3dp"
-                app:cornerRadius="8dp"
+                android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:layout_marginLeft="5dp"/>
+                android:layout_weight="1"
+                android:text="Normativa2"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp" />
+
+            <Button
+                android:id="@+id/btn_pdf3"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:text="Normativa3"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp" />
         </LinearLayout>
 
 
@@ -65,22 +70,31 @@
             android:id="@+id/tv_infoText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dip"
-            android:text="Necesitaras \n - Nombre \n - Apellidos \n - Foto \n - E-mail \n - Empadronamiento \n - Diploma deportivo"
-            android:textSize="20dip" />
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="40dp"
+            android:text="&#128161; NECESITARÁS: \n \n · Nombre \n · Apellidos \n · Foto \n · E-mail \n · Empadronamiento \n · Diploma deportivo"
+            android:textSize="20dp" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="80dp" />
 
         <TextView
             android:id="@+id/tv_infoText2"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="150dp"
             android:text="Cuando tenga todo lo anterior, puede continuar con la inscripción."
+            android:textAlignment="center"
             android:textSize="20dp" />
 
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <Button
-            style="@style/AppButton"
             android:id="@+id/btn_next"
+            style="@style/AppButton"
             android:layout_gravity="center_horizontal"
             android:text="Siguiente" />
 

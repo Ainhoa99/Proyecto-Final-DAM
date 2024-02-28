@@ -90,8 +90,7 @@ class GestionPDFs : Fragment() {
             val cursor = requireContext().contentResolver.query(uri, null, null, null, null)
             cursor?.use { cursor ->
                 if (cursor.moveToFirst()) {
-                    //val nombreArchivo = cursor.getString(cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_DISPLAY_NAME))
-                    //Toast.makeText(requireContext(), "$nombreArchivo subido correctamente", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Documento modificado correctamente", Toast.LENGTH_SHORT).show()
 
                     // Obtener el color definido en colors.xml
                     val colorPersonalizado = ContextCompat.getColor(requireContext(), R.color.C4)
