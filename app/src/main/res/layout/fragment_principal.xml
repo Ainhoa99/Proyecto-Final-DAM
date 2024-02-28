@@ -28,17 +28,11 @@
         <ImageButton
             android:id="@+id/prueba"
             style="@style/AppButton"
-<<<<<<< HEAD
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/jugadora_prueba"
             android:scaleType="fitCenter"
             android:layout_marginLeft="5dp"/>
-=======
-            android:layout_width="150dp"
-            android:layout_marginBottom="0dp"
-            android:text="Prueba" />
->>>>>>> 3ae93c0d2313cbb93542ff00dfae9176bddb0104
 
         <Space
             android:layout_width="wrap_content"
@@ -48,16 +42,11 @@
         <ImageButton
             android:id="@+id/contacto"
             style="@style/AppButton"
-<<<<<<< HEAD
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/servicio_al_cliente"
             android:scaleType="fitCenter"
             android:layout_marginRight="5dp"/>
-=======
-            android:layout_width="150dp"
-            android:layout_marginBottom="0dp"
-            android:text="Contacto" />
 
         <!--<ImageView
             android:id="@+id/contactoimg"
@@ -66,7 +55,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/contacto" />-->
 
->>>>>>> 3ae93c0d2313cbb93542ff00dfae9176bddb0104
 
     </LinearLayout>
 
