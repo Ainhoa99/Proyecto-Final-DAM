@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -192,13 +193,20 @@ class PersonalFragment : Fragment(), ICardClickListener {
                 var img = dialogView.findViewById<ImageView>(R.id.foto)
                 var fecha = dialogView.findViewById<EditText>(R.id.textViewFecha)
                 var email = dialogView.findViewById<TextInputEditText>(R.id.email)
-
+                var isAdmin = dialogView.findViewById<CheckBox>(R.id.checkBoxAdmin)
+                var isActiva = dialogView.findViewById<CheckBox>(R.id.checkBoxActiva)
 
                 name.setText(user.nombre)
                 apellido.setText(user.apellido)
                 img.setImageResource(resources.getIdentifier(user.foto, "drawable", requireContext().packageName))
                 fecha.setText(user.fecha_nacimiento)
                 email.setText(user.mail)
+                if (user.admin){
+                    isAdmin.isChecked= true
+                }
+                if (user.activo){
+                    isActiva.isChecked = true
+                }
 
             }
         }
