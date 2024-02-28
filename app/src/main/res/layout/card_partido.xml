@@ -28,8 +28,8 @@
                     android:layout_marginTop="15dp"
                     android:layout_marginEnd="12.5dp"
                     android:layout_marginBottom="15dp"
-                    app:strokeColor="#345beb"
-                    app:strokeWidth="5dp">
+                    app:strokeColor="@color/C2"
+                    app:strokeWidth="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -129,8 +129,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="10dp"
                     android:padding="10dp"
-                    app:strokeColor="#345beb"
-                    app:strokeWidth="5dp">
+                    app:strokeColor="@color/C2"
+                    app:strokeWidth="2dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
