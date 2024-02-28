@@ -9,14 +9,12 @@ import com.txurdinaga.proyectofinaldam.data.repo.Constants.SERVER_URL
 import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.RegisterError
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
-import io.ktor.client.statement.readText
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
@@ -32,6 +30,8 @@ interface IUserRepository {
     suspend fun register(user: User)
     suspend fun update(user: User)
     suspend fun delete(user: User)
+    suspend fun getUser(userId: String): User
+    suspend fun getAllUsers(): List<User>
 }
 private object Constants {
     const val SERVER_URL = "http://192.168.214.250:8080"
@@ -41,6 +41,8 @@ private object Constants {
     const val REGISTER_ROUTE = "/user/register"
     const val UPDATE_ROUTE = "/user/update"
     const val DELETE_ROUTE = "/user/delete"
+    const val GET_ALL_USERS_ROUTE = "/users"
+    const val GET_USER_BY_ID_ROUTE = "/user"
 }
 class UserRepository() : IUserRepository {
     private val client = HttpClient(Android) {
@@ -91,6 +93,14 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun delete(user: User) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getUser(userId: String): User {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getAllUsers(): List<User> {
         TODO("Not yet implemented")
     }
 
