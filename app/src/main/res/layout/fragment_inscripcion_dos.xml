@@ -9,125 +9,137 @@
     tools:context=".ui.InscripcionDosFragment">
 
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:paddingTop="20dp">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/nameLayout"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:hint="Nombre *"
-            app:errorEnabled="true"
-            android:paddingBottom="8dp">
+            android:orientation="vertical">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/name"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/nameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="Nombre *"
+                android:paddingBottom="8dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/name"
+                    android:layout_width="275dp"
+                    android:layout_height="match_parent"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/surnameLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="Apellidos *"
+                android:paddingBottom="8dp"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/surname"
+                    android:layout_width="275dp"
+                    android:layout_height="match_parent"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_datePicker"
+                style="@style/Widget.Material3.Button.ElevatedButton"
                 android:layout_width="275dp"
-                android:layout_height="match_parent"
-                android:inputType="text" />
+                android:layout_height="60dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center_horizontal"
+                android:text="Fecha *"
+                app:cornerRadius="8dp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/surnameLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:hint="Apellidos *"
-            app:errorEnabled="true"
-            android:paddingBottom="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/surname"
+            <!--Buscador de emails en caso de tener hermanos apuntados-->
+            <CheckBox
+                android:id="@+id/checkParents"
                 android:layout_width="275dp"
-                android:layout_height="match_parent"
-                android:inputType="text" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Marcar si tiene hermanos apuntados" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:id="@+id/btn_datePicker"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_gravity="center_horizontal"
-            android:text="Fecha *"
-            app:cornerRadius="8dp"/>
-
-        <!--Buscador de emails en caso de tener hermanos apuntados-->
-        <CheckBox
-            android:id="@+id/checkParents"
-            android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Marcar si tiene hermanos apuntados"/>
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/textInputLayoutEmail"
-            android:layout_width="275dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:hint="Email del usuario *"
-            android:paddingBottom="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/textInputEmail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:inputType="textEmailAddress" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dniLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:hint="DNI *"
-            app:errorEnabled="true"
-            android:paddingBottom="8dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/dni"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/textInputLayoutEmail"
                 android:layout_width="275dp"
-                android:layout_height="match_parent"
-                android:inputType="text" />
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="Email del usuario *"
+                android:paddingBottom="8dp">
 
-        </com.google.android.material.textfield.TextInputLayout>
-        <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:id="@+id/btn_empadronamiento"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Empadronamiento *"
-            app:cornerRadius="8dp"/>
-        <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:id="@+id/btn_diploma"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Diploma *"
-            app:cornerRadius="8dp"/>
-        <Button
-            style="@style/Widget.Material3.Button.ElevatedButton"
-            android:id="@+id/btn_certificado"
-            android:layout_width="275dp"
-            android:layout_height="60dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Certificado "
-            app:cornerRadius="8dp"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textInputEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textEmailAddress" />
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            style="@style/AppButton"
-            android:id="@+id/btn_inscribir"
-            android:layout_height="wrap_content"
-            android:text="Acceder" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dniLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:hint="DNI *"
+                android:paddingBottom="8dp"
+                app:errorEnabled="true">
 
-    </LinearLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dni"
+                    android:layout_width="275dp"
+                    android:layout_height="match_parent"
+                    android:inputType="text" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_empadronamiento"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="275dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Empadronamiento *"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/btn_diploma"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="275dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Diploma *"
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/btn_certificado"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="275dp"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Certificado "
+                app:cornerRadius="8dp" />
+
+            <Button
+                android:id="@+id/btn_inscribir"
+                style="@style/AppButton"
+                android:layout_height="wrap_content"
+                android:text="Acceder" />
+
+        </LinearLayout>
+    </ScrollView>
+
 </LinearLayout>
 
 

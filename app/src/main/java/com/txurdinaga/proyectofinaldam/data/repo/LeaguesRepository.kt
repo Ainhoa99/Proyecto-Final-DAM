@@ -1,16 +1,18 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
-import com.txurdinaga.proyectofinaldam.data.model.Leage
+import com.txurdinaga.proyectofinaldam.data.model.Category
 import com.txurdinaga.proyectofinaldam.data.model.League
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.API_ENTRY_POINT
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.CREATE_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.DELETE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.GET_ALL_LEAGES
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.GET_ALL_LEAGUES
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.SERVER_URL
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.UPDATE_ROUTE
+import com.txurdinaga.proyectofinaldam.util.CreateError
+import com.txurdinaga.proyectofinaldam.util.GetAllError
 import com.txurdinaga.proyectofinaldam.util.RegisterError
+import com.txurdinaga.proyectofinaldam.util.UpdateError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -66,7 +68,7 @@ class LeageRepository() : ILeagueRepository {
             Log.d("LEAGE_LEAGE", "CREATE: SUCCESS")
         } else {
             Log.d("LEAGE_LEAGE", "CREATE: ERROR")
-            throw RegisterError()
+            throw CreateError()
         }
     }
 
@@ -81,7 +83,7 @@ class LeageRepository() : ILeagueRepository {
             Log.d("LEAGE_LEAGE", "UPDATE: SUCCESS")
         } else {
             Log.d("LEAGE_LEAGE", "UPDATE: ERROR")
-            throw RegisterError()
+            throw UpdateError()
         }
     }
 
@@ -108,11 +110,11 @@ class LeageRepository() : ILeagueRepository {
         }
         if (response.status.isSuccess()) {
             Log.d("LEAGE_LEAGE", "GET: SUCCESS")
-            val responseBy = response.bodyAsText()
-            return 
+            val responseBody = response.bodyAsText()
+            return Json.decodeFromString<List<League>>(responseBody)
         } else {
             Log.d("LEAGE_LEAGE", "GET: ERROR")
-            throw RegisterError()
+            throw GetAllError()
         }
     }
 

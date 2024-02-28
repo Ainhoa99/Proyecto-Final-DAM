@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Category(
-    val id: Int? = null, // TODO Almacenar el token junto al usuario o siempre fuera?
+    val id: Int? = null,
     val name: String? = null
 )

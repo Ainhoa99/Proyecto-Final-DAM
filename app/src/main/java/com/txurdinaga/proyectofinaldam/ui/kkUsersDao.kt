@@ -11,7 +11,16 @@ interface kkUsersDao {
     @Insert
     fun insert(user: kkUsersEntity)
 
+    @Delete
+    fun delete(user: kkUsersEntity)
+
     @Update
     fun update(user: kkUsersEntity)
+
+    @Query("SELECT * FROM users")
+    fun getAllUsers(): List<kkUsersEntity>
+
+    @Query("SELECT * FROM users WHERE equipoId = :equipoId")
+    fun getUsersByEquipo(equipoId:Int): List<kkUsersEntity>
 
 }
