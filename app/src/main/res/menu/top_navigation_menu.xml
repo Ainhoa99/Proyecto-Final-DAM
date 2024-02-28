@@ -1,12 +1,15 @@
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item
-        android:id="@+id/principalFragment"
-        android:icon="@drawable/inicio"
-        android:title="Inicio"
-        android:iconTint="@color/C3"/>
+    <group android:checkableBehavior="single">
 
+        <item
+            android:id="@+id/principalFragment"
+            android:icon="@drawable/inicio"
+            android:title="Inicio"
+            android:iconTint="@color/C3"/>
+
+    </group>
     <item
         android:id="@+id/menu_equipos"
         android:title="Equipos">
@@ -66,6 +69,15 @@
                     android:id="@+id/gestionLigasFragment"
                     android:icon="@drawable/gligas"
                     android:title="GLigas" />
+                <item
+                    android:id="@+id/gestionOcupacionesFragment"
+                    android:icon="@drawable/gligas"
+                    android:title="GOcupacioens" />
+
+                <item
+                    android:id="@+id/gestionPDFs"
+                    android:icon="@drawable/gligas"
+                    android:title="GPDFs" />
             </group>
         </menu>
     </item>
@@ -76,7 +88,7 @@
 
         <menu>
 
-            <group>
+            <group android:checkableBehavior="single">
 
                 <item
                     android:id="@+id/galeriaFragment"
@@ -125,7 +137,7 @@
         android:enabled="false"
         app:showAsAction="always" />
 
-    <group>
+    <group android:checkableBehavior="single">
         <item
             android:id="@+id/AjustesFragment"
             android:icon="@drawable/ajustes"
@@ -133,4 +145,3 @@
     </group>
 
 </menu>
-

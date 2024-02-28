@@ -3,6 +3,7 @@ package com.txurdinaga.proyectofinaldam.ui
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +18,9 @@ import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.data.model.UserBuilder
 import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
+import com.txurdinaga.proyectofinaldam.ui.util.NetworkConnectivityMonitor
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,13 +47,30 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
+
+        val networkMonitor = NetworkConnectivityMonitor(this)
+        networkMonitor.observeNetworkConnectivity(this
+        ) { isConnected ->
+            if (!isConnected) {
+                Toast.makeText(this, "Conexión a internet perdida", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
+                // Get a list of style packs that are currently available.
         // Encuentra la imagen por su ID
         var unkinaLogoImageView = findViewById<ImageView>(R.id.unkina_logo)
 
-        // Establece el OnClickListener para la imagen
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
         unkinaLogoImageView.setOnClickListener {
-           // findNavController().navigate(R.id.)
+            navController.navigate(R.id.principalFragment)
         }
+
     }
 
     private fun initNavigation() {
