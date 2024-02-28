@@ -2,47 +2,132 @@ package com.txurdinaga.proyectofinaldam.ui
 
 import android.app.Dialog
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.txurdinaga.proyectofinaldam.R
-import com.txurdinaga.proyectofinaldam.databinding.FragmentPersonalBinding
+import com.txurdinaga.proyectofinaldam.databinding.FragmentFotosBinding
 
-class PersonalFragment : Fragment() {
-    private var _binding: FragmentPersonalBinding? = null
+class PersonalFragment : Fragment(), ICardClickListener {
+    private var _binding: FragmentFotosBinding? = null
     private val binding get() = _binding!!
+    private lateinit var database: kkAppDatabase
+
+    var equipoSeleccionado = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentPersonalBinding.inflate(layoutInflater, container, false)
+        _binding = FragmentFotosBinding.inflate(layoutInflater, container, false)
 
-        binding.btnDialogo.setOnClickListener {
-            showCustomDialog()
-        }
         return binding.root
     }
 
-    private fun showCustomDialog() {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.card_edit_personal, null)
-        val dialog = Dialog(requireContext())
-        dialog.setContentView(dialogView)
 
-        val btnEditar = dialogView.findViewById<ImageView>(R.id.imageViewEditar)
-        val btnCancelar = dialogView.findViewById<ImageView>(R.id.imageViewCancelar)
-        val btnConfirmar = dialogView.findViewById<ImageView>(R.id.imageViewConfirmar)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
+        database = Room.databaseBuilder(
+            view.context, kkAppDatabase::class.java, kkAppDatabase.DATABASE_NAME)
+            .allowMainThreadQueries()
+            .build()
+
+        var users = database.kkUsersDao.getAllUsers()
+
+        var equipos = database.kkequipostDao.getVisibleEquipos()
 
 
 
-        dialog.show()
+        if (users.isNotEmpty()){
+            val ListEquipos = mutableListOf<kkEquiposEntity>()
+            equipos.forEach { equipo ->
+                ListEquipos.add(equipo)
+            }
+            val spEquipos = binding.spinner
+            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquipos)
+            Handler(Looper.getMainLooper()).postDelayed({
+                spEquipos.setAdapter(adapter)
+                binding.spinner.setText("Selecciona un equipo", false)
+                spEquipos.setAdapter(adapter)
+
+            }, 100)
+
+            spEquipos.setOnItemClickListener { parent, view, position, id ->
+                val msgFotosEmpty = binding.msgFotosEmpty
+                val msgSelecciona = binding.msgSelecciona
+
+                msgSelecciona.visibility = View.GONE
+                val selectedItem = parent.getItemAtPosition(position) as kkEquiposEntity
+                // Aquí puedes hacer lo que necesites con el elemento seleccionado
+                // Por ejemplo, mostrar un Toast con el elemento seleccionado
+                Toast.makeText(requireContext(), "Seleccionaste: $selectedItem", Toast.LENGTH_SHORT).show()
+                equipoSeleccionado = selectedItem.id
+                val usersByEquipo = database.kkUsersDao.getUsersByEquipo(equipoSeleccionado)
+
+                if (usersByEquipo.isNotEmpty()){
+                    msgFotosEmpty.visibility = View.GONE
+
+                    val dataset = mutableListOf<CardData>()
+                    usersByEquipo.forEach { fotoEquipo ->
+                        dataset.add(
+                            CardData(
+                                fotoEquipo.foto,
+                                fotoEquipo.nombre,
+                                fotoEquipo.ocupacionId
+                            )
+                        )
+                    }
+
+
+                    val cardAdapter = CardAdapter(dataset, this)
+                    val recyclerView: RecyclerView = binding.recyclerView
+                    recyclerView.adapter = cardAdapter
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.isNestedScrollingEnabled = false;
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager?
+                    // Verificamos si el layoutManager no es nulo para evitar errores
+                    layoutManager?.apply {
+                        // Establecemos el spanCount deseado
+                        spanCount = 3
+                    }
+                } else{
+                    msgFotosEmpty.visibility = View.VISIBLE
+                    val emptyAdapter = CardAdapter(emptyList(), this)
+                    val recyclerView: RecyclerView = binding.recyclerView
+                    recyclerView.adapter = emptyAdapter
+                }
+
+            }
+
+        }
+
     }
 
+
+    override fun onCardClick(position: Int, cardData: CardData) {
+        TODO("Not yet implemented")
+    }
+
+
     override fun onDestroyView() {
+        requireActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
         super.onDestroyView()
         _binding = null
     }
+
+
 }

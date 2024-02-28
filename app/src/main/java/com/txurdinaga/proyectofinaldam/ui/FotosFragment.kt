@@ -52,10 +52,11 @@ class FotosFragment : Fragment(), ICardClickListener {
         var equipos = database.kkequipostDao.getVisibleEquipos()
 
 
+
         if (fotos.isNotEmpty()){
-            val ListEquipos = mutableListOf<String>()
+            val ListEquipos = mutableListOf<kkEquiposEntity>()
             equipos.forEach { equipo ->
-                ListEquipos.add(equipo.name)
+                ListEquipos.add(equipo)
             }
             val spEquipos = binding.spinner
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquipos)
@@ -71,12 +72,11 @@ class FotosFragment : Fragment(), ICardClickListener {
                 val msgSelecciona = binding.msgSelecciona
 
                 msgSelecciona.visibility = View.GONE
-                val selectedItem = parent.getItemAtPosition(position) as String
+                val selectedItem = parent.getItemAtPosition(position) as kkEquiposEntity
                 // Aquí puedes hacer lo que necesites con el elemento seleccionado
                 // Por ejemplo, mostrar un Toast con el elemento seleccionado
                 Toast.makeText(requireContext(), "Seleccionaste: $selectedItem", Toast.LENGTH_SHORT).show()
-                val equipoByName =database.kkequipostDao.getEquiposByName(selectedItem)
-                equipoSeleccionado = equipoByName.id.toInt()
+                equipoSeleccionado = selectedItem.id
                 val fotosByEquipo = database.kkfotosDao.getFotosByEquipo(equipoSeleccionado)
 
                 if (fotosByEquipo.isNotEmpty()){
@@ -86,7 +86,9 @@ class FotosFragment : Fragment(), ICardClickListener {
                     fotosByEquipo.forEach { fotoEquipo ->
                         dataset.add(
                             CardData(
-                                fotoEquipo.title
+                                fotoEquipo.title,
+                                null,
+                                null
                             )
                         )
                     }
