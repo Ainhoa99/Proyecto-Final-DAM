@@ -3,12 +3,13 @@ package com.txurdinaga.proyectofinaldam.ui
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
 
 @Dao
 interface kkCategoryDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(category: kkCategoryEntity)
 
     @Update
@@ -18,12 +19,12 @@ interface kkCategoryDao {
     fun delete(category: kkCategoryEntity)
 
     @Query("SELECT * FROM category WHERE name = :categoryName")
-    fun getTeacherByName(categoryName: String): kkCategoryEntity
+    fun getCategoryByName(categoryName: String): kkCategoryEntity
 
     @Query("SELECT * FROM category")
-    fun getAllTeachers(): List<kkCategoryEntity>
+    fun getAllCategorias(): List<kkCategoryEntity>
 
     @Query("SELECT COUNT(*) FROM category WHERE name = :categoryName")
-    fun countTeachersByName(categoryName: String): Int
+    fun countCategoryByName(categoryName: String): Int
 
 }

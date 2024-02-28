@@ -22,7 +22,6 @@
                 android:id="@+id/spinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
                 android:inputType="none" />
 
         </com.google.android.material.textfield.TextInputLayout>

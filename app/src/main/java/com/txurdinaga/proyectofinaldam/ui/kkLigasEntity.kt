@@ -9,8 +9,14 @@ import androidx.room.PrimaryKey
 data class kkLigasEntity(
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
-    var id: Int,
+    var id: Int = 0,
 
     @ColumnInfo(name = "name")
     var name: String,
 )
+
+{
+    override fun toString(): String {
+        return name
+    }
+}

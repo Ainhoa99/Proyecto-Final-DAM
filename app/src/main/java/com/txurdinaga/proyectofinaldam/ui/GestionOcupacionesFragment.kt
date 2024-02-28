@@ -17,7 +17,7 @@ import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
 import com.txurdinaga.proyectofinaldam.util.SearchList
 
 
-class GestionLigasFragment : Fragment() {
+class GestionOcupacionesFragment : Fragment() {
     private var _binding: FragmentGestionBinding? = null
     private val binding get() = _binding!!
     private lateinit var database: kkAppDatabase
@@ -29,7 +29,7 @@ class GestionLigasFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Ligas"
+        binding.tvTitle.text = "Gestión de Ocupaciones"
 
 
         //creamos la bbdd
@@ -42,36 +42,36 @@ class GestionLigasFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showLigasDialog("alta")
+            showOcupacionesDialog("alta")
         }
         binding.btnBaja.setOnClickListener() {
-            showBajaLigasDialog { selectedLiga ->
-                showConfirmDeleteDialog(selectedLiga)
+            showBajaLigasDialog { selectedOcupacion ->
+                showConfirmDeleteDialog(selectedOcupacion)
             }
         }
         binding.btnModificacion.setOnClickListener() {
-            showModLigasDialog()
+            showModOcupacionesDialog()
         }
 
         return binding.root
     }
 
-    private fun showLigasDialog(selectedLiga: String) {
+    private fun showOcupacionesDialog(selectedOcupacion: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
 
-        var liga: kkLigasEntity? = null
-        val ligaName = dialogView.findViewById<EditText>(R.id.name)
-        val ligaNameLayout = dialogView.findViewById<TextInputLayout>(R.id.nameLayout)
-        var dialogTitle = "Alta de Liga"
+        var ocupacion: kkOcupacionesEntity? = null
+        val ocupacionName = dialogView.findViewById<EditText>(R.id.name)
+        val ocupacionNameLayout = dialogView.findViewById<TextInputLayout>(R.id.nameLayout)
+        var dialogTitle = "Alta de Ocupación"
 
 
-        if(selectedLiga != "alta"){//no es alta, es MODIFICACION
-            liga = database.kkligasDao.getLigaByName(selectedLiga)
-            dialogTitle = "Modificación de Liga"
+        if(selectedOcupacion != "alta"){//no es alta, es MODIFICACION
+            ocupacion = database.kkOcupacionesDao.getOcupacionByName(selectedOcupacion)
+            dialogTitle = "Modificación de Ocupación"
 
-            ligaName.setText(liga.name)
+            ocupacionName.setText(ocupacion.name)
         }
 
         builder.setTitle(dialogTitle)
@@ -85,26 +85,26 @@ class GestionLigasFragment : Fragment() {
         positiveButton.setOnClickListener {
             var allFieldsFilled = true
 
-            if (ligaName.text.toString().trim().isEmpty()) {
-                ligaNameLayout.error = "Escribe un nombre"
-                ligaNameLayout.requestFocus()
+            if (ocupacionName.text.toString().trim().isEmpty()) {
+                ocupacionNameLayout.error = "Escribe un nombre"
+                ocupacionNameLayout.requestFocus()
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
-                val estaLiga = database.kkligasDao.getLigaByName(ligaName.text.toString())
-                if(estaLiga != null && selectedLiga == "alta"){
-                    ligaNameLayout.error = "Ya existe esta liga"
-                    ligaNameLayout.requestFocus()
+                val estaOcupacion = database.kkOcupacionesDao.getOcupacionByName(ocupacionName.text.toString())
+                if(estaOcupacion != null && selectedOcupacion == "alta"){
+                    ocupacionNameLayout.error = "Ya existe esta ocupacion"
+                    ocupacionNameLayout.requestFocus()
                     allFieldsFilled = false
                 }
             }
 
             if(allFieldsFilled){
-                if (selectedLiga == "alta") {
-                    database.kkligasDao.insert(kkLigasEntity(0, ligaName.text.toString()))
+                if (selectedOcupacion == "alta") {
+                    database.kkOcupacionesDao.insert(kkOcupacionesEntity(0, ocupacionName.text.toString()))
                 } else {
-                    if (liga != null) {
-                        liga.name = ligaName.text.toString()
-                        database.kkligasDao.update(liga)
+                    if (ocupacion != null) {
+                        ocupacion.name = ocupacionName.text.toString()
+                        database.kkOcupacionesDao.update(ocupacion)
                     }
                 }
                 dialog.dismiss()
@@ -112,39 +112,39 @@ class GestionLigasFragment : Fragment() {
         }
     }
 
-    private fun showModLigasDialog(){
-        searchList.search(requireContext(), database, "liga"){ ligasSelected ->
-            ligasSelected?.let {
-                showLigasDialog(ligasSelected)
+    private fun showModOcupacionesDialog(){
+        searchList.search(requireContext(), database, "ocupacion"){ ocupacionesSelected ->
+            ocupacionesSelected?.let {
+                showOcupacionesDialog(ocupacionesSelected)
             }
         }
     }
 
-    private fun showBajaLigasDialog(onLigasSelected: (String) -> Unit) {
-        searchList.search(requireContext(), database, "liga") { ligasSelected ->
-            ligasSelected?.let {
-                onLigasSelected(it)
+    private fun showBajaLigasDialog(onOcupacionSelected: (String) -> Unit) {
+        searchList.search(requireContext(), database, "ocupacion") { ocupacionesSelected ->
+            ocupacionesSelected?.let {
+                onOcupacionSelected(it)
             }
         }
     }
 
 
-     private fun showConfirmDeleteDialog(selectedLiga: String) {
+     private fun showConfirmDeleteDialog(selectedOcupacion: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("¿Eliminar la liga?")
+            .setTitle("¿Eliminar la ocupación?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val liga = database.kkligasDao.getLigaByName(selectedLiga)
-                database.kkligasDao.delete(liga)
+                val ocupacion = database.kkOcupacionesDao.getOcupacionByName(selectedOcupacion)
+                database.kkOcupacionesDao.delete(ocupacion)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedLiga
+        tv_name.text = selectedOcupacion
     }
 }

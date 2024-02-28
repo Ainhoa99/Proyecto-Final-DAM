@@ -137,7 +137,7 @@
             android:id="@+id/buttonEnviar"
             style="@style/AppButton"
             android:layout_width="275dp"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_gravity="left"
             android:text="CONFIRMAR" />
 
