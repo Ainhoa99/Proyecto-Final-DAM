@@ -16,20 +16,12 @@
 
         <menu>
             <group android:checkableBehavior="single">
-                <item
-                    android:id="@+id/equipoTecnicoFragment"
-                    android:icon="@drawable/equipo"
-                    android:title="Equipo Técnico"/>
 
                 <item
                     android:id="@+id/jugadoresFragment"
                     android:icon="@drawable/jugador"
                     android:title="Jugadores/as" />
 
-                <item
-                    android:id="@+id/calendarioFragment"
-                    android:icon="@drawable/calendario"
-                    android:title="Calendario" />
 
                 <item
                     android:id="@+id/fotosFragment"
@@ -94,11 +86,6 @@
                     android:id="@+id/galeriaFragment"
                     android:icon="@drawable/camara"
                     android:title="Galería" />
-
-                <item
-                    android:id="@+id/informacionFragment2"
-                    android:icon="@drawable/normativa"
-                    android:title="Normativa" />
 
 
                 <item
