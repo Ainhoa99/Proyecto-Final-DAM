@@ -72,16 +72,13 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
-<<<<<<< HEAD
 
     //Timber
     implementation ("com.jakewharton.timber:timber:4.7.1")
 
-=======
     //Generar PDF
     implementation ("androidx.appcompat:appcompat:1.6.1")
     implementation ("com.google.code.gson:gson:2.10")
     implementation ("com.itextpdf:itextg:5.5.10")
     implementation ("com.itextpdf:itext7-core:7.1.15")
->>>>>>> 65fb706a2340b8fb6fa4c8dc0dc264917461a7a9
 }
