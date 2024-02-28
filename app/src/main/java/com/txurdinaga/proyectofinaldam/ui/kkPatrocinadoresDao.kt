@@ -18,7 +18,10 @@ interface kkPatrocinadoresDao {
     fun delete(patrocinadores: kkPatrocinadoresEntity)
 
     @Query("SELECT * FROM patrocinadores WHERE name = :patrocinadoresName")
-    fun getTeacherByName(patrocinadoresName: String): kkPatrocinadoresEntity
+    fun getTeacherByName(patrocinadoresName: String): List<kkPatrocinadoresEntity>
+
+    @Query("SELECT * FROM patrocinadores WHERE id = :id")
+    fun getPatrocinadorById(id: Int): kkPatrocinadoresEntity
 
     @Query("SELECT * FROM patrocinadores")
     fun getAllTeachers(): List<kkPatrocinadoresEntity>

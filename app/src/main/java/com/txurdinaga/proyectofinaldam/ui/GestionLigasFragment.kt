@@ -42,7 +42,7 @@ class GestionLigasFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showLigasDialog("alta")
+            showLigasDialog(null, "alta")
         }
         binding.btnBaja.setOnClickListener() {
             showBajaLigasDialog { selectedLiga ->
@@ -56,7 +56,7 @@ class GestionLigasFragment : Fragment() {
         return binding.root
     }
 
-    private fun showLigasDialog(selectedLiga: String) {
+    private fun showLigasDialog(selectedLiga: Pair<Int, String>?, modo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -67,8 +67,8 @@ class GestionLigasFragment : Fragment() {
         var dialogTitle = "Alta de Liga"
 
 
-        if(selectedLiga != "alta"){//no es alta, es MODIFICACION
-            liga = database.kkligasDao.getLigaByName(selectedLiga)
+        if(modo == "modificacion" && selectedLiga!=null){//no es alta, es MODIFICACION
+            liga = database.kkligasDao.getLigaById(selectedLiga.first)
             dialogTitle = "Modificación de Liga"
 
             ligaName.setText(liga.name)
@@ -91,7 +91,7 @@ class GestionLigasFragment : Fragment() {
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
                 val estaLiga = database.kkligasDao.getLigaByName(ligaName.text.toString())
-                if(estaLiga != null && selectedLiga == "alta"){
+                if(estaLiga.isNotEmpty() && modo == "alta"){
                     ligaNameLayout.error = "Ya existe esta liga"
                     ligaNameLayout.requestFocus()
                     allFieldsFilled = false
@@ -99,8 +99,8 @@ class GestionLigasFragment : Fragment() {
             }
 
             if(allFieldsFilled){
-                if (selectedLiga == "alta") {
-                    database.kkligasDao.insert(kkLigasEntity(0, ligaName.text.toString()))
+                if (modo == "alta") {
+                    database.kkligasDao.insert(kkLigasEntity(name= ligaName.text.toString()))
                 } else {
                     if (liga != null) {
                         liga.name = ligaName.text.toString()
@@ -115,12 +115,12 @@ class GestionLigasFragment : Fragment() {
     private fun showModLigasDialog(){
         searchList.search(requireContext(), database, "liga"){ ligasSelected ->
             ligasSelected?.let {
-                showLigasDialog(ligasSelected)
+                showLigasDialog(ligasSelected, "modificacion")
             }
         }
     }
 
-    private fun showBajaLigasDialog(onLigasSelected: (String) -> Unit) {
+    private fun showBajaLigasDialog(onLigasSelected: (Pair<Int, String>) -> Unit) {
         searchList.search(requireContext(), database, "liga") { ligasSelected ->
             ligasSelected?.let {
                 onLigasSelected(it)
@@ -129,7 +129,7 @@ class GestionLigasFragment : Fragment() {
     }
 
 
-     private fun showConfirmDeleteDialog(selectedLiga: String) {
+     private fun showConfirmDeleteDialog(selectedLiga: Pair<Int, String>) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -138,13 +138,13 @@ class GestionLigasFragment : Fragment() {
             .setTitle("¿Eliminar la liga?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val liga = database.kkligasDao.getLigaByName(selectedLiga)
+                val liga = database.kkligasDao.getLigaById(selectedLiga.first)
                 database.kkligasDao.delete(liga)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedLiga
+        tv_name.text = selectedLiga.second
     }
 }

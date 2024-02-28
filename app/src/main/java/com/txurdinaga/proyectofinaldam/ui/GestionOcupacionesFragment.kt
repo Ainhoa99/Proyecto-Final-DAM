@@ -42,7 +42,7 @@ class GestionOcupacionesFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showOcupacionesDialog("alta")
+            showOcupacionesDialog(null, "alta")
         }
         binding.btnBaja.setOnClickListener() {
             showBajaLigasDialog { selectedOcupacion ->
@@ -56,7 +56,7 @@ class GestionOcupacionesFragment : Fragment() {
         return binding.root
     }
 
-    private fun showOcupacionesDialog(selectedOcupacion: String) {
+    private fun showOcupacionesDialog(selectedOcupacion: Pair<Int, String>?, modo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -67,8 +67,8 @@ class GestionOcupacionesFragment : Fragment() {
         var dialogTitle = "Alta de Ocupación"
 
 
-        if(selectedOcupacion != "alta"){//no es alta, es MODIFICACION
-            ocupacion = database.kkOcupacionesDao.getOcupacionByName(selectedOcupacion)
+        if(modo == "modificacion" && selectedOcupacion!=null){//no es alta, es MODIFICACION
+            ocupacion = database.kkOcupacionesDao.getOcupacionById(selectedOcupacion.first)
             dialogTitle = "Modificación de Ocupación"
 
             ocupacionName.setText(ocupacion.name)
@@ -91,7 +91,7 @@ class GestionOcupacionesFragment : Fragment() {
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
                 val estaOcupacion = database.kkOcupacionesDao.getOcupacionByName(ocupacionName.text.toString())
-                if(estaOcupacion != null && selectedOcupacion == "alta"){
+                if(estaOcupacion.isNotEmpty() && modo == "alta"){
                     ocupacionNameLayout.error = "Ya existe esta ocupacion"
                     ocupacionNameLayout.requestFocus()
                     allFieldsFilled = false
@@ -99,8 +99,8 @@ class GestionOcupacionesFragment : Fragment() {
             }
 
             if(allFieldsFilled){
-                if (selectedOcupacion == "alta") {
-                    database.kkOcupacionesDao.insert(kkOcupacionesEntity(0, ocupacionName.text.toString()))
+                if (modo == "alta") {
+                    database.kkOcupacionesDao.insert(kkOcupacionesEntity(name= ocupacionName.text.toString()))
                 } else {
                     if (ocupacion != null) {
                         ocupacion.name = ocupacionName.text.toString()
@@ -115,12 +115,12 @@ class GestionOcupacionesFragment : Fragment() {
     private fun showModOcupacionesDialog(){
         searchList.search(requireContext(), database, "ocupacion"){ ocupacionesSelected ->
             ocupacionesSelected?.let {
-                showOcupacionesDialog(ocupacionesSelected)
+                showOcupacionesDialog(ocupacionesSelected, "modificacion")
             }
         }
     }
 
-    private fun showBajaLigasDialog(onOcupacionSelected: (String) -> Unit) {
+    private fun showBajaLigasDialog(onOcupacionSelected: (Pair<Int, String>) -> Unit) {
         searchList.search(requireContext(), database, "ocupacion") { ocupacionesSelected ->
             ocupacionesSelected?.let {
                 onOcupacionSelected(it)
@@ -129,7 +129,7 @@ class GestionOcupacionesFragment : Fragment() {
     }
 
 
-     private fun showConfirmDeleteDialog(selectedOcupacion: String) {
+     private fun showConfirmDeleteDialog(selectedOcupacion: Pair<Int, String>) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -138,13 +138,13 @@ class GestionOcupacionesFragment : Fragment() {
             .setTitle("¿Eliminar la ocupación?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val ocupacion = database.kkOcupacionesDao.getOcupacionByName(selectedOcupacion)
+                val ocupacion = database.kkOcupacionesDao.getOcupacionById(selectedOcupacion.first)
                 database.kkOcupacionesDao.delete(ocupacion)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedOcupacion
+        tv_name.text = selectedOcupacion.second
     }
 }

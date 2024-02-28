@@ -30,5 +30,8 @@ interface kkFotosDao {
     fun getFotosByTemporada(temporada:String): List<kkFotosEntity>
 
     @Query("SELECT * FROM fotos WHERE title = :name")
-    fun getFotosByTitle(name:String): kkFotosEntity
+    fun getFotosByTitle(name:String): List<kkFotosEntity>
+
+    @Query("SELECT * FROM fotos WHERE id = :id")
+    fun getFotosById(id:Int): kkFotosEntity
 }

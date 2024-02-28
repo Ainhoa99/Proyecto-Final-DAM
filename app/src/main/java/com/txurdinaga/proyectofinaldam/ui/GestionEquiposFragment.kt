@@ -58,7 +58,7 @@ class GestionEquiposFragment : Fragment() {
             .allowMainThreadQueries()
             .fallbackToDestructiveMigration()
             .build()
-        insertMockData()
+        //insertMockData()
 
         //Obtenemos el nombre de las categorias para mostrarlo
         categoriasList = database.kkcategoryDao.getAllCategorias()
@@ -70,7 +70,7 @@ class GestionEquiposFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showEquiposDialog("alta")
+            showEquiposDialog(null, "alta")
         }
         binding.btnBaja.setOnClickListener() {
             showBajaEquiposDialog { selectedEquipo ->
@@ -93,7 +93,7 @@ class GestionEquiposFragment : Fragment() {
         }
     }
 
-    private fun showEquiposDialog(selectedEquipo: String) {
+    private fun showEquiposDialog(selectedEquipo:  Pair<Int, String>?, modo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_equipo, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -122,8 +122,8 @@ class GestionEquiposFragment : Fragment() {
         equipoLeague.setAdapter(adapter)
 
 
-        if(selectedEquipo != "alta"){//no es alta, es MODIFICACION
-            equipo = database.kkequipostDao.getEquiposByName(selectedEquipo)
+        if(modo == "modificacion" && selectedEquipo!=null){//no es alta, es MODIFICACION
+            equipo = database.kkequipostDao.getEquiposById(selectedEquipo.first)
             dialogTitle = "Modificación de Equipo"
 
             equipoName.setText(equipo.name)
@@ -192,8 +192,8 @@ class GestionEquiposFragment : Fragment() {
             }
 
             if(allFieldsFilled){
-                if (selectedEquipo == "alta") {
-                    database.kkequipostDao.insert(kkEquiposEntity(0, equipoName.text.toString(), equipoLocation.text.toString(), equipoCategorySelected?.toInt(), equipoLigaSelected?.toInt(), imageString, check_isUnkina.isChecked, check_visible.isChecked))
+                if (modo == "alta") {
+                    database.kkequipostDao.insert(kkEquiposEntity(name =  equipoName.text.toString(), campo =  equipoLocation.text.toString(), categoria =  equipoCategorySelected?.toInt(), liga =  equipoLigaSelected?.toInt(), escudo =  imageString, isUnkina =  check_isUnkina.isChecked, visible =  check_visible.isChecked))
                 } else {
                     if (equipo != null) {
                         equipo.name = equipoName.text.toString()
@@ -213,12 +213,12 @@ class GestionEquiposFragment : Fragment() {
     private fun showModEquiposDialog(){
         searchList.search(requireContext(), database, "equipo"){selectedEquipo ->
             selectedEquipo?.let {
-                showEquiposDialog(selectedEquipo)
+                showEquiposDialog(selectedEquipo, "modificacion")
             }
         }
     }
 
-    private fun showBajaEquiposDialog(onEquiposSelected: (String) -> Unit) {
+    private fun showBajaEquiposDialog(onEquiposSelected: ( Pair<Int, String>) -> Unit) {
         searchList.search(requireContext(), database, "equipo") { ligasSelected ->
             ligasSelected?.let { selectedEquipo ->
                 selectedEquipo?.let {
@@ -229,7 +229,7 @@ class GestionEquiposFragment : Fragment() {
     }
 
 
-    private fun showConfirmDeleteDialog(selectedEquipo: String) {
+    private fun showConfirmDeleteDialog(selectedEquipo:  Pair<Int, String>) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -238,14 +238,14 @@ class GestionEquiposFragment : Fragment() {
             .setTitle("¿Eliminar el equipo?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val equipo = database.kkequipostDao.getEquiposByName(selectedEquipo)
+                val equipo = database.kkequipostDao.getEquiposById(selectedEquipo.first)
                 database.kkequipostDao.delete(equipo)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedEquipo
+        tv_name.text = selectedEquipo.second
     }
 
 

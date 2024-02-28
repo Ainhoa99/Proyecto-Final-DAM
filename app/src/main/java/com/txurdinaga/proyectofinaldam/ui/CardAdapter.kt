@@ -8,8 +8,10 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.room.Room
 import com.google.android.material.card.MaterialCardView
 import com.txurdinaga.proyectofinaldam.R
+import kotlin.coroutines.coroutineContext
 
 
 class CardAdapter(private val dataSet: List<CardData>, private val clickListener: ICardClickListener):
@@ -60,7 +62,7 @@ class CardAdapter(private val dataSet: List<CardData>, private val clickListener
             holder.name.visibility = View.VISIBLE
         }
 
-        if(currentCard.ocupacion!=null){
+        if(currentCard.ocupacion!=null && currentCard.ocupacion!="Jugador"){
             holder.ocupacion.text = currentCard.ocupacion.toString()
             holder.ocupacion.visibility = View.VISIBLE
         }

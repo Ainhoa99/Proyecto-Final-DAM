@@ -19,7 +19,11 @@ interface kkOcupacionesDao {
 
 
     @Query("SELECT * FROM ocupaciones WHERE name = :name")
-    fun getOcupacionByName(name: String): kkOcupacionesEntity
+    fun getOcupacionByName(name: String): List<kkOcupacionesEntity>
+
+    @Query("SELECT * FROM ocupaciones WHERE id = :id")
+    fun getOcupacionById(id: Int): kkOcupacionesEntity
+
 
     @Query("SELECT * FROM ocupaciones")
     fun getAllOcupaciones(): List<kkOcupacionesEntity>

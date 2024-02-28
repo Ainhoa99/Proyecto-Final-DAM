@@ -12,49 +12,48 @@ import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.ui.kkAppDatabase
 
 class SearchList(context: Context?) {
-    private lateinit var listAdapter: ArrayAdapter<String>
+    private lateinit var listAdapter: ArrayAdapter<Pair<Int, String>>
 
     fun search(
         context: Context,
         database: kkAppDatabase,
         whereIam: String,
-        onLigasSelected: (String) -> Unit
+        onLigasSelected: ( Pair<Int, String>) -> Unit
     ) {
         val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_buscador, null)
         val lv_List = dialogView.findViewById<ListView>(R.id.lv_List)
         val textInputSearch = dialogView.findViewById<TextInputEditText>(R.id.textInputSearch)
-
-        var listNames: List<String> = listOf()
-        var title = "Gestion"
+        var listNames: List<Pair<Int, String>> = listOf()
+        var title = "Gestión"
 
         when(whereIam){
             "equipo" -> {
                 val lista = database.kkequipostDao.getAllEquipos()
-                listNames = lista.map { it.name }
-                title = "Alta de Equipo"
+                listNames = lista.map { Pair(it.id, it.name) }
+                title = "Modificación de Equipo"
             }
             "liga" -> {
                 val lista = database.kkligasDao.getAllLigas()
-                listNames = lista.map { it.name }
-                title = "Alta de Liga"
+                listNames = lista.map { Pair(it.id, it.name) }
+                title = "Modificación de Liga"
             }
             "categoria" -> {
                 val lista = database.kkcategoryDao.getAllCategorias()
-                listNames = lista.map { it.name }
-                title = "Alta de Categoria"
+                listNames = lista.map { Pair(it.id, it.name) }
+                title = "Modificación de Categoria"
             }
             "patrocinador" -> {
                 val lista = database.kkPatrocinadoresDao.getAllTeachers()
-                listNames = lista.map { it.name }
-                title = "Alta de Patrocinador"
+                listNames = lista.map { Pair(it.id, it.name) }
+                title = "Modificación de Patrocinador"
             }
             "ocupacion" -> {
                 val lista = database.kkOcupacionesDao.getAllOcupaciones()
-                listNames = lista.map { it.name }
-                title = "Alta de Ocupación"
+                listNames = lista.map { Pair(it.id, it.name) }
+                title = "Modificación de Ocupación"
             }
         }
-        listAdapter = ArrayAdapter(context, android.R.layout.simple_list_item_1, listNames)
+        listAdapter = ArrayAdapter<Pair<Int, String>>(context, android.R.layout.simple_list_item_1, listNames)
         lv_List.adapter = listAdapter
 
         val dialog = MaterialAlertDialogBuilder(context)
@@ -77,8 +76,8 @@ class SearchList(context: Context?) {
         })
 
         lv_List.setOnItemClickListener { _, _, position, _ ->
-            val selectedTeacher = listAdapter.getItem(position)
-            selectedTeacher?.let {
+            val selectedItem = listAdapter.getItem(position)
+            selectedItem?.let {
                 onLigasSelected(it)
                 dialog.dismiss()
             }
@@ -86,14 +85,14 @@ class SearchList(context: Context?) {
     }
     fun filterLigas(query: String, database: kkAppDatabase, whereIam: String) {
         //Ahora mismo esta repetido en varias lista por problemas de tipos
-        var filteredList: List<String> = mutableListOf()
+        var filteredList: List<Pair<Int, String>> = mutableListOf()
         when(whereIam){
             "equipo" -> {
                 var list = database.kkequipostDao.getAllEquipos()
                 filteredList = list.filter {
                     it.name.contains(query, ignoreCase = true) ||
                             it.name.contains(query, ignoreCase = true)
-                }.map { it.name }
+                }.map { Pair(it.id, it.name) }
             }
             "liga" -> {
 
@@ -101,7 +100,7 @@ class SearchList(context: Context?) {
                 filteredList = list.filter {
                     it.name.contains(query, ignoreCase = true) ||
                             it.name.contains(query, ignoreCase = true)
-                }.map { it.name }
+                }.map { Pair(it.id, it.name) }
             }
             "ocupacion" -> {
 
@@ -109,7 +108,7 @@ class SearchList(context: Context?) {
                 filteredList = list.filter {
                     it.name.contains(query, ignoreCase = true) ||
                             it.name.contains(query, ignoreCase = true)
-                }.map { it.name }
+                }.map { Pair(it.id, it.name) }
             }
 
         }

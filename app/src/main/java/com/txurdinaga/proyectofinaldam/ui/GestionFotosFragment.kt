@@ -41,7 +41,7 @@ class GestionFotosFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showFotosDialog("alta")
+            showFotosDialog(null, "alta")
         }
         binding.btnBaja.setOnClickListener() {
             showBajaFotosDialog { selectedFoto ->
@@ -55,7 +55,7 @@ class GestionFotosFragment : Fragment() {
         return binding.root
     }
 
-    private fun showFotosDialog(selectedFotos: String) {
+    private fun showFotosDialog(selectedFotos: Pair<Int, String>?, modo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -66,8 +66,8 @@ class GestionFotosFragment : Fragment() {
         var dialogTitle = "Alta de Fotos"
 
 
-        if(selectedFotos != "alta"){//no es alta, es MODIFICACION
-            foto = database.kkfotosDao.getFotosByTitle(selectedFotos)
+        if(modo != "alta" &&selectedFotos!=null){//no es alta, es MODIFICACION
+            foto = database.kkfotosDao.getFotosById(selectedFotos.first)
             dialogTitle = "Modificación de Fotos"
 
             fotoName.setText(foto.title)
@@ -90,7 +90,7 @@ class GestionFotosFragment : Fragment() {
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
                 val estaFoto = database.kkfotosDao.getFotosByTitle(fotoName.text.toString())
-                if(estaFoto != null && selectedFotos == "alta"){
+                if(estaFoto.isNotEmpty() && modo == "alta"){
                     fotoNameLayout.error = "Ya existe esta foto"
                     fotoNameLayout.requestFocus()
                     allFieldsFilled = false
@@ -98,8 +98,8 @@ class GestionFotosFragment : Fragment() {
             }
 
             if(allFieldsFilled){
-                if (selectedFotos == "alta") {
-                    database.kkfotosDao.insert(kkFotosEntity(0, "l", "", 3, false))
+                if (modo == "alta") {
+                    database.kkfotosDao.insert(kkFotosEntity(title="l",temporada= "", equipoId= 3, galeria = false))
                 } else {
                     if (foto != null) {
                         foto.title = fotoName.text.toString()
@@ -114,12 +114,12 @@ class GestionFotosFragment : Fragment() {
     private fun showModFotosDialog(){
         searchList.search(requireContext(), database, "foto"){ fotosSelected ->
             fotosSelected?.let {
-                showFotosDialog(fotosSelected)
+                showFotosDialog(fotosSelected, "modificacion")
             }
         }
     }
 
-    private fun showBajaFotosDialog(onFotosSelected: (String) -> Unit) {
+    private fun showBajaFotosDialog(onFotosSelected: ((Pair<Int, String>)) -> Unit) {
         searchList.search(requireContext(), database, "foto") { fotosSelected ->
             fotosSelected?.let {
                 onFotosSelected(it)
@@ -128,7 +128,7 @@ class GestionFotosFragment : Fragment() {
     }
 
 
-    private fun showConfirmDeleteDialog(selectedFoto: String) {
+    private fun showConfirmDeleteDialog(selectedFoto: (Pair<Int, String>)) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -137,13 +137,13 @@ class GestionFotosFragment : Fragment() {
             .setTitle("¿Eliminar la foto?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val foto = database.kkfotosDao.getFotosByTitle(selectedFoto)
+                val foto = database.kkfotosDao.getFotosById(selectedFoto.first)
                 database.kkfotosDao.delete(foto)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedFoto
+        tv_name.text = selectedFoto.second
     }
 }

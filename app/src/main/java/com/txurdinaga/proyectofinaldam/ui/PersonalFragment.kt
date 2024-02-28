@@ -91,12 +91,14 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     val datasetEquipoTecnico = mutableListOf<CardData>()
 
                     usersByEquipo.forEach { fotoEquipo ->
+                        var ocupacion = database.kkOcupacionesDao.getOcupacionById(fotoEquipo.id)
+
                         if (fotoEquipo.ocupacionId == 1){
                             datasetJugadores.add(
                                 CardData(
                                     fotoEquipo.foto,
                                     fotoEquipo.nombre,
-                                    fotoEquipo.ocupacionId
+                                    ocupacion.name
                                 )
                             )
                         } else{
@@ -104,7 +106,7 @@ class PersonalFragment : Fragment(), ICardClickListener {
                                 CardData(
                                     fotoEquipo.foto,
                                     fotoEquipo.nombre,
-                                    fotoEquipo.ocupacionId
+                                    ocupacion.name
                                 )
                             )
                         }

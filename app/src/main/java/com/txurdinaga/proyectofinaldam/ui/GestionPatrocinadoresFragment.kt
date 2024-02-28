@@ -52,7 +52,7 @@ class GestionPatrocinadoresFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showPatrocinadoresDialog("alta")
+            showPatrocinadoresDialog(null, "alta")
         }
         binding.btnBaja.setOnClickListener() {
             showBajaPatrocinadoresDialog { selectedPatrocinadore ->
@@ -79,7 +79,7 @@ class GestionPatrocinadoresFragment : Fragment() {
 
     }
 
-    private fun showPatrocinadoresDialog(selectedPatrocinador: String) {
+    private fun showPatrocinadoresDialog(selectedPatrocinador: Pair<Int, String>?, modo:String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_patrocinador, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -95,8 +95,8 @@ class GestionPatrocinadoresFragment : Fragment() {
         var dialogTitle = "Alta de Patrocinadores"
 
 
-        if(selectedPatrocinador != "alta"){//no es alta, es MODIFICACION
-            patrocinador = database.kkPatrocinadoresDao.getTeacherByName(selectedPatrocinador)
+        if(modo == "modificacion" && selectedPatrocinador!=null){//no es alta, es MODIFICACION
+            patrocinador = database.kkPatrocinadoresDao.getPatrocinadorById(selectedPatrocinador.first)
             dialogTitle = "Modificación de Patrocinadores"
 
             patrocinadorName.setText(patrocinador.name)
@@ -122,7 +122,7 @@ class GestionPatrocinadoresFragment : Fragment() {
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
                 val estaPatrocinador = database.kkPatrocinadoresDao.getTeacherByName(patrocinadorName.text.toString())
-                if(estaPatrocinador != null && selectedPatrocinador == "alta"){
+                if(estaPatrocinador.isNotEmpty() && modo == "alta"){
                     patrocinadorNameLayout.error = "Ya existe esta patrocinador"
                     patrocinadorNameLayout.requestFocus()
                     allFieldsFilled = false
@@ -131,8 +131,8 @@ class GestionPatrocinadoresFragment : Fragment() {
 
 
             if(allFieldsFilled){
-                if (selectedPatrocinador == "alta") {
-                    database.kkPatrocinadoresDao.insert(kkPatrocinadoresEntity(0, patrocinadorName.text.toString(), imageString, check_isPatrocinador.isChecked, check_activo.isChecked, patrocinadorMoney.text.toString().toDouble()))
+                if (modo == "alta") {
+                    database.kkPatrocinadoresDao.insert(kkPatrocinadoresEntity(name =  patrocinadorName.text.toString(), foto =  imageString, isPatrocinador =  check_isPatrocinador.isChecked, activo =  check_activo.isChecked, dinero =  patrocinadorMoney.text.toString().toDouble()))
                 } else {
                     if (patrocinador != null) {
                         patrocinador.name = patrocinadorName.text.toString()
@@ -147,12 +147,12 @@ class GestionPatrocinadoresFragment : Fragment() {
     private fun showModPatrocinadoresDialog(){
         searchList.search(requireContext(), database, "patrocinador"){ patrocinadorSelected ->
             patrocinadorSelected?.let {
-                showPatrocinadoresDialog(patrocinadorSelected)
+                showPatrocinadoresDialog(patrocinadorSelected, "modificacion")
             }
         }
     }
 
-    private fun showBajaPatrocinadoresDialog(onPatrocinadorSelected: (String) -> Unit) {
+    private fun showBajaPatrocinadoresDialog(onPatrocinadorSelected: (Pair<Int, String>) -> Unit) {
         searchList.search(requireContext(), database, "patrocinador") { patrocinadorSelected ->
             patrocinadorSelected?.let {
                 onPatrocinadorSelected(it)
@@ -161,7 +161,7 @@ class GestionPatrocinadoresFragment : Fragment() {
     }
 
 
-    private fun showConfirmDeleteDialog(selectedPatrocinador: String) {
+    private fun showConfirmDeleteDialog(selectedPatrocinador: Pair<Int, String>) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -170,14 +170,14 @@ class GestionPatrocinadoresFragment : Fragment() {
             .setTitle("¿Eliminar la patrocinador?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val patrocinador = database.kkPatrocinadoresDao.getTeacherByName(selectedPatrocinador)
+                val patrocinador = database.kkPatrocinadoresDao.getPatrocinadorById(selectedPatrocinador.first)
                 database.kkPatrocinadoresDao.delete(patrocinador)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedPatrocinador
+        tv_name.text = selectedPatrocinador.second
     }
 
     private fun convertirImagenABase64(imageUri: Uri): String {

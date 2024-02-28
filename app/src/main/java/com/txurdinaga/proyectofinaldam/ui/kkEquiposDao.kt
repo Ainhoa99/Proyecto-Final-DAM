@@ -22,7 +22,10 @@ interface kkEquiposDao {
     fun deleteAll()
 
     @Query("SELECT * FROM equipos WHERE name = :equiposName")
-    fun getEquiposByName(equiposName: String): kkEquiposEntity
+    fun getEquiposByName(equiposName: String): List<kkEquiposEntity>
+
+    @Query("SELECT * FROM equipos WHERE id = :id")
+    fun getEquiposById(id: Int): kkEquiposEntity
 
     @Query("SELECT * FROM equipos")
     fun getAllEquipos(): List<kkEquiposEntity>

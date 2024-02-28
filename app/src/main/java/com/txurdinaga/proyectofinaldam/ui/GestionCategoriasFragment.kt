@@ -41,7 +41,7 @@ class GestionCategoriasFragment : Fragment() {
 
 
         binding.btnAlta.setOnClickListener() {
-            showCategoriasDialog("alta")
+            showCategoriasDialog(null, "alta")
         }
         binding.btnBaja.setOnClickListener() {
             showBajaCategoriasDialog { selectedCategoria ->
@@ -55,7 +55,7 @@ class GestionCategoriasFragment : Fragment() {
         return binding.root
     }
 
-    private fun showCategoriasDialog(selectedCategoria: String) {
+    private fun showCategoriasDialog(selectedCategoria: Pair<Int, String>?, modo:String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -66,8 +66,8 @@ class GestionCategoriasFragment : Fragment() {
         var dialogTitle = "Alta de Categoria"
 
 
-        if(selectedCategoria != "alta"){//no es alta, es MODIFICACION
-            categoria = database.kkcategoryDao.getCategoryByName(selectedCategoria)
+        if(modo == "modificacion" && selectedCategoria!=null){//no es alta, es MODIFICACION
+            categoria = database.kkcategoryDao.getCategoryById(selectedCategoria.first)
             dialogTitle = "Modificación de Categoria"
 
             categoriaName.setText(categoria.name)
@@ -90,7 +90,7 @@ class GestionCategoriasFragment : Fragment() {
                 allFieldsFilled = false
             }else{//comprobar que esta nombre no este guardado ya
                 val estaCategoria = database.kkcategoryDao.getCategoryByName(categoriaName.text.toString())
-                if(estaCategoria != null && selectedCategoria == "alta"){
+                if(estaCategoria.isNotEmpty() && modo == "alta"){
                     categoriaNameLayout.error = "Ya existe esta categoria"
                     categoriaNameLayout.requestFocus()
                     allFieldsFilled = false
@@ -98,8 +98,8 @@ class GestionCategoriasFragment : Fragment() {
             }
 
             if(allFieldsFilled){
-                if (selectedCategoria == "alta") {
-                    database.kkcategoryDao.insert(kkCategoryEntity(0, categoriaName.text.toString()))
+                if (modo == "alta") {
+                    database.kkcategoryDao.insert(kkCategoryEntity(name = categoriaName.text.toString()))
                 } else {
                     if (categoria != null) {
                         categoria.name = categoriaName.text.toString()
@@ -114,12 +114,12 @@ class GestionCategoriasFragment : Fragment() {
     private fun showModCategoriasDialog(){
         searchList.search(requireContext(), database, "categoria"){ categoriaSelected ->
             categoriaSelected?.let {
-                showCategoriasDialog(categoriaSelected)
+                showCategoriasDialog(categoriaSelected, "modificacion")
             }
         }
     }
 
-    private fun showBajaCategoriasDialog(onCategoriaSelected: (String) -> Unit) {
+    private fun showBajaCategoriasDialog(onCategoriaSelected: (Pair<Int, String>) -> Unit) {
         searchList.search(requireContext(), database, "categoria") { categoriaSelected ->
             categoriaSelected?.let {
                 onCategoriaSelected(it)
@@ -128,7 +128,7 @@ class GestionCategoriasFragment : Fragment() {
     }
 
 
-    private fun showConfirmDeleteDialog(selectedCategoria: String) {
+    private fun showConfirmDeleteDialog(selectedCategoria: Pair<Int, String>) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -137,13 +137,13 @@ class GestionCategoriasFragment : Fragment() {
             .setTitle("¿Eliminar la categoria?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val categoria = database.kkcategoryDao.getCategoryByName(selectedCategoria)
+                val categoria = database.kkcategoryDao.getCategoryById(selectedCategoria.first)
                 database.kkcategoryDao.delete(categoria)
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = selectedCategoria
+        tv_name.text = selectedCategoria.second
     }
 }

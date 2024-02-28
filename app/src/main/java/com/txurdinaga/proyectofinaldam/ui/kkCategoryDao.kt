@@ -19,7 +19,9 @@ interface kkCategoryDao {
     fun delete(category: kkCategoryEntity)
 
     @Query("SELECT * FROM category WHERE name = :categoryName")
-    fun getCategoryByName(categoryName: String): kkCategoryEntity
+    fun getCategoryByName(categoryName: String): List<kkCategoryEntity>
+    @Query("SELECT * FROM category WHERE id = :id")
+    fun getCategoryById(id: Int): kkCategoryEntity
 
     @Query("SELECT * FROM category")
     fun getAllCategorias(): List<kkCategoryEntity>
