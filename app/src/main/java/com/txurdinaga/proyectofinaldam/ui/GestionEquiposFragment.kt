@@ -249,7 +249,7 @@ class GestionEquiposFragment : Fragment() {
     }
 
 
-<<<<<<< HEAD
+
     private fun convertirImagenABase64(imageUri: Uri): String {
         val inputStream = requireActivity().contentResolver.openInputStream(imageUri)
         val bitmap = BitmapFactory.decodeStream(inputStream)
@@ -280,8 +280,7 @@ class GestionEquiposFragment : Fragment() {
 
 
 
-=======
->>>>>>> 3ae93c0d2313cbb93542ff00dfae9176bddb0104
+
     private fun insertMockData() {
 
         val ligas = listOf(
