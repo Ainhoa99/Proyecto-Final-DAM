@@ -3,6 +3,7 @@ package com.txurdinaga.proyectofinaldam.ui
 import android.os.Bundle
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
@@ -17,7 +18,9 @@ import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.data.model.UserBuilder
 import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
+import com.txurdinaga.proyectofinaldam.ui.util.NetworkConnectivityMonitor
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class MainActivity : AppCompatActivity() {
 
@@ -44,13 +47,30 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+
+
+        val networkMonitor = NetworkConnectivityMonitor(this)
+        networkMonitor.observeNetworkConnectivity(this
+        ) { isConnected ->
+            if (!isConnected) {
+                Toast.makeText(this, "Conexión a internet perdida", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+
+
+
+                // Get a list of style packs that are currently available.
         // Encuentra la imagen por su ID
         var unkinaLogoImageView = findViewById<ImageView>(R.id.unkina_logo)
 
-        // Establece el OnClickListener para la imagen
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
         unkinaLogoImageView.setOnClickListener {
-           // findNavController().navigate(R.id.)
+            navController.navigate(R.id.principalFragment)
         }
+
     }
 
     private fun initNavigation() {
@@ -70,7 +90,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.gestionColaboradoresFragment,
                 R.id.fotosFragment,
                 R.id.loginFragment2,
-                R.id.galeriaFragment
+                R.id.galeriaFragment,
+                R.id.gestionPDFs,
+                R.id.gestionOcupacionesFragment
 
             ), drawerLayout
         )
@@ -90,7 +112,9 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.gestionColaboradoresFragment ||
                 destination.id == R.id.fotosFragment ||
                 destination.id == R.id.loginFragment2 ||
-                destination.id == R.id.galeriaFragment
+                destination.id == R.id.galeriaFragment ||
+                destination.id == R.id.gestionPDFs ||
+                destination.id == R.id.gestionOcupacionesFragment
             ) {
                 supportActionBar?.title = "Unkina SBT" // Establecer el título deseado para los destinos específicos
             }

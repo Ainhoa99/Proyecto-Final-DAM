@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lavender">#8692f7</color>
     <color name="red">#FF0000</color>
+    <color name="lightBlue">#add8e6</color>
+    <color name="blue">#0000FF</color>
 
 
 
@@ -20,4 +22,5 @@
     <color name="C5">#FF018786</color>
     <color name="C6">#3d3fac</color>
     <color name="C7">#FFFFFFFF</color>
+
 </resources>

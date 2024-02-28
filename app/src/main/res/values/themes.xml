@@ -7,6 +7,7 @@
 
     <style name="Theme.ProyectoFinalDam" parent="Base.Theme.ProyectoFinalDam" />
 
+    <!--BOTONES DE ENVIAR, CONFIRMAR...-->
     <style name="AppButton" parent="Widget.AppCompat.Button">
         <item name="android:layout_width">275dp</item>
         <item name="android:layout_height">70dp</item>
@@ -20,5 +21,7 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+
 
 </resources>

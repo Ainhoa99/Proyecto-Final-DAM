@@ -1,6 +1,6 @@
 package com.txurdinaga.proyectofinaldam.ui.util
 
-/*import android.content.Context
+import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
@@ -65,6 +65,4 @@ import timber.log.Timber
             }
             return false
         }
-
     }
-}*/

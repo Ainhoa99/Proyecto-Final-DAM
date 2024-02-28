@@ -28,13 +28,16 @@ class GaleriaFragment : Fragment(), ICardClickListener {
 
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentFotosBinding.inflate(layoutInflater, container, false)
 
+
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,16 +52,23 @@ class GaleriaFragment : Fragment(), ICardClickListener {
 
         var fotos = database.kkfotosDao.getAllFotos()
 
-        var temporadas = database.kkfotosDao.getTemporadas()
 
         if (fotos.isNotEmpty()){
+            var temporadas = database.kkfotosDao.getTemporadas()
+
             val ListTemporadas = mutableListOf<String>()
             temporadas.forEach { temporada ->
                 ListTemporadas.add(temporada)
             }
             val spTemporadas = binding.spinner
             val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListTemporadas)
-            spTemporadas.setAdapter(adapter)
+            Handler(Looper.getMainLooper()).postDelayed({
+                spTemporadas.setAdapter(adapter)
+                binding.spinner.setText("Selecciona una temporada", false)
+                spTemporadas.setAdapter(adapter)
+
+            }, 100)
+
 
 
             spTemporadas.setOnItemClickListener { parent, view, position, id ->
