@@ -4,10 +4,10 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import timber.log.Timber
 
 
     class NetworkConnectivityMonitor(private val context: Context) {
@@ -57,9 +57,9 @@ import timber.log.Timber
             val networkCapabilities = connectivityManager.getNetworkCapabilities(activeNetwork)
             if (networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true) {
                 if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
-                    Timber.d("Connected to Wi-Fi network")
+                    Log.d("NETWORK CONNECTIVITY MONITOR", "Connected to Wi-Fi network")
                 } else if (networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
-                    Timber.d("Connected to cellular network")
+                    Log.d("NETWORK CONNECTIVITY MONITOR", "Connected to cellular network")
                 }
                 return true
             }
