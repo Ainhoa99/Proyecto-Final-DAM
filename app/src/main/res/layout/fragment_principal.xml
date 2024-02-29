@@ -9,13 +9,18 @@
     android:orientation="vertical">
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="595dp"
-        android:layout_marginTop="5dp"
-        android:layout_weight="1"
-        app:layoutManager="LinearLayoutManager" />
+        android:layout_height="match_parent"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:id="@+id/layoutPartidos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
     <!-- Buttons -->
 
 
