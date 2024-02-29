@@ -2,9 +2,14 @@ package com.txurdinaga.proyectofinaldam.ui
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +24,10 @@ import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
 import com.txurdinaga.proyectofinaldam.ui.util.NetworkConnectivityMonitor
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -51,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         val networkMonitor = NetworkConnectivityMonitor(this)
         networkMonitor.observeNetworkConnectivity(this) { isConnected ->
             if (!isConnected) {
-                Toast.makeText(this, "Conexión a internet perdida", Toast.LENGTH_SHORT).show()
+                showNoInternetDialog(this)
             }
         }
 
@@ -148,4 +157,32 @@ class MainActivity : AppCompatActivity() {
         }
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
+    fun showNoInternetDialog(context: Context) {
+        val builder = AlertDialog.Builder(context)
+        val view = LayoutInflater.from(context).inflate(R.layout.dialog_no_internet, null)
+        builder.setView(view)
+        val dialog = builder.create()
+        dialog.setCancelable(false)
+
+        val btnRetry = view.findViewById<Button>(R.id.btn_retry)
+        btnRetry.setOnClickListener {
+            if (isInternetAvailable(context)) {
+                dialog.dismiss()
+            } else {
+                // Retrasa la verificación de la conexión a Internet durante unos segundos antes de intentarlo nuevamente
+                CoroutineScope(Dispatchers.Main).launch {
+                    showNoInternetDialog(context) // Verifica la conexión a Internet nuevamente
+                }
+            }
+        }
+
+        dialog.show()
+    }
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork
+        val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
+        return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
+    }
+
 }
