@@ -34,7 +34,7 @@ interface IUserRepository {
     suspend fun getAllUsers(): List<User>
 }
 private object Constants {
-    const val SERVER_URL = "http://192.168.214.250:8080"
+    const val SERVER_URL = "https://sardina-server.duckdns.org"
     const val API_ENTRY_POINT = "/api/v1"
 
     const val LOGIN_ROUTE = "/user/login"

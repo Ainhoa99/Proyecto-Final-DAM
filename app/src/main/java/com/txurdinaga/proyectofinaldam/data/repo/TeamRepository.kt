@@ -39,7 +39,7 @@ interface ITeamRepository {
 private object ConstantsTeam {
     const val TAG = "TEAM_REPOSITORY"
 
-    const val SERVER_URL = "http://10.0.2.2:8080"
+    const val SERVER_URL = "https://sardina-server.duckdns.org"
     const val API_ENTRY_POINT = "/api/v1"
 
     const val CREATE_ROUTE = "/team/create"
