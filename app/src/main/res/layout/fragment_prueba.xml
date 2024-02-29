@@ -17,7 +17,7 @@
             android:id="@+id/textViewContacto"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
-            android:text="PRUEBA"
+            android:text="@string/prueba"
             android:textSize="34sp"
             android:textStyle="bold"
             android:paddingBottom="15dp"/>
@@ -26,7 +26,7 @@
             android:id="@+id/emailLayout"
             android:layout_width="275dp"
             android:layout_height="90dp"
-            android:hint="E-mail*"
+            android:hint="@string/e_mail2"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -41,7 +41,7 @@
             android:id="@+id/nombreLayout"
             android:layout_width="275dp"
             android:layout_height="90dp"
-            android:hint="Nombre Jugador/a*"
+            android:hint="@string/nombre_jugador_a"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -57,7 +57,7 @@
             android:id="@+id/textInputLayoutDate"
             android:layout_width="275dp"
             android:layout_height="90dp"
-            android:hint="Fecha de Nacimiento*">
+            android:hint="@string/fecha_de_nacimiento2">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputEditTextDate"
@@ -74,7 +74,7 @@
             android:id="@+id/tlfnLayout"
             android:layout_width="275dp"
             android:layout_height="90dp"
-            android:hint="Número de Teléfono*"
+            android:hint="@string/numero_de_tel_fono"
             app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +88,7 @@
         <Button
             android:id="@+id/buttonEnviar"
             style="@style/AppButton"
-            android:text="ENVIAR" />
+            android:text="@string/enviar" />
 
 
     </LinearLayout>

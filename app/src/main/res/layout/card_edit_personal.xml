@@ -44,7 +44,7 @@
                     android:id="@+id/LayoutNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre"
+                    android:hint="@string/nombre"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -59,7 +59,7 @@
                     android:id="@+id/LayoutApellidos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Apellidos"
+                    android:hint="@string/apellidos"
                     app:errorEnabled="true">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -90,7 +90,7 @@
                     android:id="@+id/textViewFechaTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Fecha Nacimento: "
+                    android:text="@string/fecha_nacimento"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -125,7 +125,7 @@
                     android:id="@+id/textViewEquipoTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Equipo: "
+                    android:text="@string/equipo"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
@@ -155,7 +155,7 @@
                     android:id="@+id/textViewOcupacionTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ocupación: "
+                    android:text="@string/ocupacion"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
@@ -185,7 +185,7 @@
                 android:id="@+id/emailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="E-mail"
+                android:hint="@string/e_mail"
                 app:errorEnabled="true">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -213,7 +213,7 @@
                     android:id="@+id/textViewActivoTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Persona Activa: "
+                    android:text="@string/persona_activa"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
@@ -235,7 +235,7 @@
                     android:id="@+id/textViewAdminTitulo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Administrador: "
+                    android:text="@string/administrador"
                     android:textSize="20sp"
                     android:textStyle="bold"/>
 
@@ -262,7 +262,7 @@
                 android:id="@+id/textViewUltimaConexionTitulo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Última Conexión: "
+                android:text="@string/ultima_conexion"
                 android:textSize="20sp"
                 android:textStyle="bold"/>
 

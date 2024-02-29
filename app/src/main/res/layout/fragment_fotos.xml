@@ -33,7 +33,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:visibility="gone"
-            android:text="No hay imagenes" />
+            android:text="@string/no_hay_imagenes" />
 
         <TextView
             android:id="@+id/msgSelecciona"
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textStyle="bold"
-            android:text="Selecciona una opción" />
+            android:text="@string/selecciona_una_opcion" />
 
         <TextView
             android:id="@+id/msgEqTecnico"
@@ -50,7 +50,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:visibility="gone"
-            android:text="EQUIPO TÉCNICO" />
+            android:text="@string/equipo_tecnico" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view_EquipoTecnico"
@@ -69,7 +69,7 @@
             android:gravity="center"
             android:textStyle="bold"
             android:visibility="gone"
-            android:text="JUGADORES" />
+            android:text="@string/jugadores" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"

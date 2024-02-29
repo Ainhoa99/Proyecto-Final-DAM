@@ -110,4 +110,9 @@
         android:id="@+id/gestionOcupacionesFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionOcupacionesFragment"
         android:label="GestionOcupacionesFragment" />
+    <fragment
+        android:id="@+id/ajustesFragment2"
+        android:name="com.txurdinaga.proyectofinaldam.ui.AjustesFragment"
+        android:label="fragment_ajustes"
+        tools:layout="@layout/fragment_ajustes" />
 </navigation>

@@ -35,7 +35,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:text="Jornada"
+                        android:text="@string/jornada"
                         android:textSize="16sp" />
                 </LinearLayout>
 
@@ -61,7 +61,7 @@
                 android:id="@+id/layoutPartidos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"></LinearLayout>
+                android:orientation="vertical"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,7 +75,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/borde"
                     android:padding="10dp"
-                    android:text="Generar Fichero" />
+                    android:text="@string/generar_fichero" />
             </LinearLayout>
 
         </LinearLayout>

@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:hint="Nombre *"
+                android:hint="@string/nombre2"
                 android:paddingBottom="8dp"
                 app:errorEnabled="true">
 
@@ -41,7 +41,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:hint="Apellidos *"
+                android:hint="@string/apellidos2"
                 android:paddingBottom="8dp"
                 app:errorEnabled="true">
 
@@ -61,8 +61,10 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_gravity="center_horizontal"
-                android:text="Fecha *"
-                app:cornerRadius="8dp" />
+                android:text="@string/fecha2"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"/>
 
             <!--Buscador de emails en caso de tener hermanos apuntados-->
             <CheckBox
@@ -70,14 +72,14 @@
                 android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Marcar si tiene hermanos apuntados" />
+                android:text="@string/marcar_si_tiene_hermanos_apuntados" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayoutEmail"
                 android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:hint="Email del usuario *"
+                android:hint="@string/email_del_usuario"
                 android:paddingBottom="8dp">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -92,7 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:hint="DNI *"
+                android:hint="@string/dni"
                 android:paddingBottom="8dp"
                 app:errorEnabled="true">
 
@@ -110,8 +112,10 @@
                 android:layout_width="275dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Empadronamiento *"
-                app:cornerRadius="8dp" />
+                android:text="@string/empadronamiento"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"/>
 
             <Button
                 android:id="@+id/btn_diploma"
@@ -119,8 +123,10 @@
                 android:layout_width="275dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Diploma *"
-                app:cornerRadius="8dp" />
+                android:text="@string/diploma"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"/>
 
             <Button
                 android:id="@+id/btn_certificado"
@@ -128,14 +134,16 @@
                 android:layout_width="275dp"
                 android:layout_height="60dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Certificado "
-                app:cornerRadius="8dp" />
+                android:text="@string/certificado"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/C2"
+                app:strokeWidth="3dp"/>
 
             <Button
                 android:id="@+id/btn_inscribir"
                 style="@style/AppButton"
                 android:layout_height="wrap_content"
-                android:text="Acceder" />
+                android:text="@string/acceder" />
 
         </LinearLayout>
     </ScrollView>

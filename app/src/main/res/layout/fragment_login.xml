@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:hint="E-mail"
+            android:hint="@string/e_mail"
             app:errorEnabled="true"
             android:paddingBottom="8dp">
 
@@ -44,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:hint="Password"
+            android:hint="@string/constrasena"
             android:paddingBottom="8dp"
             app:errorEnabled="true"
             app:endIconMode="password_toggle">
@@ -62,7 +62,7 @@
             android:id="@+id/btn_access"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Acceder" />
+            android:text="@string/acceder" />
 
         <TextView
             android:id="@+id/tv_recovery"
@@ -71,7 +71,7 @@
             android:layout_marginBottom="40dip"
             android:layout_gravity="center_horizontal"
             android:gravity="center"
-            android:text="He olvidado mi contraseña"
+            android:text="@string/he_olvidado_mi_contrase_a"
             android:textColor="@color/C2"
             android:textSize="15dp" />
 

@@ -29,7 +29,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:text="Categoria"
+                    android:text="@string/categoria"
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
 
@@ -51,7 +51,7 @@
                     android:id="@+id/txtEquipo1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nombre Equipo"
+                    android:text="@string/nombre_equipo"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -114,7 +114,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Puntuación a favor: "
+                    android:text="@string/puntuacion_a_favor"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -146,7 +146,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Puntuación en contra: "
+                    android:text="@string/puntuacion_en_contra"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -179,7 +179,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Fecha: "
+                    android:text="@string/fecha"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -204,7 +204,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Local "
+                    android:text="@string/local"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -226,7 +226,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Horario: "
+                    android:text="@string/horario"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -245,7 +245,7 @@
                 style="@style/AppButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="CONFIRMAR" />
+                android:text="@string/confirmar" />
         </LinearLayout>
 
     </com.google.android.material.card.MaterialCardView>

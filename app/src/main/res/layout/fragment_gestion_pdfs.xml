@@ -34,7 +34,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Normas organización partidos"
+                    android:text="@string/normas_organizacion_partidos"
                     app:cornerRadius="8dp" />
 
                 <Button
@@ -46,7 +46,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Autorización de imágenes"
+                    android:text="@string/autorizacion_de_imagenes"
                     app:cornerRadius="8dp" />
 
             </LinearLayout>
@@ -66,7 +66,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Nuevas inscripciones"
+                    android:text="@string/nuevas_inscripciones"
                     app:cornerRadius="8dp" />
 
                 <Button
@@ -78,7 +78,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Alta deporte escolar"
+                    android:text="@string/alta_deporte_escolar"
                     app:cornerRadius="8dp" />
 
             </LinearLayout>
@@ -98,7 +98,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Reglamento escolar"
+                    android:text="@string/reglamento_escolar"
                     app:cornerRadius="8dp" />
 
                 <Button
@@ -110,7 +110,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Exención de responsabilidades"
+                    android:text="@string/exencion_de_responsabilidades"
                     app:cornerRadius="8dp" />
             </LinearLayout>
 
@@ -129,7 +129,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Reglamento de régimen interno"
+                    android:text="@string/reglamento_de_regimen_interno"
                     app:cornerRadius="8dp" />
 
                 <Button
@@ -141,7 +141,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:text="Reglamento vestuarios"
+                    android:text="@string/reglamento_vestuarios"
                     app:cornerRadius="8dp" />
 
             </LinearLayout>
