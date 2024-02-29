@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Category(
     val categoryId: Int? = null,
-    val categoryName: String? = null
+    var categoryName: String? = null
 )
