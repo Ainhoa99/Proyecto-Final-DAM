@@ -25,20 +25,20 @@
         <Button
             android:id="@+id/btn_alta"
             android:layout_gravity="center_horizontal"
-            android:text="Alta"
+            android:text="@string/alta"
             style="@style/AppButton"/>
         <Button
             style="@style/AppButton"
             android:id="@+id/btn_baja"
 
             android:layout_gravity="center_horizontal"
-            android:text="Baja"
+            android:text="@string/baja"
             />
         <Button
             style="@style/AppButton"
             android:id="@+id/btn_modificacion"
             android:layout_gravity="center_horizontal"
-            android:text="Modificación" />
+            android:text="@string/modificaci_n" />
     </LinearLayout>
 </LinearLayout>
 

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Nombre *"
+        android:hint="@string/nombre2"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Campo *"
+        android:hint="@string/campo"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -50,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:text="Categoria *"/>
+            android:text="@string/categoria2"/>
     </com.google.android.material.textfield.TextInputLayout>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/leagueLayout"
@@ -65,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:text="Liga *"/>
+            android:text="@string/liga"/>
     </com.google.android.material.textfield.TextInputLayout>
     <Button
         style="@style/Widget.Material3.Button.ElevatedButton"
@@ -75,7 +75,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:text="Escudo *"
+        android:text="@string/escudo"
         app:cornerRadius="8dp"
         app:strokeColor="@color/C2"
         app:strokeWidth="3dp"/>
@@ -84,11 +84,11 @@
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Equipo de Unkina"/>
+        android:text="@string/equipo_de_unkina"/>
     <CheckBox
         android:id="@+id/check_visible"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Es visible"/>
+        android:text="@string/es_visible"/>
 </LinearLayout>

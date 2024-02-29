@@ -28,7 +28,7 @@ class GestionFotosFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Fotos"
+        binding.tvTitle.text = getString(R.string.gestion_fotos)
 
 
         //creamos la bbdd

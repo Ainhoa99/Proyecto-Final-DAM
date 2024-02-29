@@ -72,7 +72,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="40dp"
-            android:text="&#128161; NECESITARÁS: \n \n · Nombre \n · Apellidos \n · Foto \n · E-mail \n · Empadronamiento \n · Diploma deportivo"
+            android:text="@string/necesitas"
             android:textSize="20dp" />
 
         <Space
@@ -84,7 +84,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Cuando tenga todo lo anterior, puede continuar con la inscripción."
+            android:text="@string/mensajito"
             android:textAlignment="center"
             android:textSize="20dp" />
 
@@ -96,7 +96,7 @@
             android:id="@+id/btn_next"
             style="@style/AppButton"
             android:layout_gravity="center_horizontal"
-            android:text="Siguiente" />
+            android:text="@string/siguiente" />
 
     </LinearLayout>
 </LinearLayout>

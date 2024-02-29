@@ -15,15 +15,17 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:text="Foto *"
-        app:cornerRadius="8dp"/>
+        android:text="@string/foto"
+        app:cornerRadius="8dp"
+        app:strokeColor="@color/C2"
+        app:strokeWidth="3dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/nameLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Nombre *"
+        android:hint="@string/nombre2"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -38,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Temporada *"
+        android:hint="@string/temporada"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -61,6 +63,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"
-            android:text="Equipo *"/>
+            android:text="@string/equipo2"/>
     </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

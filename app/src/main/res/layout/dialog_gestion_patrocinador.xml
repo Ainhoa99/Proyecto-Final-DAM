@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Nombre *"
+        android:hint="@string/nombre2"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -30,14 +30,16 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_horizontal"
-        android:text="Foto *"
-        app:cornerRadius="8dp"/>
+        android:text="@string/foto"
+        app:cornerRadius="8dp"
+        app:strokeColor="@color/C2"
+        app:strokeWidth="3dp"/>
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/moneyLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:hint="Dinero"
+        android:hint="@string/dinero"
         app:errorEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -52,11 +54,11 @@
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Es Patrocinador"/>
+        android:text="@string/es_patrocinador"/>
     <CheckBox
         android:id="@+id/check_activo"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Esta activo"/>
+        android:text="@string/esta_activo"/>
 </LinearLayout>

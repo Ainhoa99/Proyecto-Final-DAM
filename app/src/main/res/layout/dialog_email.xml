@@ -10,7 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal"
-        android:hint="Email"
+        android:hint="@string/e_mail"
         android:paddingBottom="8dp">
 
         <com.google.android.material.textfield.TextInputEditText

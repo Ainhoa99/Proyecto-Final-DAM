@@ -11,14 +11,14 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1" >
 
         <LinearLayout
             android:id="@+id/layoutPartidos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"></LinearLayout>
+            android:orientation="vertical"/>
     </ScrollView>
 
     <!-- Buttons -->
@@ -28,7 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
 
         <ImageButton
             android:id="@+id/prueba"
@@ -37,10 +38,10 @@
             android:layout_height="70dp"
             android:src="@drawable/jugadora_prueba"
             android:scaleType="fitCenter"
-            android:layout_marginLeft="5dp"/>
+            android:layout_marginStart="5dp"/>
 
         <Space
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
@@ -51,9 +52,8 @@
             android:layout_height="70dp"
             android:src="@drawable/servicio_al_cliente"
             android:scaleType="fitCenter"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="0dp"
-            android:text="Contacto"/>
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="0dp" />
 
         <!--<ImageView
             android:id="@+id/contactoimg"

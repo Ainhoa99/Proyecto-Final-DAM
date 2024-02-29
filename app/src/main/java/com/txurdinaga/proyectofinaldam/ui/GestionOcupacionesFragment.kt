@@ -29,7 +29,7 @@ class GestionOcupacionesFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Ocupaciones"
+        binding.tvTitle.text = getString(R.string.gestion_ocupaciones)
 
 
         //creamos la bbdd

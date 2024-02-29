@@ -39,7 +39,7 @@ class GestionPatrocinadoresFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Patrocinadores"
+        binding.tvTitle.text = getString(R.string.gestion_patrocinadores)
 
 
         //creamos la bbdd

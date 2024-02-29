@@ -6,13 +6,13 @@
         <item
             android:id="@+id/principalFragment"
             android:icon="@drawable/inicio"
-            android:title="Inicio"
+            android:title="@string/inicio"
             android:iconTint="@color/C3"/>
 
     </group>
     <item
         android:id="@+id/menu_equipos"
-        android:title="Equipos">
+        android:title="@string/equipos">
 
         <menu>
             <group android:checkableBehavior="single">
@@ -20,63 +20,63 @@
                 <item
                     android:id="@+id/personalFragment"
                     android:icon="@drawable/jugador"
-                    android:title="Jugadores/as" />
+                    android:title="@string/jugadores_as" />
 
 
                 <item
                     android:id="@+id/fotosFragment"
                     android:icon="@drawable/camara"
-                    android:title="Fotos" />
+                    android:title="@string/fotos" />
             </group>
         </menu>
     </item>
 
     <item
         android:id="@+id/menu_gestiones"
-        android:title="Gestiones">
+        android:title="@string/gestiones">
 
         <menu>
             <group android:checkableBehavior="single">
                 <item
                     android:id="@+id/gestionPartidosFragment"
                     android:icon="@drawable/gpartidos"
-                    android:title="GPartidos" />
+                    android:title="@string/gpartidos" />
 
                 <item
                     android:id="@+id/gestionEquiposFragment"
                     android:icon="@drawable/gequipos"
-                    android:title="GEquipos" />
+                    android:title="@string/gequipos" />
 
                 <item
                     android:id="@+id/gestionCategoriasFragment"
                     android:icon="@drawable/gcategorias"
-                    android:title="GCategorias" />
+                    android:title="@string/gcategorias" />
 
                 <item
                     android:id="@+id/gestionColaboradoresFragment"
                     android:icon="@drawable/gcolaboradores"
-                    android:title="GPatrocinadores" />
+                    android:title="@string/gpatrocinadores" />
 
                 <item
                     android:id="@+id/gestionLigasFragment"
                     android:icon="@drawable/gligas"
-                    android:title="GLigas" />
+                    android:title="@string/gligas" />
                 <item
                     android:id="@+id/gestionOcupacionesFragment"
-                    android:icon="@drawable/gligas"
-                    android:title="GOcupacioens" />
+                    android:icon="@drawable/gestion"
+                    android:title="@string/gocupacioens" />
 
                 <item
                     android:id="@+id/gestionPDFs"
-                    android:icon="@drawable/gligas"
-                    android:title="GPDFs" />
+                    android:icon="@drawable/pdf"
+                    android:title="@string/gpdfs" />
             </group>
         </menu>
     </item>
 
     <item
         android:id="@+id/menu_otros"
-        android:title="Otros">
+        android:title="@string/otros">
 
         <menu>
 
@@ -85,18 +85,18 @@
                 <item
                     android:id="@+id/galeriaFragment"
                     android:icon="@drawable/camara"
-                    android:title="Galería" />
+                    android:title="@string/galeria" />
 
 
                 <item
                     android:id="@+id/colaboradoresFragment2"
                     android:icon="@drawable/colaboradores"
-                    android:title="Patrocinadores" />
+                    android:title="@string/patrocinadores" />
 
                 <item
                     android:id="@+id/inscripcionFragment"
                     android:icon="@drawable/inscripciones"
-                    android:title="Inscripciones" />
+                    android:title="@string/inscripciones" />
 
                 <!-- Divisor -->
                 <item
@@ -107,11 +107,11 @@
                 <item
                     android:id="@+id/loginFragment2"
                     android:icon="@drawable/login"
-                    android:title="Login" />
+                    android:title="@string/inicar_sesion" />
                 <item
                     android:id="@+id/fragment_cerrar_sesion"
                     android:icon="@drawable/cerrar_sesion"
-                    android:title="Cerrar Sesión" />
+                    android:title="@string/cerrar_sesion" />
 
             </group>
 
@@ -126,9 +126,9 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/AjustesFragment"
+            android:id="@+id/ajustesFragment2"
             android:icon="@drawable/ajustes"
-            android:title="Ajustes" />
+            android:title="@string/ajustes" />
     </group>
 
 </menu>

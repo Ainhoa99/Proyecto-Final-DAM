@@ -43,25 +43,25 @@ class PruebaFragment : Fragment() {
             allFieldsFilled = true
 
             if (binding.tlfn.text.toString().trim().isEmpty()) {
-                binding.tlfnLayout.error = "Escribe un numero de teléfono"
+                binding.tlfnLayout.error = getString(R.string.escribe_numero_tlfn)
                 binding.tlfnLayout.requestFocus()
                 allFieldsFilled = false
             }
 
             if (binding.nombre.text.toString().trim().isEmpty()) {
-                binding.nombreLayout.error = "Escribe un nombre"
+                binding.nombreLayout.error = getString(R.string.escribe_un_nombre)
                 binding.nombreLayout.requestFocus()
                 allFieldsFilled = false
             }
 
             if (binding.textInputEditTextDate.text.toString().trim().isEmpty()) {
-                binding.textInputLayoutDate.error = "Elige una fecha de nacimiento"
+                binding.textInputLayoutDate.error = getString(R.string.elige_fecha)
                 binding.textInputLayoutDate.requestFocus()
                 allFieldsFilled = false
             }
 
             if (binding.email.text.toString().trim().isEmpty()) {
-                binding.emailLayout.error = "Escribe un e-mail"
+                binding.emailLayout.error = getString(R.string.Escribe_un_email)
                 binding.emailLayout.requestFocus()
                 allFieldsFilled = false
             }

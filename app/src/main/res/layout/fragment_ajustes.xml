@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.AjustesFragment">
+    tools:context=".ui.AjustesFragment"
+    android:id="@+id/ajustesFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:text="Idioma"
+            android:text="@string/idioma"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -30,7 +31,7 @@
 
             <TextView
                 android:id="@+id/textView2"
-                android:layout_width="55dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
@@ -38,13 +39,14 @@
                 android:textSize="24sp" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/languageSwitch"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:checked="false" />
 
             <TextView
                 android:id="@+id/textView3"
-                android:layout_width="55dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
@@ -54,42 +56,11 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/textViewTema"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="Tema"
-            android:textSize="30sp"
-            android:textStyle="bold" />
-
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="20dp"
-            android:gravity="center">
-
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:src="@drawable/sol" />
-
-            <com.google.android.material.materialswitch.MaterialSwitch
-                android:layout_width="wrap_content"
-                android:layout_height="50dp"
-                android:checked="false" />
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="55dp"
-                android:layout_height="50dp"
-                android:src="@drawable/luna" />
-
-
-        </LinearLayout>
+            android:gravity="center"/>
 
         <TextView
             android:id="@+id/textViewCambiarContrasena"
@@ -97,7 +68,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
-            android:text="Cambiar Contraseña"
+            android:text="@string/cambiar_contrase_a"
             android:textSize="30sp"
             android:textStyle="bold" />
 
@@ -105,7 +76,7 @@
             android:id="@+id/passwordLayout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Contraseña Actual"
+            android:hint="@string/contrase_a_actual"
             app:errorEnabled="true"
             app:endIconMode="password_toggle">
 
@@ -121,7 +92,7 @@
             android:id="@+id/password2Layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Nueva Contraseña"
+            android:hint="@string/nueva_contrase_a"
             app:errorEnabled="true"
             app:endIconMode="password_toggle">
 
@@ -139,7 +110,7 @@
             android:layout_width="275dp"
             android:layout_height="60dp"
             android:layout_gravity="left"
-            android:text="CONFIRMAR" />
+            android:text="@string/confirmar" />
 
     </LinearLayout>
 
