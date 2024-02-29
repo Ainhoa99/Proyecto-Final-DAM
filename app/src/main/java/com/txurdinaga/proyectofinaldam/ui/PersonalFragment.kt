@@ -171,7 +171,9 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
 
     override fun onCardClick(position: Int, cardData: CardData) {
-        showDialog(cardData, position)
+        if (cardData.title!=null){
+            showDialog(cardData, position)
+        }
     }
 
     private fun showDialog(cardData: CardData?, position: Int?) {
@@ -188,10 +190,10 @@ class PersonalFragment : Fragment(), ICardClickListener {
         if (cardData!= null && position!=null){
             if (cardData.id !=null){
                 val user = database.kkUsersDao.getUsersById(cardData.id)
-                var name = dialogView.findViewById<EditText>(R.id.textViewNombre)
-                var apellido = dialogView.findViewById<EditText>(R.id.textViewApellidos)
+                var name = dialogView.findViewById<TextInputEditText>(R.id.textViewNombre)
+                var apellido = dialogView.findViewById<TextInputEditText>(R.id.textViewApellidos)
                 var img = dialogView.findViewById<ImageView>(R.id.foto)
-                var fecha = dialogView.findViewById<EditText>(R.id.textViewFecha)
+                var fecha = dialogView.findViewById<TextInputEditText>(R.id.textViewFecha)
                 var email = dialogView.findViewById<TextInputEditText>(R.id.email)
                 var isAdmin = dialogView.findViewById<CheckBox>(R.id.checkBoxAdmin)
                 var isActiva = dialogView.findViewById<CheckBox>(R.id.checkBoxActiva)
@@ -208,11 +210,36 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     isActiva.isChecked = true
                 }
 
+                var btnBorrar = dialogView.findViewById<ImageView>(R.id.imageViewCancelar)
+                btnBorrar.setOnClickListener {
+                    borrarUser(cardData.id)
+                }
             }
         }
 
         val dialog = builder.create()
         dialog.show()
+
+    }
+
+
+    private fun borrarUser(id:Int){
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
+        val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
+        var user = database.kkUsersDao.getUsersById(id)
+
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("¿Eliminar el usuario?")
+            .setView(dialogView)
+            .setPositiveButton("Aceptar") {dialog, _ ->
+                database.kkUsersDao.delete(user)
+            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
+            .create()
+        dialog.show()
+
+        tv_name.text = user.nombre +" "+ user.apellido
 
     }
 

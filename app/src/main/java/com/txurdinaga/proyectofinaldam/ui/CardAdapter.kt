@@ -55,8 +55,13 @@ class CardAdapter(private val dataSet: List<CardData>, private val clickListener
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentCard = dataSet[position]
-        val resourceId = holder.itemView.context.resources.getIdentifier(currentCard.title, "drawable", holder.itemView.context.packageName)
-        holder.image.setImageResource(resourceId)
+        if (currentCard.title!=null){
+            val resourceId = holder.itemView.context.resources.getIdentifier(currentCard.title, "drawable", holder.itemView.context.packageName)
+            holder.image.setImageResource(resourceId)
+        } else{
+            holder.image.setImageResource(R.drawable.avatar)
+        }
+
         if(currentCard.nombre!=null){
             holder.name.text = currentCard.nombre.toString()
             holder.name.visibility = View.VISIBLE
