@@ -1,14 +1,7 @@
 package com.txurdinaga.proyectofinaldam.ui
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
-import android.location.Location
-import android.location.LocationManager
+import android.graphics.Typeface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,19 +9,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
-import androidx.annotation.DrawableRes
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
-import com.google.android.material.appbar.MaterialToolbar
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentPrincipalBinding
-import com.txurdinaga.proyectofinaldam.ui.splash.PdfGenerator
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -75,6 +60,7 @@ class PrincipalFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("MissingInflatedId", "ResourceAsColor", "SetTextI18n")
     private fun mostrarJornada() {
         layoutPartidosJornada.removeAllViews()
         var partidosJornada = cogerPartidosJornadaSemana()
@@ -87,31 +73,60 @@ class PrincipalFragment : Fragment() {
             val inflater = layoutInflater
             val layoutPartido = inflater.inflate(R.layout.partidos, null)
             //TODO
-             if (partido != null) {
+            var imgEquipo1 = layoutPartido.findViewById<ImageView>(R.id.imgEquipo1)
+            var imgEquipo2 = layoutPartido.findViewById<ImageView>(R.id.imgEquipo2)
+            var txtEquipo1 = layoutPartido.findViewById<TextView>(R.id.txtEquipo1)
+            var txtEquipo2 = layoutPartido.findViewById<TextView>(R.id.txtEquipo2)
+            val txtFechaHora = layoutPartido.findViewById<TextView>(R.id.txtFechaHora)
+            val txtCampo = layoutPartido.findViewById<TextView>(R.id.txtCampo)
+            val txtResultado = layoutPartido.findViewById<TextView>(R.id.txtResultado)
+            if (partido != null) {
+
                 /*val txtCategoria = layoutPartido.findViewById<TextView>(R.id.txtCategoria)
                 txtCategoria.text = categorias.find { it.id == equipo.categoria }.toString()*/
-                val txtEquipo1 = layoutPartido.findViewById<TextView>(R.id.txtEquipoUnkina)
-                txtEquipo1.text = equipo.name
-                val txtFecha = layoutPartido.findViewById<TextView>(R.id.txtFecha)
-                txtFecha.text = SimpleDateFormat("dd/MM/yyyy").format(Date(partido.fecha))
-                val txtHora = layoutPartido.findViewById<TextView>(R.id.txtHora)
-                txtHora.text = SimpleDateFormat("HH:mm").format(Date(partido.hora))
-                val txtEquipo2 = layoutPartido.findViewById<TextView>(R.id.txtEquipo2)
-                txtEquipo2.text = equipos.find { it.id == partido.id_equipo2 }.toString()
-                val txtCampo = layoutPartido.findViewById<TextView>(R.id.txtCampo)
+                txtFechaHora.text =
+                    SimpleDateFormat("dd/MM/yyyy").format(Date(partido.fecha)) + "   " + SimpleDateFormat(
+                        "HH:mm"
+                    ).format(Date(partido.hora))
                 txtCampo.text = partido.local
-                val txtResultado = layoutPartido.findViewById<TextView>(R.id.txtResultado)
-                if (partido.puntos1 == null || partido.puntos2 == null) {
-                    txtResultado.text = " - "
-                } else {
-                    txtResultado.text = "${partido.puntos1}   -   ${partido.puntos2}"
+                if(partido.local == equiposUnkina.find { it.id == partido.id_equipo1 }?.campo){
+                    //Unkina
+                    imgEquipo1.setImageResource(R.drawable.unkina_sbt_logo)
+                    txtEquipo1.text = equipo.name
+                    txtEquipo1.setTypeface(null, Typeface.BOLD_ITALIC)
+                    //Copntrario
+                    imgEquipo2.setImageResource(R.drawable.descansa)
+                    txtEquipo2.text = equipos.find { it.id == partido.id_equipo2}?.name
+                    txtEquipo2.setTypeface(null, Typeface.NORMAL)
+                    txtResultado.text = if(partido.puntos1 != null && partido.puntos2 != null) "${partido.puntos1}  -  ${partido.puntos2}" else "  -  "
+
+                }else{
+                    //Unkina
+                    imgEquipo2.setImageResource(R.drawable.unkina_sbt_logo)
+                    txtEquipo2.text = equipo.name
+                    txtEquipo2.setTypeface(null, Typeface.BOLD_ITALIC)
+                    //Copntrario
+                    imgEquipo1.setImageResource(R.drawable.descansa)
+                    txtEquipo1.text = equipos.find { it.id == partido.id_equipo2}?.name
+                    txtEquipo1.setTypeface(null, Typeface.NORMAL)
+                    txtResultado.text = if(partido.puntos1 != null && partido.puntos2 != null) "${partido.puntos2}  -  ${partido.puntos1}" else "  -  "
+
                 }
-                layoutPartido.tag = partido.id.toString()
-                    } else {
+
+
+
+            } else {
                 /*val txtCategoria = layoutPartido.findViewById<TextView>(R.id.txtCategoria)
                 txtCategoria.text = categorias.find { it.id == equipo.categoria }.toString()*/
-                val txtEquipo1 = layoutPartido.findViewById<TextView>(R.id.txtEquipoUnkina)
                 txtEquipo1.text = equipo.name
+                txtFechaHora.text = obtenerFechaHoraActual()
+                txtCampo.setTextColor(R.color.red)
+                txtResultado.setTextColor(R.color.red)
+                txtFechaHora.setTextColor(R.color.red)
+                txtEquipo1.setTextColor(R.color.red)
+                txtEquipo2.setTextColor(R.color.red)
+                txtEquipo1.setTypeface(null, Typeface.BOLD_ITALIC)
+
             }
 
 // Agregar el layout al linearGeneral
@@ -119,6 +134,12 @@ class PrincipalFragment : Fragment() {
 
         }
 
+    }
+
+    private fun obtenerFechaHoraActual(): String {
+        val formatoFechaHora = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+        val fechaHora = Date()
+        return formatoFechaHora.format(fechaHora)
     }
 
     private fun cogerPartidosJornadaSemana(): List<kkPartidosEntity> {
@@ -165,11 +186,7 @@ class PrincipalFragment : Fragment() {
         }
 
 
-
-
-
     }
-
 
 
 }

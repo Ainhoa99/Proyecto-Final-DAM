@@ -13,23 +13,25 @@
 
         <LinearLayout
             android:layout_width="100dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/imgEquipoUnkina"
+                android:id="@+id/imgEquipo1"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_weight="1"
+                android:minWidth="100dp"
+                android:minHeight="100dp"
                 android:src="@drawable/descansa" />
 
             <TextView
-                android:id="@+id/txtEquipoUnkina"
+                android:id="@+id/txtEquipo1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Equipo1"
-                android:textSize="24sp" />
+                android:textColor="#000000"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
@@ -50,18 +52,20 @@
 
 
             <ImageView
-                android:id="@+id/imgEquipoContrario"
+                android:id="@+id/imgEquipo2"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
+                android:minWidth="100dp"
+                android:minHeight="100dp"
                 android:src="@drawable/descansa" />
 
             <TextView
-                android:id="@+id/txtEquipoContrario"
+                android:id="@+id/txtEquipo2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Equipo2"
-                android:textSize="24sp" />
+                android:text="Descansa"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>
