@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
@@ -22,6 +23,7 @@ import androidx.room.Room
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.txurdinaga.proyectofinaldam.R
@@ -36,6 +38,9 @@ class PersonalFragment : Fragment(), ICardClickListener {
     private lateinit var database: kkAppDatabase
 
     var equipoSeleccionado = 0
+    var equipoSelectedId: Int = -1
+    var ocupacionSelectedId: Int = -1
+
 
 
     override fun onCreateView(
@@ -171,7 +176,9 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
 
     override fun onCardClick(position: Int, cardData: CardData) {
-        showDialog(cardData, position)
+        if (cardData.title!=null){
+            showDialog(cardData, position)
+        }
     }
 
     private fun showDialog(cardData: CardData?, position: Int?) {
@@ -180,21 +187,113 @@ class PersonalFragment : Fragment(), ICardClickListener {
         builder.setView(dialogView)
 
 
-        var imageViewDate = dialogView.findViewById<TextView>(R.id.textViewFecha)
+        var fecha = dialogView.findViewById<TextView>(R.id.textViewFecha)
             .apply {
             setOnClickListener { showDatePickerDialog(this) }
         }
 
+        var name = dialogView.findViewById<TextInputEditText>(R.id.textViewNombre)
+        var apellido = dialogView.findViewById<TextInputEditText>(R.id.textViewApellidos)
+        var img = dialogView.findViewById<ImageView>(R.id.foto)
+        var email = dialogView.findViewById<TextInputEditText>(R.id.email)
+        var isAdmin = dialogView.findViewById<CheckBox>(R.id.checkBoxAdmin)
+        var isActiva = dialogView.findViewById<CheckBox>(R.id.checkBoxActiva)
+        val equipo = dialogView.findViewById<AutoCompleteTextView>(R.id.equipo)
+        val ocupacion = dialogView.findViewById<AutoCompleteTextView>(R.id.ocupacion)
+
+        val nombreLayout =dialogView.findViewById<TextInputLayout>(R.id.LayoutNombre)
+        val apellidoLayout =dialogView.findViewById<TextInputLayout>(R.id.LayoutApellidos)
+        val mailLayout =dialogView.findViewById<TextInputLayout>(R.id.emailLayout)
+        val fechaLayout =dialogView.findViewById<TextInputLayout>(R.id.LayoutFecha)
+        val equipoLayout =dialogView.findViewById<TextInputLayout>(R.id.spEquipo)
+        val ocupacionLayout =dialogView.findViewById<TextInputLayout>(R.id.spOcupacion)
+
+
+
+        var btnBorrar = dialogView.findViewById<ImageView>(R.id.imageViewCancelar)
+        var btnConfirmar = dialogView.findViewById<ImageView>(R.id.imageViewConfirmar)
+
+
+
+        val ListEquiposDialog = mutableListOf<kkEquiposEntity>()
+        val equiposVisibles =database.kkequipostDao.getVisibleEquipos()
+        equiposVisibles.forEach { equipoVisible ->
+            ListEquiposDialog.add(equipoVisible)
+        }
+        val adapterEquipos = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquiposDialog)
+        equipo.setAdapter(adapterEquipos)
+
+
+        val ListOcupaciones = mutableListOf<kkOcupacionesEntity>()
+        val ocupacionesDialog =database.kkOcupacionesDao.getAllOcupaciones()
+        ocupacionesDialog.forEach { ocupacionDialog ->
+            ListOcupaciones.add(ocupacionDialog)
+        }
+        val adapterOcupacion = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListOcupaciones)
+        ocupacion.setAdapter(adapterOcupacion)
+
+
+
+        val dialog = builder.create()
+        dialog.show()
+
+
+
+        equipo.setOnItemClickListener { parent, view, position, id ->
+            var equipoSelected = parent.getItemAtPosition(position) as kkEquiposEntity
+            equipoSelectedId = equipoSelected.id
+
+        }
+        ocupacion.setOnItemClickListener { parent, view, position, id ->
+            var ocupacionSelected = parent.getItemAtPosition(position) as kkOcupacionesEntity
+            ocupacionSelectedId = ocupacionSelected.id
+        }
+
+        fun comprobarCampos():Boolean{
+            var allFieldsFilled = true
+
+            if (name.text.toString().isEmpty()) {
+                nombreLayout.error = "Escribe un nombre"
+                nombreLayout.requestFocus()
+                allFieldsFilled = false
+            }
+
+            if (apellido.text.toString().isEmpty()) {
+                apellidoLayout.error = "Escribe un apellido"
+                apellidoLayout.requestFocus()
+                allFieldsFilled = false
+            }
+
+            if (fecha.text.toString().isEmpty()) {
+                fechaLayout.error = "Escribe una fecha"
+                fechaLayout.requestFocus()
+                allFieldsFilled = false
+            }
+
+            if (email.text.toString().isEmpty()) {
+                mailLayout.error = "Escribe un email"
+                mailLayout.requestFocus()
+                allFieldsFilled = false
+            }
+
+            if (equipoSelectedId==-1) {
+                equipoLayout.error = "Selecciona un equipo"
+                equipoLayout.requestFocus()
+                allFieldsFilled = false
+            }
+
+            if (ocupacionSelectedId==-1) {
+                ocupacionLayout.error = "Selecciona una ocupacion"
+                ocupacionLayout.requestFocus()
+                allFieldsFilled = false
+            }
+            return allFieldsFilled
+        }
+
+
         if (cardData!= null && position!=null){
             if (cardData.id !=null){
                 val user = database.kkUsersDao.getUsersById(cardData.id)
-                var name = dialogView.findViewById<EditText>(R.id.textViewNombre)
-                var apellido = dialogView.findViewById<EditText>(R.id.textViewApellidos)
-                var img = dialogView.findViewById<ImageView>(R.id.foto)
-                var fecha = dialogView.findViewById<EditText>(R.id.textViewFecha)
-                var email = dialogView.findViewById<TextInputEditText>(R.id.email)
-                var isAdmin = dialogView.findViewById<CheckBox>(R.id.checkBoxAdmin)
-                var isActiva = dialogView.findViewById<CheckBox>(R.id.checkBoxActiva)
 
                 name.setText(user.nombre)
                 apellido.setText(user.apellido)
@@ -208,11 +307,58 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     isActiva.isChecked = true
                 }
 
+                btnBorrar.setOnClickListener {
+                    borrarUser(cardData.id)
+                    dialog.dismiss()
+
+                }
+                btnConfirmar.setOnClickListener {
+                    val todoOk = comprobarCampos()
+                    if(todoOk){
+                        database.kkUsersDao.update(kkUsersEntity(id = user.id, foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                        dialog.dismiss()
+                    }
+                }
+            }
+        } else{
+            img.setImageResource(resources.getIdentifier("avatar", "drawable", requireContext().packageName))
+            btnBorrar.setOnClickListener {
+                dialog.dismiss()
+            }
+            btnConfirmar.setOnClickListener {
+                btnConfirmar.setOnClickListener {
+                    val todoOk = comprobarCampos()
+                    if(todoOk){
+                        database.kkUsersDao.insert(kkUsersEntity(foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                        dialog.dismiss()
+
+                    }
+                }
             }
         }
 
-        val dialog = builder.create()
+
+
+    }
+
+
+    private fun borrarUser(id:Int){
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
+        val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
+        var user = database.kkUsersDao.getUsersById(id)
+
+
+        val dialog = MaterialAlertDialogBuilder(requireContext())
+            .setTitle("¿Eliminar el usuario?")
+            .setView(dialogView)
+            .setPositiveButton("Aceptar") {dialog, _ ->
+                database.kkUsersDao.delete(user)
+            }
+            .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
+            .create()
         dialog.show()
+
+        tv_name.text = user.nombre +" "+ user.apellido
 
     }
 

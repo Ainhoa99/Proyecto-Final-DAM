@@ -40,25 +40,36 @@
                 android:layout_marginLeft="15dp"
                 android:layout_weight="2.5">
 
-
-                <EditText
-                    android:id="@+id/textViewNombre"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/LayoutNombre"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Nombre"
-                    android:textSize="24sp"
-                    android:textStyle="bold"
-                    android:layout_weight="1"
-                    android:layout_marginBottom="15dp"/>
+                    android:hint="Nombre"
+                    app:errorEnabled="true">
 
-                <EditText
-                    android:id="@+id/textViewApellidos"
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/LayoutApellidos"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Apellidos"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:hint="Apellidos"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewApellidos"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </LinearLayout>
         </LinearLayout>
@@ -83,17 +94,24 @@
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
-                <EditText
-                    android:id="@+id/textViewFecha"
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/LayoutFecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="dd/mm/aaaa"
-                    android:gravity="center"
-                    android:textSize="20sp"
-                    android:textStyle=""
-                    android:inputType="none"
-                    android:editable="false"
-                    android:focusable="false"/>
+                    android:hint="dd/mm/aaaa"
+                    app:errorEnabled="true">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/textViewFecha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text"
+                        android:focusable="false"
+
+                        />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
 
             </LinearLayout>
 
@@ -112,12 +130,13 @@
                     android:textStyle="bold"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/equipo"
+                    android:id="@+id/spEquipo"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
                     <AutoCompleteTextView
+                        android:id="@+id/equipo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -141,12 +160,13 @@
                     android:textStyle="bold"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ocupacion"
+                    android:id="@+id/spOcupacion"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
                     <AutoCompleteTextView
+                        android:id="@+id/ocupacion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -264,10 +284,17 @@
             android:layout_marginTop="20dp">
 
             <ImageView
-                android:id="@+id/imageViewEditar"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/editar" />
+                android:id="@+id/imageViewCancelar"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/cancelar" />
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
 
             <Space
                 android:layout_width="wrap_content"
@@ -276,20 +303,9 @@
 
             <ImageView
                 android:id="@+id/imageViewConfirmar"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/confirmar" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <ImageView
-                android:id="@+id/imageViewCancelar"
                 android:layout_width="53dp"
                 android:layout_height="53dp"
-                android:src="@drawable/cancelar" />
+                android:src="@drawable/confirmar" />
         </LinearLayout>
 
 

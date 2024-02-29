@@ -355,7 +355,7 @@ class GestionEquiposFragment : Fragment() {
 
 
         val users = listOf(
-            kkUsersEntity(foto= "sol", nombre = "Ainhoa", apellido = "Lopez", mail = "ainhoa@mail.com", password = "xxx", fecha_nacimiento = "28-09-1999", equipoId = 2, ocupacionId = 2, admin = true, activo = true),
+            kkUsersEntity(foto= null, nombre = "Ainhoa", apellido = "Lopez", mail = "ainhoa@mail.com", password = "xxx", fecha_nacimiento = "28-09-1999", equipoId = 2, ocupacionId = 2, admin = true, activo = true),
             kkUsersEntity(foto= "luna", nombre = "Mario", apellido = "Gomez", mail = "mario@mail.com", password = "xxx", fecha_nacimiento = "15-12-2001", equipoId = 2, ocupacionId = 1, admin = true, activo = true),
             kkUsersEntity(foto= "img_9116", nombre = "Sergio", apellido = "Perez", mail = "sergio@mail.com", password = "xxx", fecha_nacimiento = "15-12-2001", equipoId = 2, ocupacionId = 1, admin = true, activo = true),
 
