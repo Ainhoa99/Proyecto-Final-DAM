@@ -48,7 +48,7 @@ class GestionEquiposFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Equipos"
+        binding.tvTitle.text = getString(R.string.gestion_equipos)
 
 
         //creamos la bbdd

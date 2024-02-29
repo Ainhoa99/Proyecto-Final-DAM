@@ -96,7 +96,7 @@ class InscripcionDosFragment : Fragment() {
         val textInputEmail = dialogView.findViewById<TextInputEditText>(R.id.textInputEmail)
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Escribe el email con el que te registraste la primera vez")
+            .setTitle(getString(R.string.mensajito_email_primera_vez))
             .setView(dialogView)
             .setPositiveButton("Aceptar") { dialog, _ -> dialog.cancel() }
             .create()

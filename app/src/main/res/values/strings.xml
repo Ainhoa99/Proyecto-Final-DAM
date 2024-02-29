@@ -4,6 +4,7 @@
     <string name="apellidos">Apellidos</string>
     <string name="fecha_nacimento">Fecha Nacimento:</string>
     <string name="equipo">Equipo:</string>
+    <string name="cancelar">Cancelar</string>
     <string name="ocupacion">Ocupación:</string>
     <string name="persona_activa">Persona Activa:</string>
     <string name="administrador">Administrador:</string>
@@ -89,7 +90,7 @@
     <string name="gcategorias">GCategorias</string>
     <string name="gpatrocinadores">GPatrocinadores</string>
     <string name="gligas">GLigas</string>
-    <string name="gocupacioens">GOcupacioens</string>
+    <string name="gocupacioens">GOcupaciones</string>
     <string name="gpdfs">GPDFs</string>
     <string name="otros">Otros</string>
     <string name="galeria">Galería</string>
@@ -98,5 +99,18 @@
     <string name="inicar_sesion">Inicar Sesión</string>
     <string name="cerrar_sesion">Cerrar Sesión</string>
     <string name="ajustes">Ajustes</string>
+    <string name="gestion_patrocinadores">Gestión de Patrocinadores</string>
+    <string name="gestion_equipos">Gestión de Equipos</string>
+    <string name="gestion_ligas">Gestion de Ligas</string>
+    <string name="gestion_ocupaciones">Gestión de Ocupaciones</string>
+    <string name="gestion_fotos">Gestión de Fotos</string>
+    <string name="gestion_categorias">Gestión de Categorías</string>
+    <string name="mensajito_email_primera_vez">Escribe el email con el que te registraste la primera vez</string>
+    <string name="escribe_numero_tlfn">Escribe un numero de teléfono</string>
+    <string name="escribe_un_nombre">Escribe un nombre</string>
+    <string name="elige_fecha">Elige una fecha de nacimiento</string>
+    <string name="Escribe_un_email">Escribe un e-mail</string>
+    <string name="Escribe_un_mensaje">Escribe un mensaje</string>
+    <string name="Escribe_un_asunto">Escribe un asunto</string>
 
 </resources>

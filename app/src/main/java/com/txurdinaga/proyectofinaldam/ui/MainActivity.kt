@@ -3,6 +3,7 @@ package com.txurdinaga.proyectofinaldam.ui
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -17,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
 import com.txurdinaga.proyectofinaldam.ui.util.NetworkConnectivityMonitor
+import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -51,6 +53,30 @@ class MainActivity : AppCompatActivity() {
             if (!isConnected) {
                 Toast.makeText(this, "Conexión a internet perdida", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // Inicialización del las funciones de utilidad de encrypted shared prefs como singleton
+        // Lo inicializamos aquí pasándole el ApplicationContext global para no tener que hacerlo
+        // en los repositorios
+        EncryptedPrefsUtil.init(this.applicationContext)
+
+        supportActionBar?.apply {
+            title="Unkina SBT"
+            setDisplayShowHomeEnabled(true)
+            setDisplayUseLogoEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            setCustomView(R.layout.custom_action_bar)
+            setDisplayShowCustomEnabled(true)
+        }
+
+        // Encuentra la imagen por su ID
+        var unkinaLogoImageView = findViewById<ImageView>(R.id.unkina_logo)
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        unkinaLogoImageView.setOnClickListener {
+            navController.navigate(R.id.principalFragment)
         }
     }
 

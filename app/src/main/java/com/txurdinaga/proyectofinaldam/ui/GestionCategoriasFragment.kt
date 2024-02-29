@@ -39,7 +39,7 @@ class GestionCategoriasFragment : Fragment() {
     ): View {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
-        binding.tvTitle.text = "Gestión de Categorias"
+        binding.tvTitle.text = getString(R.string.gestion_categorias)
 
         /**
          * Ejemplo uso de repositorios

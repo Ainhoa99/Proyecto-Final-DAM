@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.databinding.FragmentContactoBinding
 
 class ContactoFragment : Fragment() {
@@ -28,19 +29,19 @@ class ContactoFragment : Fragment() {
             allFieldsFilled = true
 
             if (binding.mensaje.text.toString().trim().isEmpty()) {
-                binding.mensajeLayout.error = "Escribe un mensaje"
+                binding.mensajeLayout.error = getString(R.string.Escribe_un_mensaje)
                 binding.mensajeLayout.requestFocus()
                 allFieldsFilled = false
             }
 
             if (binding.asunto.text.toString().trim().isEmpty()) {
-                binding.asuntoLayout.error = "Escribe un asunto"
+                binding.asuntoLayout.error = getString(R.string.Escribe_un_asunto)
                 binding.asuntoLayout.requestFocus()
                 allFieldsFilled = false
             }
 
             if (binding.email.text.toString().trim().isEmpty()) {
-                binding.emailLayout.error = "Escribe un e-mail"
+                binding.emailLayout.error = getString(R.string.Escribe_un_email)
                 binding.emailLayout.requestFocus()
                 allFieldsFilled = false
             }

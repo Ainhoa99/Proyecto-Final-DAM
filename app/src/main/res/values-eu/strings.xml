@@ -6,12 +6,13 @@
     <string name="fecha_nacimento">Jaiotze Data:</string>
     <string name="equipo">Taldea:</string>
     <string name="ocupacion">Okupazioa:</string>
+    <string name="cancelar">ITXI</string>
     <string name="persona_activa">Pertsona Aktibo:</string>
     <string name="administrador">Administratzailea:</string>
     <string name="ultima_conexion">Azken Konexioa:</string>
     <string name="categoria">Kategoria</string>
     <string name="nombre_equipo">Taldearen Izena</string>
-    <string name="puntuacion_en_contra">Aurkako Puntuazioa:</string>
+    <string name="puntuacion_en_contra">Aurkako Puntuazioa: </string>
     <string name="fecha">Data:</string>
     <string name="local">Lekua</string>
     <string name="horario">Ordua:</string>
@@ -99,5 +100,18 @@
     <string name="inicar_sesion">Sesioa Hasteko</string>
     <string name="cerrar_sesion">Sesioa Itxi</string>
     <string name="ajustes">Ezarpenak</string>
+    <string name="gestion_patrocinadores">Babesleen Kudeaketa</string>
+    <string name="gestion_equipos">Taldeen Kudeaketa</string>
+    <string name="gestion_ligas">Ligen Kudeaketa</string>
+    <string name="gestion_ocupaciones">Okupazioen Kudeaketa</string>
+    <string name="gestion_fotos">Argazkien Kudeaketa</string>
+    <string name="gestion_categorias">Kategorien Kudeaketa</string>
+    <string name="mensajito_email_primera_vez">Idatz ezazu lehenengo aldian erregistratzeko erabili zenuen helbide elektronikoa</string>
+    <string name="escribe_numero_tlfn">Idatzi telefono-zenbaki bat</string>
+    <string name="escribe_un_nombre">Idatzi izena bat</string>
+    <string name="elige_fecha">Aukeratu jaiotze-data bat</string>
+    <string name="Escribe_un_email">Idatzi e-mail bat</string>
+    <string name="Escribe_un_mensaje">Idatzi mesu bat</string>
+    <string name="Escribe_un_asunto">Idatzi kontu bat</string>
 
 </resources>

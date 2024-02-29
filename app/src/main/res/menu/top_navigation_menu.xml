@@ -63,12 +63,12 @@
                     android:title="@string/gligas" />
                 <item
                     android:id="@+id/gestionOcupacionesFragment"
-                    android:icon="@drawable/gligas"
+                    android:icon="@drawable/gestion"
                     android:title="@string/gocupacioens" />
 
                 <item
                     android:id="@+id/gestionPDFs"
-                    android:icon="@drawable/gligas"
+                    android:icon="@drawable/pdf"
                     android:title="@string/gpdfs" />
             </group>
         </menu>
