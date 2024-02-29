@@ -8,12 +8,18 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.Category
+import com.txurdinaga.proyectofinaldam.data.repo.CategoryRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
+import com.txurdinaga.proyectofinaldam.util.CreateError
+import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.SearchList
+import kotlinx.coroutines.launch
 
 
 class GestionCategoriasFragment : Fragment() {
@@ -21,6 +27,11 @@ class GestionCategoriasFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
+
+    /**
+     * Ejemplo uso de repositorios
+     */
+    private lateinit var categoryRepo: CategoryRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +41,10 @@ class GestionCategoriasFragment : Fragment() {
 
         binding.tvTitle.text = "Gestión de Categorias"
 
+        /**
+         * Ejemplo uso de repositorios
+         */
+        categoryRepo = CategoryRepository()
 
         //creamos la bbdd
         database = Room.databaseBuilder(
@@ -100,6 +115,21 @@ class GestionCategoriasFragment : Fragment() {
             if(allFieldsFilled){
                 if (modo == "alta") {
                     database.kkcategoryDao.insert(kkCategoryEntity(name = categoriaName.text.toString()))
+
+                    /**
+                     * Ejemplo uso de repositorios
+                     */
+                    val category = Category(categoryName = categoriaName.text.toString())
+                    lifecycleScope.launch {
+                        try {
+                            categoryRepo.create(category)
+                        } catch(loginE: LoginError) {
+                            // Mostrar mensaje de error sobre problemas con la autenticación o permisos
+                        } catch(createE: CreateError) {
+                            // Mostrar mensaje de error sobre problemas generales durante la creación
+                        }
+
+                    }
                 } else {
                     if (categoria != null) {
                         categoria.name = categoriaName.text.toString()
