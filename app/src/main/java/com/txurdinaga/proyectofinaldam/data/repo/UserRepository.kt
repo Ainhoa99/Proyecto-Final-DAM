@@ -6,6 +6,7 @@ import com.txurdinaga.proyectofinaldam.data.repo.Constants.API_ENTRY_POINT
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.LOGIN_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.REGISTER_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.SERVER_URL
+import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.RegisterError
 import io.ktor.client.HttpClient
@@ -27,6 +28,7 @@ import kotlinx.serialization.json.jsonPrimitive
 
 interface IUserRepository {
     suspend fun login(email: String, password: String): String
+    suspend fun isAdmin():Boolean
     suspend fun register(user: User)
     suspend fun update(user: User)
     suspend fun delete(user: User)
@@ -71,6 +73,13 @@ class UserRepository() : IUserRepository {
             Log.d("USER_REPOSITORY", "LOGIN: ERROR")
             throw LoginError()
         }
+    }
+
+    override suspend fun isAdmin():Boolean{
+         var respuesta = false
+        val tokent = EncryptedPrefsUtil.getString("tokenLogin")
+        //TODO logica
+        return respuesta
     }
 
     override suspend fun register(user: User) {

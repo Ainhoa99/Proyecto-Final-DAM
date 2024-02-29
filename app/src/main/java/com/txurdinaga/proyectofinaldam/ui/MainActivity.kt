@@ -100,6 +100,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavigation() {
+        //mostrarOpciones()
         val navHost = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHost.navController
         // Especifica los ID de los destinos de nivel superior, excluyendo el ID del destino de inicio
@@ -184,5 +185,106 @@ class MainActivity : AppCompatActivity() {
         val networkCapabilities = connectivityManager.getNetworkCapabilities(network)
         return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) ?: false
     }
+
+    private fun mostrarOpciones() {
+        val navView = binding.navView
+        val menu = navView.menu
+        var usuario :Boolean? =null
+        try {
+            usuario = EncryptedPrefsUtil.getBoolean("isAdmin")
+            todoATrue()
+            val gPartidos = menu.findItem(R.id.gestionPartidosFragment)
+            val gEquipos = menu.findItem(R.id.gestionEquiposFragment)
+            val gCategorias = menu.findItem(R.id.gestionCategoriasFragment)
+            val gPatrocinadores = menu.findItem(R.id.gestionColaboradoresFragment)
+            val gLigas = menu.findItem(R.id.gestionLigasFragment)
+            val gOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
+            val gPDFs = menu.findItem(R.id.gestionPDFs)
+            val inicioSesion = menu.findItem(R.id.loginFragment2)
+
+            gPartidos.isVisible = usuario
+            gEquipos.isVisible = usuario
+            gCategorias.isVisible = usuario
+            gPatrocinadores.isVisible = usuario
+            gLigas.isVisible = usuario
+            gOcupaciones.isVisible = usuario
+            gPDFs.isVisible = usuario
+            inicioSesion.isVisible = usuario
+
+        }catch (e: Exception) {
+            todoATrue()
+            val principal = menu.findItem(R.id.principalFragment)
+            val gestionEquipos = menu.findItem(R.id.gestionEquiposFragment)
+            val inscripcion = menu.findItem(R.id.inscripcionFragment)
+            val gestionPartidos = menu.findItem(R.id.gestionPartidosFragment)
+            val colaboradores = menu.findItem(R.id.colaboradoresFragment2)
+            val informacion = menu.findItem(R.id.informacionFragment2)
+            val gestionLigas = menu.findItem(R.id.gestionLigasFragment)
+            val gestionCategorias = menu.findItem(R.id.gestionCategoriasFragment)
+            val gestionColaboradores = menu.findItem(R.id.gestionColaboradoresFragment)
+            val fotos = menu.findItem(R.id.fotosFragment)
+            val login = menu.findItem(R.id.loginFragment2)
+            val galeria = menu.findItem(R.id.galeriaFragment)
+            val gestionPDFs = menu.findItem(R.id.gestionPDFs)
+            val gestionOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
+            val personal = menu.findItem(R.id.personalFragment)
+            val ajustes = menu.findItem(R.id.ajustesFragment2)
+            val cerrarSesion = menu.findItem(R.id.fragment_cerrar_sesion)
+
+            gestionEquipos.isVisible = false
+            gestionPartidos.isVisible = false
+            gestionLigas.isVisible = false
+            gestionCategorias.isVisible = false
+            gestionColaboradores.isVisible = false
+            fotos.isVisible = false
+            galeria.isVisible = false
+            gestionPDFs.isVisible = false
+            gestionOcupaciones.isVisible = false
+            personal.isVisible = false
+            cerrarSesion.isVisible = false
+
+        }
+    }
+
+    fun todoATrue(){
+        val navView = binding.navView
+        val menu = navView.menu
+        val principal = menu.findItem(R.id.principalFragment)
+        val gestionEquipos = menu.findItem(R.id.gestionEquiposFragment)
+        val inscripcion = menu.findItem(R.id.inscripcionFragment)
+        val gestionPartidos = menu.findItem(R.id.gestionPartidosFragment)
+        val colaboradores = menu.findItem(R.id.colaboradoresFragment2)
+        val informacion = menu.findItem(R.id.informacionFragment2)
+        val gestionLigas = menu.findItem(R.id.gestionLigasFragment)
+        val gestionCategorias = menu.findItem(R.id.gestionCategoriasFragment)
+        val gestionColaboradores = menu.findItem(R.id.gestionColaboradoresFragment)
+        val fotos = menu.findItem(R.id.fotosFragment)
+        val login = menu.findItem(R.id.loginFragment2)
+        val galeria = menu.findItem(R.id.galeriaFragment)
+        val gestionPDFs = menu.findItem(R.id.gestionPDFs)
+        val gestionOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
+        val personal = menu.findItem(R.id.personalFragment)
+        val ajustes = menu.findItem(R.id.ajustesFragment2)
+        val cerrarSesion = menu.findItem(R.id.fragment_cerrar_sesion)
+
+        principal.isVisible = true
+        gestionEquipos.isVisible = true
+        inscripcion.isVisible = true
+        gestionPartidos.isVisible = true
+        colaboradores.isVisible = true
+        //informacion.isVisible = true
+        gestionLigas.isVisible = true
+        gestionCategorias.isVisible = true
+        gestionColaboradores.isVisible = true
+        fotos.isVisible = true
+        login.isVisible = true
+        galeria.isVisible = true
+        gestionPDFs.isVisible = true
+        gestionOcupaciones.isVisible = true
+        personal.isVisible = true
+        ajustes.isVisible = true
+        cerrarSesion.isVisible = true
+    }
+
 
 }
