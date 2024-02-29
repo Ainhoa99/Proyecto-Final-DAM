@@ -105,7 +105,10 @@
                         android:id="@+id/textViewFecha"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:inputType="text" />
+                        android:inputType="text"
+                        android:focusable="false"
+
+                        />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -127,12 +130,13 @@
                     android:textStyle="bold"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/equipo"
+                    android:id="@+id/spEquipo"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
                     <AutoCompleteTextView
+                        android:id="@+id/equipo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />
@@ -156,12 +160,13 @@
                     android:textStyle="bold"/>
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/ocupacion"
+                    android:id="@+id/spOcupacion"
                     style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
                     android:layout_width="match_parent"
                     android:layout_height="50dp">
 
                     <AutoCompleteTextView
+                        android:id="@+id/ocupacion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:inputType="none" />

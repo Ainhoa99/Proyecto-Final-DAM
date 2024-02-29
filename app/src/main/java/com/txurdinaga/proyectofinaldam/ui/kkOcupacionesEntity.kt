@@ -14,3 +14,8 @@ data class kkOcupacionesEntity(
     @ColumnInfo(name = "name")
     var name: String,
 )
+{
+    override fun toString(): String {
+        return name
+    }
+}
