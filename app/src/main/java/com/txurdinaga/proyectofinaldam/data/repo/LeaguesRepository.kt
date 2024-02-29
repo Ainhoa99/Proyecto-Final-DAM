@@ -10,6 +10,7 @@ import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.GET_ALL_LEAGUES
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.SERVER_URL
 import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.UPDATE_ROUTE
 import com.txurdinaga.proyectofinaldam.util.CreateError
+import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.GetAllError
 import com.txurdinaga.proyectofinaldam.util.RegisterError
 import com.txurdinaga.proyectofinaldam.util.UpdateError
@@ -59,7 +60,7 @@ class LeageRepository() : ILeagueRepository {
 
     override suspend fun create(league: League) {
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.post("$SERVER_URL$API_ENTRY_POINT}$CREATE_ROUTE") {
+            client.post("$SERVER_URL$API_ENTRY_POINT$CREATE_ROUTE") {
                 contentType(ContentType.Application.Json)
                 setBody(league)
             }
@@ -74,7 +75,7 @@ class LeageRepository() : ILeagueRepository {
 
     override suspend fun update(league: League) {
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.put("$SERVER_URL$API_ENTRY_POINT}$UPDATE_ROUTE/${league.id}") {
+            client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${league.leagueId}") {
                 contentType(ContentType.Application.Json)
                 setBody(league)
             }
@@ -89,7 +90,7 @@ class LeageRepository() : ILeagueRepository {
 
     override suspend fun delete(league: League) {
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.delete("$SERVER_URL$API_ENTRY_POINT}$DELETE_ROUTE/${league.id}") {
+            client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${league.leagueId}") {
                 contentType(ContentType.Application.Json)
                 setBody(league)
             }
@@ -98,13 +99,13 @@ class LeageRepository() : ILeagueRepository {
             Log.d("LEAGE_LEAGE", "DELETE: SUCCESS")
         } else {
             Log.d("LEAGE_LEAGE", "DELETE: ERROR")
-            throw RegisterError()
+            throw DeleteError()
         }
     }
 
     override suspend fun getAllLeagues(): List<League> {
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.get("$SERVER_URL$API_ENTRY_POINT}$GET_ALL_LEAGUES") {
+            client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_LEAGUES") {
                 contentType(ContentType.Application.Json)
             }
         }
