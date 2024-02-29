@@ -81,4 +81,7 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.10")
     implementation ("com.itextpdf:itextg:5.5.10")
     implementation ("com.itextpdf:itext7-core:7.1.15")
+
+    // almacenar shared prefs de forma segura
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }

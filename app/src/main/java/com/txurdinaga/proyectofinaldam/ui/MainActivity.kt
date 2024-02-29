@@ -1,6 +1,7 @@
 package com.txurdinaga.proyectofinaldam.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.Toast
@@ -16,10 +17,13 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.Category
 import com.txurdinaga.proyectofinaldam.data.model.UserBuilder
+import com.txurdinaga.proyectofinaldam.data.repo.CategoryRepository
 import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.ActivityMainBinding
 import com.txurdinaga.proyectofinaldam.ui.util.NetworkConnectivityMonitor
+import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -28,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -36,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         drawerLayout = binding.drawerLayout
         initNavigation()
 
+        // Inicialización del las funciones de utilidad de encrypted shared prefs como singleton
+        // Lo inicializamos aquí pasándole el ApplicationContext global para no tener que hacerlo
+        // en los repositorios
+        EncryptedPrefsUtil.init(this.applicationContext)
 
         supportActionBar?.apply {
             title="Unkina SBT"
@@ -60,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-                // Get a list of style packs that are currently available.
+
         // Encuentra la imagen por su ID
         var unkinaLogoImageView = findViewById<ImageView>(R.id.unkina_logo)
 
@@ -70,7 +77,6 @@ class MainActivity : AppCompatActivity() {
         unkinaLogoImageView.setOnClickListener {
             navController.navigate(R.id.principalFragment)
         }
-
     }
 
     private fun initNavigation() {
