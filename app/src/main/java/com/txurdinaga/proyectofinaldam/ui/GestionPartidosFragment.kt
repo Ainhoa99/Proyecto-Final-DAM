@@ -102,7 +102,7 @@ class GestionPartidosFragment : Fragment() {
         var partidosJornada = cogerPartidosJornadaSemana()
 
         // Inflar tu diseño (layout_equipo.xml) 6 veces y agregarlo al linearGeneral
-        for (i in 0 until 6) {
+        for (i in equiposUnkina.indices) {
             var equipo: kkEquiposEntity = equiposUnkina[i]
             var partido: kkPartidosEntity? =
                 partidosJornada.find { it.id_equipo1 == equipo.id && equiposUnkina.any { it.id == equipo.id && it.categoria == equipo.categoria } }
