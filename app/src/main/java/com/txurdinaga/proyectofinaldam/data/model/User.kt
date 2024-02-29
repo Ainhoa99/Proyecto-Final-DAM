@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class User(
+    val userId: String? = null,
     val token: String? = null, // TODO Almacenar el token junto al usuario o siempre fuera?
     val email: String? = null,
     val password: String? = null,
@@ -21,6 +22,7 @@ data class User(
 )
 
 class UserBuilder { // Builder Pattern
+    var userId: String? = null
     var token: String? = null
     var email: String? = null
     var password: String? = null
@@ -36,6 +38,7 @@ class UserBuilder { // Builder Pattern
     var familyId: String? = null
     var isActive: Boolean? = null
 
+    fun userId(userId: String?) = apply { this.userId = userId }
     fun token(token: String?) = apply { this.token = token }
     fun email(email: String?) = apply { this.email = email }
     fun password(password: String?) = apply { this.password = password }
@@ -52,6 +55,7 @@ class UserBuilder { // Builder Pattern
     fun isActive(isActive: Boolean?) = apply { this.isActive = isActive }
 
     fun build() = User(
+        userId = userId,
         token = token,
         email = email,
         password = password,
