@@ -67,7 +67,7 @@ private object Constants {
     const val IS_ADMIN_ROUTE = "/user/isAdmin"
 }
 class UserRepository() : IUserRepository {
-    private val token = EncryptedPrefsUtil.getToken()
+    private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -80,6 +80,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun login(email: String, password: String): String {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO){
             client.post("$SERVER_URL$API_ENTRY_POINT$LOGIN_ROUTE") {
                 contentType(ContentType.Application.Json)
@@ -98,6 +99,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun isAdmin():Boolean{
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT$IS_ADMIN_ROUTE") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -117,6 +119,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun register(user: User) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("$SERVER_URL$API_ENTRY_POINT$REGISTER_ROUTE") {
                 contentType(ContentType.Application.Json)
@@ -132,6 +135,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun update(user: User) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${user.userId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -150,6 +154,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun delete(user: User) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${user.userId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -167,6 +172,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun getUser(userId: String): User {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT$GET_USER_BY_ID_ROUTE/$userId") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -186,6 +192,7 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun getAllUsers(): List<User> {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_USERS_ROUTE") {
                 header(HttpHeaders.Authorization, "Bearer $token")

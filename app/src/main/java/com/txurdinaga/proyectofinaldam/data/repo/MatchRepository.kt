@@ -49,7 +49,7 @@ private object ConstantsMatch {
 }
 
 class MatchRepository : IMatchRepository {
-    private val token = EncryptedPrefsUtil.getToken()
+    private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -62,6 +62,7 @@ class MatchRepository : IMatchRepository {
     }
 
     override suspend fun create(match: Match) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.CREATE_ROUTE}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -80,6 +81,7 @@ class MatchRepository : IMatchRepository {
     }
 
     override suspend fun update(match: Match) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.put("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.UPDATE_ROUTE}/${match.matchId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -98,6 +100,7 @@ class MatchRepository : IMatchRepository {
     }
 
     override suspend fun delete(match: Match) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.delete("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.DELETE_ROUTE}/${match.matchId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -114,6 +117,7 @@ class MatchRepository : IMatchRepository {
     }
 
     override suspend fun getAllMatches(): List<Match> {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.GET_ALL_MATCHES}") {
                 header(HttpHeaders.Authorization, "Bearer $token")

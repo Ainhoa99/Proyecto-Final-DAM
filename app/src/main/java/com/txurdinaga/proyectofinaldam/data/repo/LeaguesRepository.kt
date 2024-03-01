@@ -51,7 +51,7 @@ private object ConstantsLeage {
     const val GET_ALL_LEAGUES = "/leagues"
 }
 class LeageRepository() : ILeagueRepository {
-    private val token = EncryptedPrefsUtil.getToken()
+    private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -64,6 +64,7 @@ class LeageRepository() : ILeagueRepository {
     }
 
     override suspend fun create(league: League) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("$SERVER_URL$API_ENTRY_POINT$CREATE_ROUTE") {
                 header(
@@ -83,6 +84,7 @@ class LeageRepository() : ILeagueRepository {
     }
 
     override suspend fun update(league: League) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${league.leagueId}") {
                 header(
@@ -102,6 +104,7 @@ class LeageRepository() : ILeagueRepository {
     }
 
     override suspend fun delete(league: League) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${league.leagueId}") {
                 header(
@@ -121,6 +124,7 @@ class LeageRepository() : ILeagueRepository {
     }
 
     override suspend fun getAllLeagues(): List<League> {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_LEAGUES") {
                 header(

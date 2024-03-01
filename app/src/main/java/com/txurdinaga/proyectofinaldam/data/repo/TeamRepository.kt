@@ -49,7 +49,7 @@ private object ConstantsTeam {
 }
 
 class TeamRepository : ITeamRepository {
-    private val token = EncryptedPrefsUtil.getToken()
+    private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -62,6 +62,7 @@ class TeamRepository : ITeamRepository {
     }
 
     override suspend fun create(team: Team) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.CREATE_ROUTE}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -80,6 +81,7 @@ class TeamRepository : ITeamRepository {
     }
 
     override suspend fun update(team: Team) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.put("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.UPDATE_ROUTE}/${team.teamId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -98,6 +100,7 @@ class TeamRepository : ITeamRepository {
     }
 
     override suspend fun delete(team: Team) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.delete("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.DELETE_ROUTE}/${team.teamId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
@@ -115,6 +118,7 @@ class TeamRepository : ITeamRepository {
     }
 
     override suspend fun getAllTeams(): List<Team> {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.GET_ALL_TEAMS}") {
                 header(HttpHeaders.Authorization, "Bearer $token")

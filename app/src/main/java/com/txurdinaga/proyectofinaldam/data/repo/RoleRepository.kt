@@ -57,7 +57,7 @@ private object ConstantsRole {
 }
 
 class RoleRepository : IRoleRepository {
-    private val token = EncryptedPrefsUtil.getToken()
+    private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -70,6 +70,7 @@ class RoleRepository : IRoleRepository {
     }
 
     override suspend fun create(role: Role) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("$SERVER_URL$API_ENTRY_POINT$CREATE_ROUTE") {
                 header(
@@ -91,6 +92,7 @@ class RoleRepository : IRoleRepository {
     }
 
     override suspend fun update(role: Role) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${role.roleId}") {
                 header(
@@ -112,6 +114,7 @@ class RoleRepository : IRoleRepository {
     }
 
     override suspend fun delete(role: Role) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${role.roleId}") {
                 header(
@@ -133,6 +136,7 @@ class RoleRepository : IRoleRepository {
     }
 
     override suspend fun getAllRoles(): List<Role> {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_ROLES") {
                 header(

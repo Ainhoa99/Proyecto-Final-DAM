@@ -54,7 +54,7 @@ private object ConstantsCategory {
 }
 
 class CategoryRepository : ICategoryRepository {
-    private val token = EncryptedPrefsUtil.getToken()
+    private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
@@ -67,6 +67,7 @@ class CategoryRepository : ICategoryRepository {
     }
 
     override suspend fun create(category: Category) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.post("$SERVER_URL$API_ENTRY_POINT$CREATE_ROUTE") {
                 header(
@@ -88,6 +89,7 @@ class CategoryRepository : ICategoryRepository {
     }
 
     override suspend fun update(category: Category) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${category.categoryId}") {
                 header(
@@ -109,6 +111,7 @@ class CategoryRepository : ICategoryRepository {
     }
 
     override suspend fun delete(category: Category) {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${category.categoryId}") {
                 header(
@@ -130,6 +133,7 @@ class CategoryRepository : ICategoryRepository {
     }
 
     override suspend fun getAllCategories(): List<Category> {
+        token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
             client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_CATEGORIES") {
                 header(
