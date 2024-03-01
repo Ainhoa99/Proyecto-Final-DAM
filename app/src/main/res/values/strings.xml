@@ -71,7 +71,7 @@
     <string name="dni">DNI *</string>
     <string name="empadronamiento">Empadronamiento *</string>
     <string name="diploma">Diploma *</string>
-    <string name="certificado">Certificado</string>
+    <string name="certificado">Certificado </string>
     <string name="acceder">Acceder</string>
     <string name="constrasena">Constraseña</string>
     <string name="he_olvidado_mi_contrase_a">He olvidado mi contraseña</string>
@@ -106,6 +106,8 @@
     <string name="gestion_fotos">Gestión de Fotos</string>
     <string name="gestion_categorias">Gestión de Categorías</string>
     <string name="mensajito_email_primera_vez">Escribe el email con el que te registraste la primera vez</string>
+    <string name="confirmacion_inscripcion">Datos enviado, se le confirmara por Email</string>
+    <string name="datos_requeridos">Introduce todos los datos requeridos</string>
     <string name="escribe_numero_tlfn">Escribe un numero de teléfono</string>
     <string name="escribe_un_nombre">Escribe un nombre</string>
     <string name="elige_fecha">Elige una fecha de nacimiento</string>
