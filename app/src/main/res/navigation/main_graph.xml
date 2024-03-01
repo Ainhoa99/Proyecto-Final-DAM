@@ -59,7 +59,12 @@
         android:id="@+id/loginFragment2"
         android:name="com.txurdinaga.proyectofinaldam.ui.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" />
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment2_to_principalFragment"
+            app:destination="@id/principalFragment"
+            app:popUpTo="@id/principalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/principalFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.PrincipalFragment"
