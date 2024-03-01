@@ -8,11 +8,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Team(
     val teamId: Int? = null,
-    val teamName: String? = null,
-    val stadium: String? = null,
-    val categoryId: Int? = null,
-    val leagueId: Int? = null,
-    val logo: String? = null,
-    val picturesConsent: Boolean? = null,
-    val isTeamUnkina: Boolean? = null
+    var teamName: String? = null,
+    var stadium: String? = null,
+    var categoryId: Int? = null,
+    var leagueId: Int? = null,
+    var logo: String? = null,
+    var picturesConsent: Boolean? = null,
+    var isTeamUnkina: Boolean? = null
 )

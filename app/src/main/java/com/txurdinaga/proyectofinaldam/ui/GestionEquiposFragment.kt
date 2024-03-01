@@ -1,12 +1,15 @@
 package com.txurdinaga.proyectofinaldam.ui
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
@@ -17,15 +20,28 @@ import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.Category
+import com.txurdinaga.proyectofinaldam.data.model.League
+import com.txurdinaga.proyectofinaldam.data.model.Team
+import com.txurdinaga.proyectofinaldam.data.repo.CategoryRepository
+import com.txurdinaga.proyectofinaldam.data.repo.LeageRepository
+import com.txurdinaga.proyectofinaldam.data.repo.TeamRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
+import com.txurdinaga.proyectofinaldam.util.CreateError
+import com.txurdinaga.proyectofinaldam.util.GetAllError
+import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.SearchList
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 
 
@@ -33,14 +49,19 @@ class GestionEquiposFragment : Fragment() {
     private var _binding: FragmentGestionBinding? = null
     private val binding get() = _binding!!
     private lateinit var equiposListAdapter: ArrayAdapter<String>
-    private lateinit var categoriasList: List<kkCategoryEntity>
+    private lateinit var categoriasList: List<Category>
     private lateinit var categoriasNameList: List<String>
-    private lateinit var ligasList: List<kkLigasEntity>
+    private lateinit var ligasList: List<League>
     private lateinit var ligasNameList: List<String>
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
     private val PICK_IMAGE_REQUEST = 1
     private lateinit var imageString: String
+    private lateinit var listAdapter: ArrayAdapter<Pair<Int?, String?>>
+
+    private lateinit var teamRepo: TeamRepository
+    private lateinit var categoryRepo: CategoryRepository
+    private lateinit var leagueRepo: LeageRepository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +71,9 @@ class GestionEquiposFragment : Fragment() {
 
         binding.tvTitle.text = getString(R.string.gestion_equipos)
 
+        teamRepo = TeamRepository()
+        categoryRepo = CategoryRepository()
+        leagueRepo = LeageRepository()
 
         //creamos la bbdd
         database = Room.databaseBuilder(
@@ -61,12 +85,17 @@ class GestionEquiposFragment : Fragment() {
         //insertMockData()
 
         //Obtenemos el nombre de las categorias para mostrarlo
-        categoriasList = database.kkcategoryDao.getAllCategorias()
-        categoriasNameList = categoriasList.map { it.name }
-        //Obtenemos el nombre de las ligas para mostrarlo
-        ligasList = database.kkligasDao.getAllLigas()
-        ligasNameList = ligasList.map { it.name }
-
+        lifecycleScope.launch {
+            try {
+                categoriasList = categoryRepo.getAllCategories()
+                categoriasNameList = categoriasList.map { it.categoryName.toString() }
+                //Obtenemos el nombre de las ligas para mostrarlo
+                ligasList = leagueRepo.getAllLeagues()
+                ligasNameList = ligasList.map { it.leagueName.toString() }
+            } catch (getE: GetAllError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
+            }
+        }
 
 
         binding.btnAlta.setOnClickListener() {
@@ -93,7 +122,7 @@ class GestionEquiposFragment : Fragment() {
         }
     }
 
-    private fun showEquiposDialog(selectedEquipo:  Pair<Int, String>?, modo: String) {
+    private fun showEquiposDialog(selectedEquipo: Pair<Int?, String?>?, modo: String) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_equipo, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
@@ -114,6 +143,8 @@ class GestionEquiposFragment : Fragment() {
         var equipoCategorySelected: String? = null
         var equipoLigaSelected: String? = null
         var dialogTitle = "Alta de Equipo"
+        var allTeams: List<Team>
+        var team: Team = Team(0, "Nombre", "Estadio", 0, 0, "Logo", false, false)
 
         // Adaptador para desplegables de categoria y liga
         var adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categoriasNameList)
@@ -123,13 +154,27 @@ class GestionEquiposFragment : Fragment() {
 
 
         if(modo == "modificacion" && selectedEquipo!=null){//no es alta, es MODIFICACION
-            equipo = database.kkequipostDao.getEquiposById(selectedEquipo.first)
-            dialogTitle = "Modificación de Equipo"
+            lifecycleScope.launch {
+                try {
+                    allTeams = teamRepo.getAllTeams()
+                    allTeams.forEach { t ->
+                        if (t.teamId == selectedEquipo.first) {
+                            team = t
+                            equipoName.setText(team.teamName)
+                            equipoLocation.setText(team.stadium)
+                            check_isUnkina.isChecked = team.isTeamUnkina == false
+                            check_visible.isChecked = team.picturesConsent == false
+                            return@forEach
+                        }
+                    }
+                } catch (loginE: LoginError) {
+                    // Mostrar mensaje de error sobre problemas con la autenticación o permisos
+                } catch (getAllE: GetAllError) {
+                    // Mostrar mensaje de error sobre problemas generales durante la creación
+                }
 
-            equipoName.setText(equipo.name)
-            equipoLocation.setText(equipo.campo)
-            check_isUnkina.isChecked = equipo.isUnkina
-            check_visible.isChecked = equipo.visible
+            }
+            dialogTitle = "Modificación de Categoria"
         }
 
         builder.setTitle(dialogTitle)
@@ -140,13 +185,13 @@ class GestionEquiposFragment : Fragment() {
 
         equipoCategory.setOnItemClickListener { parent, view, position, id ->
             equipoCategorySelected = parent.getItemAtPosition(position).toString()
-            val categoria = categoriasList.find { it.name == equipoCategorySelected }
-            equipoCategorySelected = categoria?.id.toString()
+            val categoria = categoriasList.find { it.categoryName == equipoCategorySelected }
+            equipoCategorySelected = categoria?.categoryId.toString()
         }
         equipoLeague.setOnItemClickListener { parent, view, position, id ->
             equipoLigaSelected = parent.getItemAtPosition(position).toString()
-            val liga = ligasList.find { it.name == equipoLigaSelected }
-            equipoLigaSelected = liga?.id.toString()
+            val liga = ligasList.find { it.leagueName == equipoLigaSelected }
+            equipoLigaSelected = liga?.leagueId.toString()
         }
 
         btn_shield.setOnClickListener {
@@ -163,15 +208,7 @@ class GestionEquiposFragment : Fragment() {
                 equipoNameLayout.error = "Escribe un nombre"
                 equipoNameLayout.requestFocus()
                 allFieldsFilled = false
-            }/*else{//comprobar que esta nombre no este guardado ya
-                val estaEquipo = database.kkequipostDao.getEquiposByName(equipoName.text.toString())
-                if(estaEquipo != null && selectedEquipo == "alta"){
-                    equipoNameLayout.error = "Ya existe este equipo"
-                    equipoNameLayout.requestFocus()
-                    allFieldsFilled = false
-                }
-            }*/
-
+            }
             if (equipoLocation.text.toString().trim().isEmpty()) {
                 equipoLocationLayout.error = "Escribe un campo"
                 equipoLocationLayout.requestFocus()
@@ -193,16 +230,34 @@ class GestionEquiposFragment : Fragment() {
 
             if(allFieldsFilled){
                 if (modo == "alta") {
-                    database.kkequipostDao.insert(kkEquiposEntity(name =  equipoName.text.toString(), campo =  equipoLocation.text.toString(), categoria =  equipoCategorySelected?.toInt(), liga =  equipoLigaSelected?.toInt(), escudo =  imageString, isUnkina =  check_isUnkina.isChecked, visible =  check_visible.isChecked))
+                    team = Team(teamName = equipoName.text.toString(), stadium = equipoLocation.text.toString(), categoryId =  equipoCategorySelected?.toInt(), leagueId =  equipoLigaSelected?.toInt(), logo =  imageString, isTeamUnkina =  check_isUnkina.isChecked, picturesConsent =  check_visible.isChecked)
+                    lifecycleScope.launch {
+                        try {
+                            teamRepo.create(team)
+                        } catch (loginE: LoginError) {
+                            // Mostrar mensaje de error sobre problemas con la autenticación o permisos
+                        } catch (createE: CreateError) {
+                            // Mostrar mensaje de error sobre problemas generales durante la creación
+                        }
+
+                    }
+                    //database.kkequipostDao.insert(kkEquiposEntity(name =  equipoName.text.toString(), campo =  equipoLocation.text.toString(), categoria =  equipoCategorySelected?.toInt(), liga =  equipoLigaSelected?.toInt(), escudo =  imageString, isUnkina =  check_isUnkina.isChecked, visible =  check_visible.isChecked))
                 } else {
-                    if (equipo != null) {
-                        equipo.name = equipoName.text.toString()
-                        equipo.campo = equipoLocation.text.toString()
-                        equipo.categoria = equipoCategorySelected?.toInt()
-                        equipo.liga = equipoLigaSelected?.toInt()
-                        equipo.escudo = "EscudoNew"
-                        equipo.isUnkina = check_isUnkina.isChecked
-                        database.kkequipostDao.update(equipo)
+                    lifecycleScope.launch {
+                        try {
+                        team.teamName = equipoName.text.toString()
+                        team.stadium = equipoLocation.text.toString()
+                        team.categoryId = equipoCategorySelected?.toInt()
+                        team.leagueId = equipoLigaSelected?.toInt()
+                        team.logo = "EscudoNew"
+                        team.isTeamUnkina = check_isUnkina.isChecked
+                        team.picturesConsent = check_visible.isChecked
+                        teamRepo.update(team)
+                        } catch (loginE: LoginError) {
+                            // Mostrar mensaje de error sobre problemas con la autenticación o permisos
+                        } catch (createE: CreateError) {
+                            // Mostrar mensaje de error sobre problemas generales durante la creación
+                        }
                     }
                 }
                 dialog.dismiss()
@@ -211,16 +266,16 @@ class GestionEquiposFragment : Fragment() {
     }
 
     private fun showModEquiposDialog(){
-        searchList.search(requireContext(), database, "equipo"){selectedEquipo ->
+        search(requireContext()){selectedEquipo ->
             selectedEquipo?.let {
                 showEquiposDialog(selectedEquipo, "modificacion")
             }
         }
     }
 
-    private fun showBajaEquiposDialog(onEquiposSelected: ( Pair<Int, String>) -> Unit) {
-        searchList.search(requireContext(), database, "equipo") { ligasSelected ->
-            ligasSelected?.let { selectedEquipo ->
+    private fun showBajaEquiposDialog(onEquiposSelected: ( Pair<Int?, String?>) -> Unit) {
+        search(requireContext()) { equipoSelected ->
+            equipoSelected?.let { selectedEquipo ->
                 selectedEquipo?.let {
                     onEquiposSelected(it)
                 }
@@ -229,7 +284,7 @@ class GestionEquiposFragment : Fragment() {
     }
 
 
-    private fun showConfirmDeleteDialog(selectedEquipo:  Pair<Int, String>) {
+    private fun showConfirmDeleteDialog(selectedEquipo:  Pair<Int?, String?>) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
 
@@ -238,8 +293,18 @@ class GestionEquiposFragment : Fragment() {
             .setTitle("¿Eliminar el equipo?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                val equipo = database.kkequipostDao.getEquiposById(selectedEquipo.first)
-                database.kkequipostDao.delete(equipo)
+                lifecycleScope.launch {
+                    try {
+                        val allCategories = teamRepo.getAllTeams()
+                        allCategories.forEach { t ->
+                            if (t.teamId == selectedEquipo.first) {
+                                teamRepo.delete(t)
+                            }
+                        }
+                    } catch (createE: CreateError) {
+                        // Mostrar mensaje de error sobre problemas generales durante la creación
+                    }
+                }
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
@@ -268,6 +333,87 @@ class GestionEquiposFragment : Fragment() {
 
 
 
+
+    private fun search(
+        context: Context,
+        onLigasSelected: (Pair<Int?, String?>) -> Unit
+    ) {
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.dialog_buscador, null)
+        val lv_List = dialogView.findViewById<ListView>(R.id.lv_List)
+        val textInputSearch = dialogView.findViewById<TextInputEditText>(R.id.textInputSearch)
+        var listNames: List<Pair<Int?, String?>> = listOf()
+        var title = "Gestión"
+        lifecycleScope.launch {
+            try {
+                val lista = teamRepo.getAllTeams()
+                listNames = lista.map { Pair(it.teamId, it.teamName) }
+                title = "Modificación de Equipo"
+            } catch (createE: CreateError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
+            }
+
+            listAdapter = ArrayAdapter<Pair<Int?, String?>>(
+                context,
+                android.R.layout.simple_list_item_1,
+                listNames
+            )
+            lv_List.adapter = listAdapter
+
+            val dialog = MaterialAlertDialogBuilder(context)
+                .setTitle(title)
+                .setView(dialogView)
+                .setPositiveButton("Aceptar") { dialog, _ -> dialog.cancel() }
+                .create()
+            dialog.show()
+
+            textInputSearch.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable?) {
+                    filter(s.toString())
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence?,
+                    start: Int,
+                    count: Int,
+                    after: Int
+                ) {
+                }
+
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                }
+            })
+
+            lv_List.setOnItemClickListener { _, _, position, _ ->
+                val selectedItem = listAdapter.getItem(position)
+                selectedItem?.let {
+                    onLigasSelected(it)
+                    dialog.dismiss()
+                }
+            }
+        }
+    }
+
+    private fun filter(query: String) {
+        //Ahora mismo esta repetido en varias lista por problemas de tipos
+        var filteredList: List<Pair<Int, String>> = mutableListOf()
+
+
+        var list: List<Team> = listOf()
+        lifecycleScope.launch {
+            try {
+                list = teamRepo.getAllTeams()
+            } catch (createE: CreateError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
+            }
+            filteredList = list.filter {
+                it.teamName!!.contains(query, ignoreCase = true) ||
+                        it.teamName!!.contains(query, ignoreCase = true)
+            }.map { Pair(it.categoryId, it.teamName) } as List<Pair<Int, String>>
+        }
+        listAdapter.clear()
+        listAdapter.addAll(filteredList)
+        listAdapter.notifyDataSetChanged()
+    }
 
 
 
