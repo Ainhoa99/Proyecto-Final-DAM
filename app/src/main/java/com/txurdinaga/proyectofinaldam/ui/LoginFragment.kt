@@ -3,6 +3,7 @@ package com.txurdinaga.proyectofinaldam.ui
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,11 +32,10 @@ class LoginFragment : Fragment() {
         binding.btnAccess.setOnClickListener {
             lifecycleScope.launch {
                 try {
-
                     EncryptedPrefsUtil.putString("tokenLogin",userRepo.login(binding.email.text.toString(),binding.password.text.toString()))
                     EncryptedPrefsUtil.putBoolean("isAdmin",userRepo.isAdmin())
-                    activity?.recreate()
                     findNavController().navigate(R.id.action_loginFragment2_to_principalFragment)
+                    activity?.recreate()
                     Toast.makeText(context,"correcto",Toast.LENGTH_LONG).show()
                 } catch(loginE: LoginError) {
                     // Mostrar mensaje de error sobre problemas con la autenticación o permisos

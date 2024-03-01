@@ -125,4 +125,14 @@
         android:name="com.txurdinaga.proyectofinaldam.ui.AjustesFragment"
         android:label="fragment_ajustes"
         tools:layout="@layout/fragment_ajustes" />
+    <fragment
+        android:id="@+id/cerrarSesionFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.CerrarSesionFragment"
+        android:label="fragment_cerrar_sesion"
+        tools:layout="@layout/fragment_cerrar_sesion" >
+        <action
+            android:id="@+id/action_cerrarSesionFragment_to_principalFragment"
+            app:destination="@id/principalFragment"
+            app:popUpTo="@id/principalFragment" />
+    </fragment>
 </navigation>

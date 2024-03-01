@@ -143,7 +143,8 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.gestionPDFs ||
                 destination.id == R.id.gestionOcupacionesFragment ||
                 destination.id == R.id.personalFragment ||
-                destination.id == R.id.ajustesFragment2
+                destination.id == R.id.ajustesFragment2 ||
+                destination.id == R.id.cerrarSesionFragment
             ) {
                 supportActionBar?.title = "Unkina SBT"
             }
@@ -191,61 +192,72 @@ class MainActivity : AppCompatActivity() {
         val menu = navView.menu
         var usuario :Boolean? =null
         try {
-            usuario = EncryptedPrefsUtil.getBoolean("isAdmin")
-            todoATrue()
-            val gPartidos = menu.findItem(R.id.gestionPartidosFragment)
-            val gEquipos = menu.findItem(R.id.gestionEquiposFragment)
-            val gCategorias = menu.findItem(R.id.gestionCategoriasFragment)
-            val gPatrocinadores = menu.findItem(R.id.gestionColaboradoresFragment)
-            val gLigas = menu.findItem(R.id.gestionLigasFragment)
-            val gOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
-            val gPDFs = menu.findItem(R.id.gestionPDFs)
-            val inicioSesion = menu.findItem(R.id.loginFragment2)
-            val login = menu.findItem(R.id.loginFragment2)
+            if(EncryptedPrefsUtil.getString("tokenLogin")!=null){
 
-            gPartidos.isVisible = usuario
-            gEquipos.isVisible = usuario
-            gCategorias.isVisible = usuario
-            gPatrocinadores.isVisible = usuario
-            gLigas.isVisible = usuario
-            gOcupaciones.isVisible = usuario
-            gPDFs.isVisible = usuario
-            inicioSesion.isVisible = usuario
-            login.isVisible = false
+                usuario = EncryptedPrefsUtil.getBoolean("isAdmin")
+                todoATrue()
+                val gPartidos = menu.findItem(R.id.gestionPartidosFragment)
+                val gEquipos = menu.findItem(R.id.gestionEquiposFragment)
+                val gCategorias = menu.findItem(R.id.gestionCategoriasFragment)
+                val gPatrocinadores = menu.findItem(R.id.gestionColaboradoresFragment)
+                val gLigas = menu.findItem(R.id.gestionLigasFragment)
+                val gOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
+                val gPDFs = menu.findItem(R.id.gestionPDFs)
+                val inicioSesion = menu.findItem(R.id.loginFragment2)
+                val login = menu.findItem(R.id.loginFragment2)
 
-        }catch (e: Exception) {
-            todoATrue()
-            val principal = menu.findItem(R.id.principalFragment)
-            val gestionEquipos = menu.findItem(R.id.gestionEquiposFragment)
-            val inscripcion = menu.findItem(R.id.inscripcionFragment)
-            val gestionPartidos = menu.findItem(R.id.gestionPartidosFragment)
-            val colaboradores = menu.findItem(R.id.colaboradoresFragment2)
-            val informacion = menu.findItem(R.id.informacionFragment2)
-            val gestionLigas = menu.findItem(R.id.gestionLigasFragment)
-            val gestionCategorias = menu.findItem(R.id.gestionCategoriasFragment)
-            val gestionColaboradores = menu.findItem(R.id.gestionColaboradoresFragment)
-            val fotos = menu.findItem(R.id.fotosFragment)
-            val login = menu.findItem(R.id.loginFragment2)
-            val galeria = menu.findItem(R.id.galeriaFragment)
-            val gestionPDFs = menu.findItem(R.id.gestionPDFs)
-            val gestionOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
-            val personal = menu.findItem(R.id.personalFragment)
-            val ajustes = menu.findItem(R.id.ajustesFragment2)
-            val cerrarSesion = menu.findItem(R.id.fragment_cerrar_sesion)
+                gPartidos.isVisible = usuario
+                gEquipos.isVisible = usuario
+                gCategorias.isVisible = usuario
+                gPatrocinadores.isVisible = usuario
+                gLigas.isVisible = usuario
+                gOcupaciones.isVisible = usuario
+                gPDFs.isVisible = usuario
+                inicioSesion.isVisible = usuario
+                login.isVisible = false
 
-            gestionEquipos.isVisible = false
-            gestionPartidos.isVisible = false
-            gestionLigas.isVisible = false
-            gestionCategorias.isVisible = false
-            gestionColaboradores.isVisible = false
-            fotos.isVisible = false
-            galeria.isVisible = false
-            gestionPDFs.isVisible = false
-            gestionOcupaciones.isVisible = false
-            personal.isVisible = false
-            cerrarSesion.isVisible = false
-
+            }else {
+                usuarioInvitado()
+            }
+        }catch (e: Exception){
+            usuarioInvitado()
         }
+
+    }
+
+    private fun usuarioInvitado() {
+        val navView = binding.navView
+        val menu = navView.menu
+        todoATrue()
+        val principal = menu.findItem(R.id.principalFragment)
+        val gestionEquipos = menu.findItem(R.id.gestionEquiposFragment)
+        val inscripcion = menu.findItem(R.id.inscripcionFragment)
+        val gestionPartidos = menu.findItem(R.id.gestionPartidosFragment)
+        val colaboradores = menu.findItem(R.id.colaboradoresFragment2)
+        val informacion = menu.findItem(R.id.informacionFragment2)
+        val gestionLigas = menu.findItem(R.id.gestionLigasFragment)
+        val gestionCategorias = menu.findItem(R.id.gestionCategoriasFragment)
+        val gestionColaboradores = menu.findItem(R.id.gestionColaboradoresFragment)
+        val fotos = menu.findItem(R.id.fotosFragment)
+        val login = menu.findItem(R.id.loginFragment2)
+        val galeria = menu.findItem(R.id.galeriaFragment)
+        val gestionPDFs = menu.findItem(R.id.gestionPDFs)
+        val gestionOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
+        val personal = menu.findItem(R.id.personalFragment)
+        val ajustes = menu.findItem(R.id.ajustesFragment2)
+        val cerrarSesion = menu.findItem(R.id.cerrarSesionFragment)
+
+        gestionEquipos.isVisible = false
+        gestionPartidos.isVisible = false
+        gestionLigas.isVisible = false
+        gestionCategorias.isVisible = false
+        gestionColaboradores.isVisible = false
+        fotos.isVisible = false
+        galeria.isVisible = false
+        gestionPDFs.isVisible = false
+        gestionOcupaciones.isVisible = false
+        personal.isVisible = false
+        cerrarSesion.isVisible = false
     }
 
     fun todoATrue(){
@@ -267,7 +279,7 @@ class MainActivity : AppCompatActivity() {
         val gestionOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
         val personal = menu.findItem(R.id.personalFragment)
         val ajustes = menu.findItem(R.id.ajustesFragment2)
-        val cerrarSesion = menu.findItem(R.id.fragment_cerrar_sesion)
+        val cerrarSesion = menu.findItem(R.id.cerrarSesionFragment)
 
         principal.isVisible = true
         gestionEquipos.isVisible = true

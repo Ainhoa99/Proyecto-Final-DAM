@@ -109,7 +109,7 @@
                     android:icon="@drawable/login"
                     android:title="@string/inicar_sesion" />
                 <item
-                    android:id="@+id/fragment_cerrar_sesion"
+                    android:id="@+id/cerrarSesionFragment"
                     android:icon="@drawable/cerrar_sesion"
                     android:title="@string/cerrar_sesion" />
 
