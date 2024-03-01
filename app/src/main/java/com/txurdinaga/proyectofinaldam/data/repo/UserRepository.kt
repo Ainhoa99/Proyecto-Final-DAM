@@ -4,19 +4,30 @@ import android.util.Log
 import com.txurdinaga.proyectofinaldam.data.model.User
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.API_ENTRY_POINT
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.DELETE_ROUTE
+import com.txurdinaga.proyectofinaldam.data.repo.Constants.GET_ALL_USERS_ROUTE
+import com.txurdinaga.proyectofinaldam.data.repo.Constants.GET_USER_BY_ID_ROUTE
+import com.txurdinaga.proyectofinaldam.data.repo.Constants.IS_ADMIN_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.LOGIN_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.REGISTER_ROUTE
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.SERVER_URL
+import com.txurdinaga.proyectofinaldam.data.repo.Constants.TAG
+import com.txurdinaga.proyectofinaldam.data.repo.Constants.UPDATE_ROUTE
 import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
+import com.txurdinaga.proyectofinaldam.util.GetAllError
+import com.txurdinaga.proyectofinaldam.util.GetByIdError
+import com.txurdinaga.proyectofinaldam.util.IsAdminRequestError
 import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.RegisterError
+import com.txurdinaga.proyectofinaldam.util.UpdateError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.delete
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
+import io.ktor.client.request.put
 import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
@@ -53,6 +64,7 @@ private object Constants {
     const val DELETE_ROUTE = "/user/delete"
     const val GET_ALL_USERS_ROUTE = "/users"
     const val GET_USER_BY_ID_ROUTE = "/user"
+    const val IS_ADMIN_ROUTE = "/user/isAdmin"
 }
 class UserRepository() : IUserRepository {
     private val token = EncryptedPrefsUtil.getToken()
@@ -86,10 +98,22 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun isAdmin():Boolean{
-         var respuesta = false
-        val tokent = EncryptedPrefsUtil.getString("tokenLogin")
-        //TODO logica
-        return respuesta
+        val response: HttpResponse = withContext(Dispatchers.IO) {
+            client.get("$SERVER_URL$API_ENTRY_POINT$IS_ADMIN_ROUTE") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+                contentType(ContentType.Application.Json)
+            }
+        }
+        if (response.status.isSuccess()) {
+            Log.d(TAG, "IS ADMIN: SUCCESS")
+            val responseBody = response.bodyAsText()
+            return Json.decodeFromString(responseBody)
+        } else if (response.status == HttpStatusCode.Unauthorized) {
+            throw LoginError()
+        } else {
+            Log.d(TAG, "IS ADMIN: ERROR")
+            throw IsAdminRequestError()
+        }
     }
 
     override suspend fun register(user: User) {
@@ -108,7 +132,21 @@ class UserRepository() : IUserRepository {
     }
 
     override suspend fun update(user: User) {
-        TODO("Not yet implemented")
+        val response: HttpResponse = withContext(Dispatchers.IO) {
+            client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${user.userId}") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+                contentType(ContentType.Application.Json)
+                setBody(user)
+            }
+        }
+        if (response.status.isSuccess()) {
+            Log.d(TAG, "UPDATE: SUCCESS")
+        } else if (response.status == HttpStatusCode.Unauthorized) {
+            throw LoginError()
+        } else {
+            Log.d(TAG, "UPDATE: ERROR")
+            throw UpdateError()
+        }
     }
 
     override suspend fun delete(user: User) {
@@ -119,21 +157,51 @@ class UserRepository() : IUserRepository {
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(Constants.TAG, "DELETE: SUCCESS")
+            Log.d(TAG, "DELETE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(Constants.TAG, "DELETE: ERROR")
+            Log.d(TAG, "DELETE: ERROR")
             throw DeleteError()
         }
     }
 
     override suspend fun getUser(userId: String): User {
-        TODO("Not yet implemented")
+        val response: HttpResponse = withContext(Dispatchers.IO) {
+            client.get("$SERVER_URL$API_ENTRY_POINT$GET_USER_BY_ID_ROUTE/$userId") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+                contentType(ContentType.Application.Json)
+            }
+        }
+        if (response.status.isSuccess()) {
+            Log.d(TAG, "GET BY ID: SUCCESS")
+            val responseBody = response.bodyAsText()
+            return Json.decodeFromString(responseBody)
+        } else if (response.status == HttpStatusCode.Unauthorized) {
+            throw LoginError()
+        } else {
+            Log.d(TAG, "GET BY ID: ERROR")
+            throw GetByIdError()
+        }
     }
 
     override suspend fun getAllUsers(): List<User> {
-        TODO("Not yet implemented")
+        val response: HttpResponse = withContext(Dispatchers.IO) {
+            client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_USERS_ROUTE") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+                contentType(ContentType.Application.Json)
+            }
+        }
+        if (response.status.isSuccess()) {
+            Log.d(TAG, "GET ALL: SUCCESS")
+            val responseBody = response.bodyAsText()
+            return Json.decodeFromString(responseBody)
+        } else if (response.status == HttpStatusCode.Unauthorized) {
+            throw LoginError()
+        } else {
+            Log.d(TAG, "GET ALL: ERROR")
+            throw GetAllError()
+        }
     }
 
 }
