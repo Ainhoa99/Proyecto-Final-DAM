@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Role(
     val roleId: Int? = null,
-    val roleName: String? = null
+    var roleName: String? = null
 )

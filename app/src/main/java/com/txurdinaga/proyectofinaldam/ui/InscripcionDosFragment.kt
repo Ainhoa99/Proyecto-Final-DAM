@@ -13,19 +13,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.User
+import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentInscripcionDosBinding
+import com.txurdinaga.proyectofinaldam.util.GetAllError
+import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
 
 class InscripcionDosFragment : Fragment() {
 
     private var _binding: FragmentInscripcionDosBinding? = null
     private val binding get() = _binding!!
+    private lateinit var userRepo: UserRepository
     private lateinit var boton: Button
+    private lateinit var empadronamiento : Uri
+    private lateinit var diploma :Uri
+    private lateinit var certificado :Uri
+    private var comprFecha = false
 
     private val getContent =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -41,7 +53,7 @@ class InscripcionDosFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentInscripcionDosBinding.inflate(layoutInflater, container, false)
-
+        userRepo = UserRepository()
 
         binding.btnDatePicker.setOnClickListener {
             openDatePicker()
@@ -65,6 +77,48 @@ class InscripcionDosFragment : Fragment() {
             subirPDF(binding.btnCertificado)
         }
 
+        binding.btnInscribir.setOnClickListener {
+
+            if (
+                !binding.name.text.isNullOrEmpty() &&
+                !binding.surname.text.isNullOrEmpty() &&
+                !binding.textInputEmail.text.isNullOrEmpty() &&
+                comprFecha &&
+                ::diploma.isInitialized &&
+                ::empadronamiento.isInitialized &&
+                ::certificado.isInitialized
+            ){
+                lifecycleScope.launch {
+                    try {
+                        val user = User(
+                            name = binding.name.text.toString(),
+                            surname =binding.surname.text.toString(),
+                            dateOfBirth = convertirALong(binding.btnDatePicker.text.toString()),
+                            email = binding.textInputEmail.text.toString()
+                        )
+                        //userRepo.register(user)
+                        Toast.makeText(context,R.string.confirmacion_inscripcion,Toast.LENGTH_LONG).show()
+                    } catch (getAllE: GetAllError) {
+                        // Mostrar mensaje de error sobre problemas generales durante la creación
+                    }
+                }
+                //datos enviar email
+                binding.name.text
+                binding.surname.text
+                binding.btnDatePicker.text
+                binding.checkParents.isChecked
+                binding.textInputEmail.text
+                binding.dni.text
+                diploma
+                empadronamiento
+                certificado
+            }else{
+                Toast.makeText(context, R.string.datos_requeridos, Toast.LENGTH_SHORT).show()
+            }
+
+
+        }
+
         return binding.root
     }
 
@@ -84,11 +138,19 @@ class InscripcionDosFragment : Fragment() {
                 val selectedDate = Calendar.getInstance()
                 selectedDate.set(yearSelected, monthOfYear, dayOfMonth)
                 val formattedDate = "%02d/%02d/%d".format(dayOfMonth, monthOfYear + 1, yearSelected)
-                binding.btnDatePicker.text = formattedDate
+
+                binding.btnDatePicker.text = "$formattedDate"
+                comprFecha = true
                 //Toast.makeText(requireContext(), "Fecha seleccionada: $formattedDate", Toast.LENGTH_SHORT).show()
             }, year, month, dayOfMonth)
 
         datePickerDialog.show()
+    }
+
+    private fun convertirALong(formattedDate: String) :Long{
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+        val date = dateFormat.parse(formattedDate)
+        return date.time / 1000
     }
 
     private fun showEmailSearchDialog() {
@@ -145,6 +207,14 @@ class InscripcionDosFragment : Fragment() {
                     val nombreArchivo =
                         cursor.getString(cursor.getColumnIndexOrThrow(DocumentsContract.Document.COLUMN_DISPLAY_NAME))
                     boton.text = "${boton.text.toString().split(" ")[0]} : $nombreArchivo"
+                    when(boton.text.toString().split(" ")[0]){
+                        "Empadronamiento" -> empadronamiento = uri
+                        "Diploma" -> diploma = uri
+                        "Certificado" -> certificado = uri
+                        "Erresidentzi" -> empadronamiento = uri
+                        "Egiaztapena" -> certificado = uri
+
+                    }
                 }
             }
         }

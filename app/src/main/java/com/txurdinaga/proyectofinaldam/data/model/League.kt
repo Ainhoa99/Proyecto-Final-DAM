@@ -8,5 +8,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class League(
     val leagueId: Int? = null,
-    val leagueName: String? = null
+    var leagueName: String? = null
 )
