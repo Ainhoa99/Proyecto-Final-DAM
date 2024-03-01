@@ -9,7 +9,12 @@
         android:id="@+id/inscripcionDosFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.InscripcionDosFragment"
         android:label="fragment_inscripcion_dos"
-        tools:layout="@layout/fragment_inscripcion_dos" />
+        tools:layout="@layout/fragment_inscripcion_dos" >
+        <action
+            android:id="@+id/action_inscripcionDosFragment_to_principalFragment"
+            app:destination="@id/principalFragment"
+            app:popUpTo="@id/principalFragment" />
+    </fragment>
     <fragment
         android:id="@+id/gestionPartidosFragment"
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionPartidosFragment"

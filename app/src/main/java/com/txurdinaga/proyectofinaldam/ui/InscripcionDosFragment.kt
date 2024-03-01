@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.txurdinaga.proyectofinaldam.R
@@ -94,10 +95,13 @@ class InscripcionDosFragment : Fragment() {
                             name = binding.name.text.toString(),
                             surname =binding.surname.text.toString(),
                             dateOfBirth = convertirALong(binding.btnDatePicker.text.toString()),
-                            email = binding.textInputEmail.text.toString()
+                            email = binding.textInputEmail.text.toString(),
+                            isFirstLogin = true,
+                            isActive = false
                         )
-                        //userRepo.register(user)
+                        userRepo.register(user)
                         Toast.makeText(context,R.string.confirmacion_inscripcion,Toast.LENGTH_LONG).show()
+                        findNavController().navigate(R.id.action_inscripcionDosFragment_to_principalFragment)
                     } catch (getAllE: GetAllError) {
                         // Mostrar mensaje de error sobre problemas generales durante la creación
                     }
