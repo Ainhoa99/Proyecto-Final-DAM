@@ -100,7 +100,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initNavigation() {
-        //mostrarOpciones()
+        mostrarOpciones()
         val navHost = supportFragmentManager.findFragmentById(R.id.navHostFragment) as NavHostFragment
         navController = navHost.navController
         // Especifica los ID de los destinos de nivel superior, excluyendo el ID del destino de inicio
@@ -201,6 +201,7 @@ class MainActivity : AppCompatActivity() {
             val gOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
             val gPDFs = menu.findItem(R.id.gestionPDFs)
             val inicioSesion = menu.findItem(R.id.loginFragment2)
+            val login = menu.findItem(R.id.loginFragment2)
 
             gPartidos.isVisible = usuario
             gEquipos.isVisible = usuario
@@ -210,6 +211,7 @@ class MainActivity : AppCompatActivity() {
             gOcupaciones.isVisible = usuario
             gPDFs.isVisible = usuario
             inicioSesion.isVisible = usuario
+            login.isVisible = false
 
         }catch (e: Exception) {
             todoATrue()
