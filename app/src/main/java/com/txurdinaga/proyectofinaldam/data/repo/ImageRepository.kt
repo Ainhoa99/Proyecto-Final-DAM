@@ -2,7 +2,7 @@ package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.txurdinaga.proyectofinaldam.data.model.Image
+import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -15,17 +15,16 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
-import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.PartData
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
+import java.io.File
 
 interface IImageRepository {
-    suspend fun uploadImage(image: Bitmap, metadata: Image): Boolean
+    suspend fun uploadImage(image: File, metadata: ImageMetadata): Boolean
 }
 
 class ImageRepository : IImageRepository {
@@ -41,13 +40,11 @@ class ImageRepository : IImageRepository {
         }
     }
 
-    override suspend fun uploadImage(image: Bitmap, metadata: Image): Boolean = withContext(Dispatchers.IO) {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        image.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val imageData = byteArrayOutputStream.toByteArray()
+    override suspend fun uploadImage(image: File, metadata: ImageMetadata): Boolean = withContext(Dispatchers.IO) {
+        val imageData = image.readBytes()
 
         val formData = formData {
-            append("data", Json.encodeToString(Image.serializer(), metadata), Headers.build {
+            append("data", Json.encodeToString(ImageMetadata.serializer(), metadata), Headers.build {
                 append(HttpHeaders.ContentType, ContentType.Application.Json.toString())
             })
             append("file", imageData, Headers.build {
@@ -55,6 +52,7 @@ class ImageRepository : IImageRepository {
                 append(HttpHeaders.ContentDisposition, "filename=\"${metadata.fileName}.jpg\"")
             })
         }
+
 
         val response: HttpResponse = client.submitFormWithBinaryData(
             url = "${ConstantsImage.SERVER_URL}${ConstantsImage.API_ENTRY_POINT}${ConstantsImage.UPLOAD_ROUTE}",
