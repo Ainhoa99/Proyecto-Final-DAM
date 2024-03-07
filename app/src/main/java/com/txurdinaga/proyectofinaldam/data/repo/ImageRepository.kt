@@ -1,30 +1,46 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import com.bumptech.glide.load.model.GlideUrl
+import com.bumptech.glide.load.model.LazyHeaders
 import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
+import com.txurdinaga.proyectofinaldam.data.model.League
+import com.txurdinaga.proyectofinaldam.data.repo.ConstantsImage.API_ENTRY_POINT
+import com.txurdinaga.proyectofinaldam.data.repo.ConstantsImage.GET_ROUTE
+import com.txurdinaga.proyectofinaldam.data.repo.ConstantsImage.SERVER_URL
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
+import com.txurdinaga.proyectofinaldam.util.GetAllError
+import com.txurdinaga.proyectofinaldam.util.GetByIdError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.contentLength
+import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
+import io.ktor.utils.io.copyAndClose
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.FileOutputStream
 
 interface IImageRepository {
     suspend fun uploadImage(image: File, metadata: ImageMetadata): Boolean
+    suspend fun getImage(imageId: String): GlideUrl
 }
 
 class ImageRepository : IImageRepository {
@@ -70,10 +86,24 @@ class ImageRepository : IImageRepository {
             false
         }
     }
+
+    // TODO Handle errors
+    override suspend fun getImage(imageId: String): GlideUrl {
+        val glideUrl = GlideUrl(
+            "$SERVER_URL${API_ENTRY_POINT}${GET_ROUTE}/${imageId}",
+            LazyHeaders.Builder()
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+        )
+        return glideUrl
+    }
+
+
 }
 
 private object ConstantsImage {
     const val SERVER_URL = "https://sardina-server.duckdns.org"
     const val API_ENTRY_POINT = "/api/v1"
     const val UPLOAD_ROUTE = "/image/upload"
+    const val GET_ROUTE = "/image"
 }
