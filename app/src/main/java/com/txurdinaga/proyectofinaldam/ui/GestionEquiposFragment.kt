@@ -60,7 +60,7 @@ class GestionEquiposFragment : Fragment() {
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
     private val PICK_IMAGE_REQUEST = 1
-    private lateinit var imageString: String
+    private var imageString: String=""
     private lateinit var listAdapter: ArrayAdapter<Pair<Int?, String?>>
 
     private lateinit var teamRepo: TeamRepository
@@ -180,8 +180,8 @@ class GestionEquiposFragment : Fragment() {
                             team = t
                             equipoName.setText(team.teamName)
                             equipoLocation.setText(team.stadium)
-                            check_isUnkina.isChecked = team.isTeamUnkina == false
-                            check_visible.isChecked = team.picturesConsent == false
+                            check_isUnkina.isChecked = team.isTeamUnkina == true
+                            check_visible.isChecked = team.picturesConsent == true
                             return@forEach
                         }
                     }
