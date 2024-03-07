@@ -84,4 +84,8 @@ dependencies {
 
     // almacenar shared prefs de forma segura
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
+
+    // glide
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 }
