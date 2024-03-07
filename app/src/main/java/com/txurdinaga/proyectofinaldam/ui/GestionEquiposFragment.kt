@@ -31,9 +31,11 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.data.model.Category
+import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
 import com.txurdinaga.proyectofinaldam.data.model.League
 import com.txurdinaga.proyectofinaldam.data.model.Team
 import com.txurdinaga.proyectofinaldam.data.repo.CategoryRepository
+import com.txurdinaga.proyectofinaldam.data.repo.ImageRepository
 import com.txurdinaga.proyectofinaldam.data.repo.LeageRepository
 import com.txurdinaga.proyectofinaldam.data.repo.TeamRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
@@ -43,6 +45,8 @@ import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.SearchList
 import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 
 
 class GestionEquiposFragment : Fragment() {
@@ -60,6 +64,7 @@ class GestionEquiposFragment : Fragment() {
     private lateinit var listAdapter: ArrayAdapter<Pair<Int?, String?>>
 
     private lateinit var teamRepo: TeamRepository
+    private lateinit var imageRepo: ImageRepository
     private lateinit var categoryRepo: CategoryRepository
     private lateinit var leagueRepo: LeageRepository
 
@@ -72,6 +77,7 @@ class GestionEquiposFragment : Fragment() {
         binding.tvTitle.text = getString(R.string.gestion_equipos)
 
         teamRepo = TeamRepository()
+        imageRepo = ImageRepository()
         categoryRepo = CategoryRepository()
         leagueRepo = LeageRepository()
 
@@ -118,7 +124,19 @@ class GestionEquiposFragment : Fragment() {
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
             val imageUri = data.data
-            imageString = convertirImagenABase64(imageUri!!)
+            lifecycleScope.launch {
+                requireContext().contentResolver.openInputStream(imageUri!!).use { inputStream ->
+                    val mimeType = requireContext().contentResolver.getType(imageUri)
+                    val extension = mimeType?.substringAfterLast("/")
+                    val imageFile = File.createTempFile("image", ".$extension")
+                    FileOutputStream(imageFile).use { outputStream ->
+                        inputStream?.copyTo(outputStream)
+                    }
+                    val metadata = ImageMetadata("team_logo", null, false)
+                    val imageId = imageRepo.uploadImage(imageFile, metadata)
+                    imageString = imageId
+                }
+            }
         }
     }
 
