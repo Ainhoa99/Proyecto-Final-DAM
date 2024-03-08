@@ -1,6 +1,7 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
+import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.Match
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import com.txurdinaga.proyectofinaldam.util.CreateError
@@ -36,18 +37,6 @@ interface IMatchRepository {
     suspend fun getAllMatches(): List<Match>
 }
 
-private object ConstantsMatch {
-    const val TAG = "MATCH_REPOSITORY"
-
-    const val SERVER_URL = "https://sardina-server.duckdns.org"
-    const val API_ENTRY_POINT = "/api/v1"
-
-    const val CREATE_ROUTE = "/match/create"
-    const val UPDATE_ROUTE = "/match/update"
-    const val DELETE_ROUTE = "/match/delete"
-    const val GET_ALL_MATCHES = "/matches"
-}
-
 class MatchRepository : IMatchRepository {
     private var token = EncryptedPrefsUtil.getToken()
 
@@ -64,18 +53,18 @@ class MatchRepository : IMatchRepository {
     override suspend fun create(match: Match) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.post("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.CREATE_ROUTE}") {
+            client.post("${SERVER_URL}${API_ENTRY_POINT}${CREATE_ROUTE}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
                 contentType(ContentType.Application.Json)
                 setBody(match)
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsMatch.TAG, "CREATE: SUCCESS")
+            Log.d(TAG, "CREATE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsMatch.TAG, "CREATE: ERROR")
+            Log.d(TAG, "CREATE: ERROR")
             throw CreateError()
         }
     }
@@ -83,18 +72,18 @@ class MatchRepository : IMatchRepository {
     override suspend fun update(match: Match) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.put("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.UPDATE_ROUTE}/${match.matchId}") {
+            client.put("${SERVER_URL}${API_ENTRY_POINT}${UPDATE_ROUTE}/${match.matchId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
                 contentType(ContentType.Application.Json)
                 setBody(match)
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsMatch.TAG, "UPDATE: SUCCESS")
+            Log.d(TAG, "UPDATE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsMatch.TAG, "UPDATE: ERROR")
+            Log.d(TAG, "UPDATE: ERROR")
             throw UpdateError()
         }
     }
@@ -102,16 +91,16 @@ class MatchRepository : IMatchRepository {
     override suspend fun delete(match: Match) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.delete("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.DELETE_ROUTE}/${match.matchId}") {
+            client.delete("${SERVER_URL}${API_ENTRY_POINT}${DELETE_ROUTE}/${match.matchId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsMatch.TAG, "DELETE: SUCCESS")
+            Log.d(TAG, "DELETE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsMatch.TAG, "DELETE: ERROR")
+            Log.d(TAG, "DELETE: ERROR")
             throw DeleteError()
         }
     }
@@ -119,19 +108,31 @@ class MatchRepository : IMatchRepository {
     override suspend fun getAllMatches(): List<Match> {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.get("${ConstantsMatch.SERVER_URL}${ConstantsMatch.API_ENTRY_POINT}${ConstantsMatch.GET_ALL_MATCHES}") {
+            client.get("${SERVER_URL}${API_ENTRY_POINT}${GET_ALL_MATCHES}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsMatch.TAG, "GET ALL: SUCCESS")
+            Log.d(TAG, "GET ALL: SUCCESS")
             val responseBody = response.bodyAsText()
             return Json.decodeFromString(responseBody)
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsMatch.TAG, "GET ALL: ERROR")
+            Log.d(TAG, "GET ALL: ERROR")
             throw GetAllError()
         }
+    }
+
+    companion object {
+        private const val TAG = "MATCH_REPOSITORY"
+
+        private const val SERVER_URL: String = BuildConfig.SERVER_URL
+        private const val API_ENTRY_POINT = "/api/v1"
+
+        private const val CREATE_ROUTE = "/match/create"
+        private const val UPDATE_ROUTE = "/match/update"
+        private const val DELETE_ROUTE = "/match/delete"
+        private const val GET_ALL_MATCHES = "/matches"
     }
 }

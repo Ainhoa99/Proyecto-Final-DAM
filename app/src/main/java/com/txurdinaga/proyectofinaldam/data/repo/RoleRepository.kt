@@ -1,19 +1,12 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
+import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.Role
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.API_ENTRY_POINT
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.CREATE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.DELETE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.GET_ALL_ROLES
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.SERVER_URL
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.TAG
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsRole.UPDATE_ROUTE
 import com.txurdinaga.proyectofinaldam.util.CreateError
 import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.GetAllError
 import com.txurdinaga.proyectofinaldam.util.LoginError
-import com.txurdinaga.proyectofinaldam.util.RegisterError
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import com.txurdinaga.proyectofinaldam.util.UpdateError
 import io.ktor.client.HttpClient
@@ -42,18 +35,6 @@ interface IRoleRepository {
     suspend fun update(role: Role)
     suspend fun delete(role: Role)
     suspend fun getAllRoles(): List<Role>
-}
-
-private object ConstantsRole {
-    const val TAG = "ROLE_REPOSITORY"
-
-    const val SERVER_URL = "https://sardina-server.duckdns.org"
-    const val API_ENTRY_POINT = "/api/v1"
-
-    const val CREATE_ROUTE = "/role/create"
-    const val UPDATE_ROUTE = "/role/update"
-    const val DELETE_ROUTE = "/role/delete"
-    const val GET_ALL_ROLES = "/roles"
 }
 
 class RoleRepository : IRoleRepository {
@@ -157,6 +138,18 @@ class RoleRepository : IRoleRepository {
             Log.d(TAG, "GET ALL: ERROR")
             throw GetAllError()
         }
+    }
+
+    companion object {
+        private const val TAG = "ROLE_REPOSITORY"
+
+        private const val SERVER_URL: String = BuildConfig.SERVER_URL
+        private const val API_ENTRY_POINT = "/api/v1"
+
+        private const val CREATE_ROUTE = "/role/create"
+        private const val UPDATE_ROUTE = "/role/update"
+        private const val DELETE_ROUTE = "/role/delete"
+        private const val GET_ALL_ROLES = "/roles"
     }
 
 }
