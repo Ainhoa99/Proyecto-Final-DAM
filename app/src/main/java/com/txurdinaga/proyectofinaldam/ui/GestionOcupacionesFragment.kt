@@ -164,7 +164,7 @@ class GestionOcupacionesFragment : Fragment() {
                         /**
                          * Ejemplo uso de repositorios
                          */
-                        role = Role(roleName = ocupacionName.text.toString())
+                        role = Role(roleId = 0, roleName = ocupacionName.text.toString())
                         lifecycleScope.launch {
                             try {
                                 roleRepo.create(role)

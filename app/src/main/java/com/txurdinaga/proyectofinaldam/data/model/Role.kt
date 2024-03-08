@@ -7,6 +7,12 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Role(
-    val roleId: Int? = null,
-    var roleName: String? = null
+    val roleId: Int,
+    var roleName: String
 )
+
+{
+    override fun toString(): String {
+        return roleName
+    }
+}

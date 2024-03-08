@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
@@ -27,7 +28,16 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.Category
+import com.txurdinaga.proyectofinaldam.data.model.Role
+import com.txurdinaga.proyectofinaldam.data.model.Team
+import com.txurdinaga.proyectofinaldam.data.model.User
+import com.txurdinaga.proyectofinaldam.data.repo.RoleRepository
+import com.txurdinaga.proyectofinaldam.data.repo.TeamRepository
+import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentFotosBinding
+import com.txurdinaga.proyectofinaldam.util.GetAllError
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -41,6 +51,15 @@ class PersonalFragment : Fragment(), ICardClickListener {
     var equipoSelectedId: Int = -1
     var ocupacionSelectedId: Int = -1
 
+
+    private lateinit var equiposList: List<Team>
+    private lateinit var usuariosList: List<User>
+    private lateinit var ocupacionesList: List<Role>
+    private lateinit var user:User
+
+    private lateinit var teamRepo: TeamRepository
+    private lateinit var userRepo: UserRepository
+    private lateinit var roleRepo: RoleRepository
 
 
     override fun onCreateView(
@@ -56,6 +75,10 @@ class PersonalFragment : Fragment(), ICardClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        teamRepo = TeamRepository()
+        userRepo = UserRepository()
+        roleRepo = RoleRepository()
+
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
         val addPlayer = binding.add
@@ -70,107 +93,143 @@ class PersonalFragment : Fragment(), ICardClickListener {
             .allowMainThreadQueries()
             .build()
 
-        var users = database.kkUsersDao.getAllUsers()
+       // var users = database.kkUsersDao.getAllUsers()
 
-        var equipos = database.kkequipostDao.getVisibleEquipos()
+      //  var equipos = database.kkequipostDao.getVisibleEquipos()
+        var equiposNameList= mutableListOf<Team>()
 
-
-
-        if (users.isNotEmpty()){
-            val ListEquipos = mutableListOf<kkEquiposEntity>()
-            equipos.forEach { equipo ->
-                ListEquipos.add(equipo)
+        lifecycleScope.launch {
+            try {
+                equiposList = teamRepo.getAllTeams()
+                equiposList.forEach { t ->
+                    equiposNameList.add(t)
+                }
+           } catch (getE: GetAllError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
             }
-            val spEquipos = binding.spinner
-            val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquipos)
-            Handler(Looper.getMainLooper()).postDelayed({
-                spEquipos.setAdapter(adapter)
-                binding.spinner.setText("Selecciona un equipo", false)
-                spEquipos.setAdapter(adapter)
+        }
 
-            }, 100)
+        val spEquipos = binding.spinner
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, equiposNameList)
+        Handler(Looper.getMainLooper()).postDelayed({
+            spEquipos.setAdapter(adapter)
+            binding.spinner.setText("Selecciona un equipo", false)
+            spEquipos.setAdapter(adapter)
 
-            spEquipos.setOnItemClickListener { parent, view, position, id ->
-                val msgFotosEmpty = binding.msgFotosEmpty
-                val msgSelecciona = binding.msgSelecciona
-                val msgJugadores = binding.msgJugadores
-                val msgEqTecnico = binding.msgEqTecnico
+        }, 100)
 
-                msgSelecciona.visibility = View.GONE
+        spEquipos.setOnItemClickListener { parent, view, position, id ->
+            val msgFotosEmpty = binding.msgFotosEmpty
+            val msgSelecciona = binding.msgSelecciona
+            val msgJugadores = binding.msgJugadores
+            val msgEqTecnico = binding.msgEqTecnico
 
-                val selectedItem = parent.getItemAtPosition(position) as kkEquiposEntity
-                // Aquí puedes hacer lo que necesites con el elemento seleccionado
-                // Por ejemplo, mostrar un Toast con el elemento seleccionado
-                Toast.makeText(requireContext(), "Seleccionaste: $selectedItem", Toast.LENGTH_SHORT).show()
-                equipoSeleccionado = selectedItem.id
-                val usersByEquipo = database.kkUsersDao.getUsersByEquipo(equipoSeleccionado)
+            msgSelecciona.visibility = View.GONE
 
-                if (usersByEquipo.isNotEmpty()){
-                    msgFotosEmpty.visibility = View.GONE
-                    msgJugadores.visibility = View.VISIBLE
-                    msgEqTecnico.visibility = View.VISIBLE
-                    val rvEquipoTecnico = binding.recyclerViewEquipoTecnico
-                    rvEquipoTecnico.visibility = View.VISIBLE
-                    val datasetJugadores = mutableListOf<CardData>()
-                    val datasetEquipoTecnico = mutableListOf<CardData>()
+            val selectedItem = parent.getItemAtPosition(position) as Team
+            // Aquí puedes hacer lo que necesites con el elemento seleccionado
+            // Por ejemplo, mostrar un Toast con el elemento seleccionado
+            Toast.makeText(requireContext(), "Seleccionaste: $selectedItem", Toast.LENGTH_SHORT).show()
+            equipoSeleccionado = selectedItem.teamId
 
-                    usersByEquipo.forEach { user ->
-                        var ocupacion = database.kkOcupacionesDao.getOcupacionById(user.ocupacionId)
+            //  val usersByEquipo = database.kkUsersDao.getUsersByEquipo(equipoSeleccionado)
 
-                        if (user.ocupacionId == 1){
-                            datasetJugadores.add(
-                                CardData(
-                                    user.foto,
-                                    user.id,
-                                    user.nombre,
-                                    ocupacion.name
+            var usersNameList= mutableListOf<User>()
 
-                                )
-                            )
-                        } else{
-                            datasetEquipoTecnico.add(
-                                CardData(
-                                    user.foto,
-                                    user.id,
-                                    user.nombre,
-                                    ocupacion.name
-                                )
-                            )
+            lifecycleScope.launch {
+                try {
+                    usuariosList = userRepo.getAllUsers()
+                    usuariosList.forEach { t ->
+                        if (t.teamId==equipoSeleccionado){
+                            usersNameList.add(t)
+                        }
+                    }
+                } catch (getE: GetAllError) {
+                    // Mostrar mensaje de error sobre problemas generales durante la creación
+                }
+            }
+
+            if (usersNameList.isNotEmpty()){
+                msgFotosEmpty.visibility = View.GONE
+                msgJugadores.visibility = View.VISIBLE
+                msgEqTecnico.visibility = View.VISIBLE
+                val rvEquipoTecnico = binding.recyclerViewEquipoTecnico
+                rvEquipoTecnico.visibility = View.VISIBLE
+                val datasetJugadores = mutableListOf<CardData>()
+                val datasetEquipoTecnico = mutableListOf<CardData>()
+
+                usersNameList.forEach { user ->
+                    //var ocupacion = database.kkOcupacionesDao.getOcupacionById(user.ocupacionId)
+
+                    var roleName= Role(0, "")
+
+                    lifecycleScope.launch {
+                        try {
+                            ocupacionesList = roleRepo.getAllRoles()
+                            ocupacionesList.forEach { t ->
+                                if (t.roleId==user.roleId){
+                                    roleName=t
+                                }
+                            }
+                        } catch (getE: GetAllError) {
+                            // Mostrar mensaje de error sobre problemas generales durante la creación
                         }
                     }
 
+                    if (user.roleId == 1){
+                        datasetJugadores.add(
+                            CardData(
+                                user.picture,
+                                user.userId,
+                                user.name,
+                                roleName.roleName
 
-                    val cardAdapter = CardAdapter(datasetJugadores, this)
-                    val recyclerView: RecyclerView = binding.recyclerView
-                    recyclerView.adapter = cardAdapter
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.isNestedScrollingEnabled = false;
-                    val layoutManager = recyclerView.layoutManager as GridLayoutManager?
-                    // Verificamos si el layoutManager no es nulo para evitar errores
-                    layoutManager?.apply {
-                        // Establecemos el spanCount deseado
-                        spanCount = 3
+                            )
+                        )
+                    } else{
+                        datasetEquipoTecnico.add(
+                            CardData(
+                                user.picture,
+                                user.userId,
+                                user.name,
+                                roleName.roleName
+                            )
+                        )
                     }
-
-                    val cardAdapterEquipoTecnico = CardAdapter(datasetEquipoTecnico, this)
-                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
-                    recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
-                    recyclerViewEquipoTecnico.setHasFixedSize(true);
-                    recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
-                } else{
-                    msgFotosEmpty.visibility = View.VISIBLE
-                    msgJugadores.visibility = View.GONE
-                    msgEqTecnico.visibility = View.GONE
-                    val emptyAdapter = CardAdapter(emptyList(), this)
-                    val recyclerView: RecyclerView = binding.recyclerView
-                    recyclerView.adapter = emptyAdapter
-                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
-                    recyclerViewEquipoTecnico.adapter = emptyAdapter
                 }
 
+
+                val cardAdapter = CardAdapter(datasetJugadores, this)
+                val recyclerView: RecyclerView = binding.recyclerView
+                recyclerView.adapter = cardAdapter
+                recyclerView.setHasFixedSize(true);
+                recyclerView.isNestedScrollingEnabled = false;
+                val layoutManager = recyclerView.layoutManager as GridLayoutManager?
+                // Verificamos si el layoutManager no es nulo para evitar errores
+                layoutManager?.apply {
+                    // Establecemos el spanCount deseado
+                    spanCount = 3
+                }
+
+                val cardAdapterEquipoTecnico = CardAdapter(datasetEquipoTecnico, this)
+                val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
+                recyclerViewEquipoTecnico.setHasFixedSize(true);
+                recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
+            } else{
+                msgFotosEmpty.visibility = View.VISIBLE
+                msgJugadores.visibility = View.GONE
+                msgEqTecnico.visibility = View.GONE
+                val emptyAdapter = CardAdapter(emptyList(), this)
+                val recyclerView: RecyclerView = binding.recyclerView
+                recyclerView.adapter = emptyAdapter
+                val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                recyclerViewEquipoTecnico.adapter = emptyAdapter
             }
 
         }
+
+
 
     }
 
@@ -213,40 +272,43 @@ class PersonalFragment : Fragment(), ICardClickListener {
         var btnBorrar = dialogView.findViewById<ImageView>(R.id.imageViewCancelar)
         var btnConfirmar = dialogView.findViewById<ImageView>(R.id.imageViewConfirmar)
 
+        var equiposNameList= mutableListOf<Team>()
+        var ocupacionesNameList= mutableListOf<Role>()
 
-
-        val ListEquiposDialog = mutableListOf<kkEquiposEntity>()
-        val equiposVisibles =database.kkequipostDao.getVisibleEquipos()
-        equiposVisibles.forEach { equipoVisible ->
-            ListEquiposDialog.add(equipoVisible)
+        lifecycleScope.launch {
+            try {
+                equiposList = teamRepo.getAllTeams()
+                equiposList.forEach { t ->
+                    if (t.picturesConsent==true){
+                        equiposNameList.add(t)
+                    }
+                }
+                ocupacionesList = roleRepo.getAllRoles()
+                ocupacionesList.forEach { t ->
+                    ocupacionesNameList.add(t)
+                }
+            } catch (getE: GetAllError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
+            }
         }
-        val adapterEquipos = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListEquiposDialog)
+
+        val adapterEquipos = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, equiposNameList)
         equipo.setAdapter(adapterEquipos)
 
-
-        val ListOcupaciones = mutableListOf<kkOcupacionesEntity>()
-        val ocupacionesDialog =database.kkOcupacionesDao.getAllOcupaciones()
-        ocupacionesDialog.forEach { ocupacionDialog ->
-            ListOcupaciones.add(ocupacionDialog)
-        }
-        val adapterOcupacion = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ListOcupaciones)
+        val adapterOcupacion = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, ocupacionesNameList)
         ocupacion.setAdapter(adapterOcupacion)
-
-
 
         val dialog = builder.create()
         dialog.show()
 
-
-
         equipo.setOnItemClickListener { parent, view, position, id ->
-            var equipoSelected = parent.getItemAtPosition(position) as kkEquiposEntity
-            equipoSelectedId = equipoSelected.id
+            var equipoSelected = parent.getItemAtPosition(position) as Team
+            equipoSelectedId = equipoSelected.teamId
 
         }
         ocupacion.setOnItemClickListener { parent, view, position, id ->
-            var ocupacionSelected = parent.getItemAtPosition(position) as kkOcupacionesEntity
-            ocupacionSelectedId = ocupacionSelected.id
+            var ocupacionSelected = parent.getItemAtPosition(position) as Role
+            ocupacionSelectedId = ocupacionSelected.roleId
         }
 
         fun comprobarCampos():Boolean{
@@ -293,17 +355,26 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
         if (cardData!= null && position!=null){
             if (cardData.id !=null){
-                val user = database.kkUsersDao.getUsersById(cardData.id)
+               // val user = database.kkUsersDao.getUsersById(cardData.id)
 
-                name.setText(user.nombre)
-                apellido.setText(user.apellido)
-                img.setImageResource(resources.getIdentifier(user.foto, "drawable", requireContext().packageName))
-                fecha.setText(user.fecha_nacimiento)
-                email.setText(user.mail)
-                if (user.admin){
+
+                lifecycleScope.launch {
+                    try {
+                        user = userRepo.getUser(cardData.id)
+                    } catch (getE: GetAllError) {
+                        // Mostrar mensaje de error sobre problemas generales durante la creación
+                    }
+                }
+
+                name.setText(user.name)
+                apellido.setText(user.surname)
+                img.setImageResource(resources.getIdentifier(user.picture, "drawable", requireContext().packageName))
+                fecha.setText(user.dateOfBirth.toString())
+                email.setText(user.email)
+                if (user.isAdmin==true){
                     isAdmin.isChecked= true
                 }
-                if (user.activo){
+                if (user.isActive==true){
                     isActiva.isChecked = true
                 }
 
@@ -315,7 +386,15 @@ class PersonalFragment : Fragment(), ICardClickListener {
                 btnConfirmar.setOnClickListener {
                     val todoOk = comprobarCampos()
                     if(todoOk){
-                        database.kkUsersDao.update(kkUsersEntity(id = user.id, foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                        //database.kkUsersDao.update(kkUsersEntity(id = user.id, foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                        lifecycleScope.launch {
+                            try {
+                                val fechaLong = convertirFechaStringAFechaLong(fecha.text.toString())
+                                userRepo.update(User(userId = user.userId, token = user.token, picture = null, name = name.text.toString(), surname = apellido.text.toString(), email = email.text.toString(), password = user.password, dateOfBirth = fechaLong, teamId = equipoSelectedId, roleId = ocupacionSelectedId, isAdmin = isAdmin.isChecked, isActive = isActiva.isChecked, isFirstLogin = user.isFirstLogin, lastSeen = user.lastSeen, familyId = user.familyId))
+                            } catch (getE: GetAllError) {
+                                // Mostrar mensaje de error sobre problemas generales durante la creación
+                            }
+                        }
                         dialog.dismiss()
                     }
                 }
@@ -329,7 +408,15 @@ class PersonalFragment : Fragment(), ICardClickListener {
                 btnConfirmar.setOnClickListener {
                     val todoOk = comprobarCampos()
                     if(todoOk){
-                        database.kkUsersDao.insert(kkUsersEntity(foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                        //database.kkUsersDao.insert(kkUsersEntity(foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                        val fechaLong = convertirFechaStringAFechaLong(fecha.text.toString())
+                        lifecycleScope.launch {
+                            try {
+                                userRepo.register(User(picture = null, name = name.text.toString(), surname = apellido.text.toString(), email = email.text.toString(), dateOfBirth = fechaLong, teamId = equipoSelectedId, roleId = ocupacionSelectedId, isAdmin = isAdmin.isChecked, isActive = isActiva.isChecked, isFirstLogin = true))
+                            } catch (getE: GetAllError) {
+                                // Mostrar mensaje de error sobre problemas generales durante la creación
+                            }
+                        }
                         dialog.dismiss()
 
                     }
@@ -342,24 +429,45 @@ class PersonalFragment : Fragment(), ICardClickListener {
     }
 
 
-    private fun borrarUser(id:Int){
+    private fun borrarUser(id:String){
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_confirm_delete, null)
         val tv_name = dialogView.findViewById<TextView>(R.id.tv_name)
-        var user = database.kkUsersDao.getUsersById(id)
+        //var user = database.kkUsersDao.getUsersById(id)
+        lifecycleScope.launch {
+            try {
+                user = userRepo.getUser(id)
+            } catch (getE: GetAllError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
+            }
+        }
 
 
         val dialog = MaterialAlertDialogBuilder(requireContext())
             .setTitle("¿Eliminar el usuario?")
             .setView(dialogView)
             .setPositiveButton("Aceptar") {dialog, _ ->
-                database.kkUsersDao.delete(user)
+                //database.kkUsersDao.delete(user)
+                lifecycleScope.launch {
+                    try {
+                        userRepo.delete(user)
+                    } catch (getE: GetAllError) {
+                        // Mostrar mensaje de error sobre problemas generales durante la creación
+                    }
+                }
+
             }
             .setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
             .create()
         dialog.show()
 
-        tv_name.text = user.nombre +" "+ user.apellido
+        tv_name.text = user.name +" "+ user.surname
 
+    }
+
+    private fun convertirFechaStringAFechaLong(fechaString: String): Long {
+        val formato = SimpleDateFormat("dd/MM/yyyy")
+        val fecha = formato.parse(fechaString)
+        return fecha?.time ?: 0
     }
 
     private fun showDatePickerDialog(txtInsertarFecha: TextView) {

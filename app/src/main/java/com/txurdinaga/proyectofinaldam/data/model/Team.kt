@@ -7,8 +7,8 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Team(
-    val teamId: Int? = null,
-    var teamName: String? = null,
+    val teamId: Int,
+    var teamName: String,
     var stadium: String? = null,
     var categoryId: Int? = null,
     var leagueId: Int? = null,
@@ -16,3 +16,8 @@ data class Team(
     var picturesConsent: Boolean? = null,
     var isTeamUnkina: Boolean? = null
 )
+{
+    override fun toString(): String {
+        return teamName
+    }
+}

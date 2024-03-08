@@ -248,7 +248,7 @@ class GestionEquiposFragment : Fragment() {
 
             if(allFieldsFilled){
                 if (modo == "alta") {
-                    team = Team(teamName = equipoName.text.toString(), stadium = equipoLocation.text.toString(), categoryId =  equipoCategorySelected?.toInt(), leagueId =  equipoLigaSelected?.toInt(), logo =  imageString, isTeamUnkina =  check_isUnkina.isChecked, picturesConsent =  check_visible.isChecked)
+                    team = Team(teamId = 0, teamName = equipoName.text.toString(), stadium = equipoLocation.text.toString(), categoryId =  equipoCategorySelected?.toInt(), leagueId =  equipoLigaSelected?.toInt(), logo =  imageString, isTeamUnkina =  check_isUnkina.isChecked, picturesConsent =  check_visible.isChecked)
                     lifecycleScope.launch {
                         try {
                             teamRepo.create(team)
