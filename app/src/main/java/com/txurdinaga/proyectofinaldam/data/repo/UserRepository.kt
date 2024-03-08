@@ -66,16 +66,13 @@ private object Constants {
     const val GET_USER_BY_ID_ROUTE = "/user"
     const val IS_ADMIN_ROUTE = "/user/isAdmin"
 }
+
 class UserRepository() : IUserRepository {
     private var token = EncryptedPrefsUtil.getToken()
 
     private val client = HttpClient(Android) {
         install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true // Permite al serializador ignorar campos no esperados
-                prettyPrint = true
-                isLenient = true
-            })
+            json(json)
         }
     }
 
@@ -202,13 +199,21 @@ class UserRepository() : IUserRepository {
         if (response.status.isSuccess()) {
             Log.d(TAG, "GET ALL: SUCCESS")
             val responseBody = response.bodyAsText()
-            return Json.decodeFromString(responseBody)
+            val users = json.decodeFromString<List<Map<String, User>>>(responseBody).map { it.values.first() }
+            return users
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
             Log.d(TAG, "GET ALL: ERROR")
             throw GetAllError()
         }
+    }
+
+    companion object {
+        val json = Json{
+            ignoreUnknownKeys = true
+            prettyPrint = true
+            isLenient = true}
     }
 
 }

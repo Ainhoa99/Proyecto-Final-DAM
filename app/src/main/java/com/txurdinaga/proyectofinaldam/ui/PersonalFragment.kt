@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -139,6 +140,7 @@ class PersonalFragment : Fragment(), ICardClickListener {
             lifecycleScope.launch {
                 try {
                     usuariosList = userRepo.getAllUsers()
+                    Log.d("FLAG", usuariosList.toString())
                     usuariosList.forEach { t ->
                         if (t.teamId==equipoSeleccionado){
                             usersNameList.add(t)
