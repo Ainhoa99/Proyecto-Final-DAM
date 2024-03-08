@@ -137,6 +137,86 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
             var usersNameList= mutableListOf<User>()
 
+            fun mostrarLista(){
+                if (usersNameList.isNotEmpty()){
+                    msgFotosEmpty.visibility = View.GONE
+                    msgJugadores.visibility = View.VISIBLE
+                    msgEqTecnico.visibility = View.VISIBLE
+                    val rvEquipoTecnico = binding.recyclerViewEquipoTecnico
+                    rvEquipoTecnico.visibility = View.VISIBLE
+                    val datasetJugadores = mutableListOf<CardData>()
+                    val datasetEquipoTecnico = mutableListOf<CardData>()
+
+                    usersNameList.forEach { user ->
+                        //var ocupacion = database.kkOcupacionesDao.getOcupacionById(user.ocupacionId)
+
+                        var roleName= Role(0, "")
+
+                        lifecycleScope.launch {
+                            try {
+                                ocupacionesList = roleRepo.getAllRoles()
+                                ocupacionesList.forEach { t ->
+                                    if (t.roleId==user.roleId){
+                                        roleName=t
+                                    }
+                                }
+                            } catch (getE: GetAllError) {
+                                // Mostrar mensaje de error sobre problemas generales durante la creación
+                            }
+                        }
+
+                        if (user.roleId == 1){
+                            datasetJugadores.add(
+                                CardData(
+                                    user.picture,
+                                    user.userId,
+                                    user.name,
+                                    roleName.roleName
+
+                                )
+                            )
+                        } else{
+                            datasetEquipoTecnico.add(
+                                CardData(
+                                    user.picture,
+                                    user.userId,
+                                    user.name,
+                                    roleName.roleName
+                                )
+                            )
+                        }
+                    }
+
+
+                    val cardAdapter = CardAdapter(datasetJugadores, this)
+                    val recyclerView: RecyclerView = binding.recyclerView
+                    recyclerView.adapter = cardAdapter
+                    recyclerView.setHasFixedSize(true);
+                    recyclerView.isNestedScrollingEnabled = false;
+                    val layoutManager = recyclerView.layoutManager as GridLayoutManager?
+                    // Verificamos si el layoutManager no es nulo para evitar errores
+                    layoutManager?.apply {
+                        // Establecemos el spanCount deseado
+                        spanCount = 3
+                    }
+
+                    val cardAdapterEquipoTecnico = CardAdapter(datasetEquipoTecnico, this)
+                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                    recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
+                    recyclerViewEquipoTecnico.setHasFixedSize(true);
+                    recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
+                } else{
+                    msgFotosEmpty.visibility = View.VISIBLE
+                    msgJugadores.visibility = View.GONE
+                    msgEqTecnico.visibility = View.GONE
+                    val emptyAdapter = CardAdapter(emptyList(), this)
+                    val recyclerView: RecyclerView = binding.recyclerView
+                    recyclerView.adapter = emptyAdapter
+                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                    recyclerViewEquipoTecnico.adapter = emptyAdapter
+                }
+            }
+
             lifecycleScope.launch {
                 try {
                     usuariosList = userRepo.getAllUsers()
@@ -146,88 +226,12 @@ class PersonalFragment : Fragment(), ICardClickListener {
                             usersNameList.add(t)
                         }
                     }
+                    mostrarLista()
                 } catch (getE: GetAllError) {
                     // Mostrar mensaje de error sobre problemas generales durante la creación
                 }
             }
 
-            if (usersNameList.isNotEmpty()){
-                msgFotosEmpty.visibility = View.GONE
-                msgJugadores.visibility = View.VISIBLE
-                msgEqTecnico.visibility = View.VISIBLE
-                val rvEquipoTecnico = binding.recyclerViewEquipoTecnico
-                rvEquipoTecnico.visibility = View.VISIBLE
-                val datasetJugadores = mutableListOf<CardData>()
-                val datasetEquipoTecnico = mutableListOf<CardData>()
-
-                usersNameList.forEach { user ->
-                    //var ocupacion = database.kkOcupacionesDao.getOcupacionById(user.ocupacionId)
-
-                    var roleName= Role(0, "")
-
-                    lifecycleScope.launch {
-                        try {
-                            ocupacionesList = roleRepo.getAllRoles()
-                            ocupacionesList.forEach { t ->
-                                if (t.roleId==user.roleId){
-                                    roleName=t
-                                }
-                            }
-                        } catch (getE: GetAllError) {
-                            // Mostrar mensaje de error sobre problemas generales durante la creación
-                        }
-                    }
-
-                    if (user.roleId == 1){
-                        datasetJugadores.add(
-                            CardData(
-                                user.picture,
-                                user.userId,
-                                user.name,
-                                roleName.roleName
-
-                            )
-                        )
-                    } else{
-                        datasetEquipoTecnico.add(
-                            CardData(
-                                user.picture,
-                                user.userId,
-                                user.name,
-                                roleName.roleName
-                            )
-                        )
-                    }
-                }
-
-
-                val cardAdapter = CardAdapter(datasetJugadores, this)
-                val recyclerView: RecyclerView = binding.recyclerView
-                recyclerView.adapter = cardAdapter
-                recyclerView.setHasFixedSize(true);
-                recyclerView.isNestedScrollingEnabled = false;
-                val layoutManager = recyclerView.layoutManager as GridLayoutManager?
-                // Verificamos si el layoutManager no es nulo para evitar errores
-                layoutManager?.apply {
-                    // Establecemos el spanCount deseado
-                    spanCount = 3
-                }
-
-                val cardAdapterEquipoTecnico = CardAdapter(datasetEquipoTecnico, this)
-                val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
-                recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
-                recyclerViewEquipoTecnico.setHasFixedSize(true);
-                recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
-            } else{
-                msgFotosEmpty.visibility = View.VISIBLE
-                msgJugadores.visibility = View.GONE
-                msgEqTecnico.visibility = View.GONE
-                val emptyAdapter = CardAdapter(emptyList(), this)
-                val recyclerView: RecyclerView = binding.recyclerView
-                recyclerView.adapter = emptyAdapter
-                val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
-                recyclerViewEquipoTecnico.adapter = emptyAdapter
-            }
 
         }
 
