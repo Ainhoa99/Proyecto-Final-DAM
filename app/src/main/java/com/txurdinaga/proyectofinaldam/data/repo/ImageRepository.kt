@@ -5,19 +5,24 @@ import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
+import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
+import com.txurdinaga.proyectofinaldam.util.GetAllError
+import com.txurdinaga.proyectofinaldam.util.LoginError
 import com.txurdinaga.proyectofinaldam.util.UploadError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
+import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
@@ -28,6 +33,7 @@ import java.io.File
 interface IImageRepository {
     suspend fun uploadImage(image: File, metadata: ImageMetadata): String
     suspend fun getImage(imageId: String): GlideUrl
+    suspend fun getAllImages(): List<ImageMetadata>
 }
 
 class ImageRepository : IImageRepository {
@@ -60,12 +66,13 @@ class ImageRepository : IImageRepository {
                 })
             }
 
+            token = EncryptedPrefsUtil.getToken()
 
             val response: HttpResponse = client.submitFormWithBinaryData(
                 url = "${SERVER_URL}${API_ENTRY_POINT}${UPLOAD_ROUTE}",
                 formData = formData,
                 block = {
-                    header(HttpHeaders.Authorization, "Bearer $token")
+                    header(HttpHeaders.Authorization, "Bearer $token") 
                 }
             )
 
@@ -81,8 +88,10 @@ class ImageRepository : IImageRepository {
 
     // TODO Handle errors
     override suspend fun getImage(imageId: String): GlideUrl {
+        token = EncryptedPrefsUtil.getToken()
+
         val glideUrl = GlideUrl(
-            "${Companion.SERVER_URL}${API_ENTRY_POINT}${GET_ROUTE}/${imageId}",
+            "${SERVER_URL}${API_ENTRY_POINT}${GET_ROUTE}/${imageId}",
             LazyHeaders.Builder()
                 .addHeader("Authorization", "Bearer $token")
                 .build()
@@ -90,10 +99,43 @@ class ImageRepository : IImageRepository {
         return glideUrl
     }
 
+    override suspend fun getAllImages(): List<ImageMetadata> {
+        token = EncryptedPrefsUtil.getToken()
+        val response: HttpResponse = withContext(Dispatchers.IO) {
+            client.get("${SERVER_URL}${API_ENTRY_POINT}${GET_ALL_IMAGES}") {
+                header(HttpHeaders.Authorization, "Bearer $token")
+            }
+        }
+        if (response.status.isSuccess()) {
+            Log.d("IMAGE_REPOSITORY", "GET ALL: SUCCESS")
+            val json = response.bodyAsText()
+            val images = Json.decodeFromString<List<ImageMetadata>>(json)
+
+            for (image in images) {
+                val glideUrl = GlideUrl(
+                    "${SERVER_URL}${API_ENTRY_POINT}${GET_ROUTE}/${image.imageId}",
+                    LazyHeaders.Builder()
+                        .addHeader("Authorization", "Bearer $token")
+                        .build()
+                )
+                image.url = glideUrl
+            }
+
+            return images
+
+        } else if (response.status == HttpStatusCode.Unauthorized) {
+            throw LoginError()
+        } else {
+            Log.d("IMAGE_REPOSITORY", "GET ALL: ERROR")
+            throw GetAllError()
+        }
+    }
+
     companion object {
         private const val SERVER_URL: String = BuildConfig.SERVER_URL
         private const val API_ENTRY_POINT = "/api/v1"
         private const val UPLOAD_ROUTE = "/image/upload"
         private const val GET_ROUTE = "/image"
+        private const val GET_ALL_IMAGES = "/images"
     }
 }
