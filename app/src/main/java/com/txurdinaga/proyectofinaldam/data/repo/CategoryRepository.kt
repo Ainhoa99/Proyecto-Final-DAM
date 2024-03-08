@@ -1,18 +1,12 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
+import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.Category
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.API_ENTRY_POINT
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.CREATE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.DELETE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.GET_ALL_CATEGORIES
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.SERVER_URL
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsCategory.UPDATE_ROUTE
 import com.txurdinaga.proyectofinaldam.util.CreateError
 import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.GetAllError
 import com.txurdinaga.proyectofinaldam.util.LoginError
-import com.txurdinaga.proyectofinaldam.util.RegisterError
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import com.txurdinaga.proyectofinaldam.util.UpdateError
 import io.ktor.client.HttpClient
@@ -43,16 +37,6 @@ interface ICategoryRepository {
     suspend fun getAllCategories(): List<Category>
 }
 
-private object ConstantsCategory {
-    const val SERVER_URL = "https://sardina-server.duckdns.org"
-    const val API_ENTRY_POINT = "/api/v1"
-
-    const val CREATE_ROUTE = "/category/create"
-    const val UPDATE_ROUTE = "/category/update"
-    const val DELETE_ROUTE = "/category/delete"
-    const val GET_ALL_CATEGORIES = "/categories"
-}
-
 class CategoryRepository : ICategoryRepository {
     private var token = EncryptedPrefsUtil.getToken()
 
@@ -69,7 +53,7 @@ class CategoryRepository : ICategoryRepository {
     override suspend fun create(category: Category) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.post("$SERVER_URL$API_ENTRY_POINT$CREATE_ROUTE") {
+            client.post("${Companion.SERVER_URL}${Companion.API_ENTRY_POINT}$CREATE_ROUTE") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -91,7 +75,7 @@ class CategoryRepository : ICategoryRepository {
     override suspend fun update(category: Category) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${category.categoryId}") {
+            client.put("${Companion.SERVER_URL}${Companion.API_ENTRY_POINT}$UPDATE_ROUTE/${category.categoryId}") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -113,7 +97,7 @@ class CategoryRepository : ICategoryRepository {
     override suspend fun delete(category: Category) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${category.categoryId}") {
+            client.delete("${Companion.SERVER_URL}${Companion.API_ENTRY_POINT}$DELETE_ROUTE/${category.categoryId}") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -135,7 +119,7 @@ class CategoryRepository : ICategoryRepository {
     override suspend fun getAllCategories(): List<Category> {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_CATEGORIES") {
+            client.get("${SERVER_URL}${Companion.API_ENTRY_POINT}$GET_ALL_CATEGORIES") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -154,6 +138,15 @@ class CategoryRepository : ICategoryRepository {
             Log.d("CATEGORY_REPOSITORY", "GET ALL: ERROR")
             throw GetAllError()
         }
+    }
+
+    companion object {
+        private const val SERVER_URL: String = BuildConfig.SERVER_URL
+        private const val API_ENTRY_POINT = "/api/v1"
+        private const val CREATE_ROUTE = "/category/create"
+        private const val UPDATE_ROUTE = "/category/update"
+        private const val DELETE_ROUTE = "/category/delete"
+        private const val GET_ALL_CATEGORIES = "/categories"
     }
 
 }

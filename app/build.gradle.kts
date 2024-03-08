@@ -12,6 +12,7 @@ android {
     namespace = "com.txurdinaga.proyectofinaldam"
     compileSdk = 34
 
+
     defaultConfig {
         applicationId = "com.txurdinaga.proyectofinaldam"
         minSdk = 24
@@ -20,6 +21,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // buildConfigField("String", "SERVER_URL", "\"http://10.0.2.2:8080\"")
+        buildConfigField("String", "SERVER_URL", "\"https://sardina-server.duckdns.org\"")
     }
 
     buildTypes {
@@ -40,6 +44,7 @@ android {
     }
     buildFeatures{
         viewBinding = true
+        buildConfig = true
     }
 }
 

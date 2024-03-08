@@ -1,19 +1,12 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
-import com.txurdinaga.proyectofinaldam.data.model.Category
+import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.League
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.API_ENTRY_POINT
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.CREATE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.DELETE_ROUTE
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.GET_ALL_LEAGUES
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.SERVER_URL
-import com.txurdinaga.proyectofinaldam.data.repo.ConstantsLeage.UPDATE_ROUTE
 import com.txurdinaga.proyectofinaldam.util.CreateError
 import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import com.txurdinaga.proyectofinaldam.util.GetAllError
-import com.txurdinaga.proyectofinaldam.util.RegisterError
 import com.txurdinaga.proyectofinaldam.util.UpdateError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -41,15 +34,7 @@ interface ILeagueRepository {
     suspend fun delete(league: League)
     suspend fun getAllLeagues(): List<League>
 }
-private object ConstantsLeage {
-    const val SERVER_URL = "https://sardina-server.duckdns.org"
-    const val API_ENTRY_POINT = "/api/v1"
 
-    const val CREATE_ROUTE = "/league/create"
-    const val UPDATE_ROUTE = "/league/update"
-    const val DELETE_ROUTE = "/league/delete"
-    const val GET_ALL_LEAGUES = "/leagues"
-}
 class LeageRepository() : ILeagueRepository {
     private var token = EncryptedPrefsUtil.getToken()
 
@@ -66,7 +51,7 @@ class LeageRepository() : ILeagueRepository {
     override suspend fun create(league: League) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.post("$SERVER_URL$API_ENTRY_POINT$CREATE_ROUTE") {
+            client.post("${Companion.SERVER_URL}$API_ENTRY_POINT$CREATE_ROUTE") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -86,7 +71,7 @@ class LeageRepository() : ILeagueRepository {
     override suspend fun update(league: League) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.put("$SERVER_URL$API_ENTRY_POINT$UPDATE_ROUTE/${league.leagueId}") {
+            client.put("${SERVER_URL}$API_ENTRY_POINT$UPDATE_ROUTE/${league.leagueId}") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -106,7 +91,7 @@ class LeageRepository() : ILeagueRepository {
     override suspend fun delete(league: League) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.delete("$SERVER_URL$API_ENTRY_POINT$DELETE_ROUTE/${league.leagueId}") {
+            client.delete("${SERVER_URL}$API_ENTRY_POINT$DELETE_ROUTE/${league.leagueId}") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -126,7 +111,7 @@ class LeageRepository() : ILeagueRepository {
     override suspend fun getAllLeagues(): List<League> {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.get("$SERVER_URL$API_ENTRY_POINT$GET_ALL_LEAGUES") {
+            client.get("${SERVER_URL}$API_ENTRY_POINT$GET_ALL_LEAGUES") {
                 header(
                     HttpHeaders.Authorization,
                     "Bearer $token"
@@ -142,6 +127,15 @@ class LeageRepository() : ILeagueRepository {
             Log.d("LEAGE_LEAGE", "GET: ERROR")
             throw GetAllError()
         }
+    }
+
+    companion object {
+        private const val SERVER_URL: String = BuildConfig.SERVER_URL
+        private const val API_ENTRY_POINT = "/api/v1"
+        private const val CREATE_ROUTE = "/league/create"
+        private const val UPDATE_ROUTE = "/league/update"
+        private const val DELETE_ROUTE = "/league/delete"
+        private const val GET_ALL_LEAGUES = "/leagues"
     }
 
 }

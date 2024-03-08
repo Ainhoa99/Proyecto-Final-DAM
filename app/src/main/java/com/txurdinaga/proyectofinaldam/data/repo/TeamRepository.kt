@@ -1,6 +1,7 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
+import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.Team
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
 import com.txurdinaga.proyectofinaldam.util.CreateError
@@ -36,18 +37,6 @@ interface ITeamRepository {
     suspend fun getAllTeams(): List<Team>
 }
 
-private object ConstantsTeam {
-    const val TAG = "TEAM_REPOSITORY"
-
-    const val SERVER_URL = "https://sardina-server.duckdns.org"
-    const val API_ENTRY_POINT = "/api/v1"
-
-    const val CREATE_ROUTE = "/team/create"
-    const val UPDATE_ROUTE = "/team/update"
-    const val DELETE_ROUTE = "/team/delete"
-    const val GET_ALL_TEAMS = "/teams"
-}
-
 class TeamRepository : ITeamRepository {
     private var token = EncryptedPrefsUtil.getToken()
 
@@ -64,18 +53,18 @@ class TeamRepository : ITeamRepository {
     override suspend fun create(team: Team) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.post("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.CREATE_ROUTE}") {
+            client.post("${SERVER_URL}${API_ENTRY_POINT}${CREATE_ROUTE}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
                 contentType(ContentType.Application.Json)
                 setBody(team)
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsTeam.TAG, "CREATE: SUCCESS")
+            Log.d(TAG, "CREATE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsTeam.TAG, "CREATE: ERROR")
+            Log.d(TAG, "CREATE: ERROR")
             throw CreateError()
         }
     }
@@ -83,18 +72,18 @@ class TeamRepository : ITeamRepository {
     override suspend fun update(team: Team) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.put("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.UPDATE_ROUTE}/${team.teamId}") {
+            client.put("${SERVER_URL}${API_ENTRY_POINT}${UPDATE_ROUTE}/${team.teamId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
                 contentType(ContentType.Application.Json)
                 setBody(team)
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsTeam.TAG, "UPDATE: SUCCESS")
+            Log.d(TAG, "UPDATE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsTeam.TAG, "UPDATE: ERROR")
+            Log.d(TAG, "UPDATE: ERROR")
             throw UpdateError()
         }
     }
@@ -102,17 +91,17 @@ class TeamRepository : ITeamRepository {
     override suspend fun delete(team: Team) {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.delete("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.DELETE_ROUTE}/${team.teamId}") {
+            client.delete("${SERVER_URL}${API_ENTRY_POINT}${DELETE_ROUTE}/${team.teamId}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
                 contentType(ContentType.Application.Json)
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsTeam.TAG, "DELETE: SUCCESS")
+            Log.d(TAG, "DELETE: SUCCESS")
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsTeam.TAG, "DELETE: ERROR")
+            Log.d(TAG, "DELETE: ERROR")
             throw DeleteError()
         }
     }
@@ -120,20 +109,32 @@ class TeamRepository : ITeamRepository {
     override suspend fun getAllTeams(): List<Team> {
         token = EncryptedPrefsUtil.getToken()
         val response: HttpResponse = withContext(Dispatchers.IO) {
-            client.get("${ConstantsTeam.SERVER_URL}${ConstantsTeam.API_ENTRY_POINT}${ConstantsTeam.GET_ALL_TEAMS}") {
+            client.get("${SERVER_URL}${API_ENTRY_POINT}${GET_ALL_TEAMS}") {
                 header(HttpHeaders.Authorization, "Bearer $token")
                 contentType(ContentType.Application.Json)
             }
         }
         if (response.status.isSuccess()) {
-            Log.d(ConstantsTeam.TAG, "GET ALL: SUCCESS")
+            Log.d(TAG, "GET ALL: SUCCESS")
             val responseBody = response.bodyAsText()
             return Json.decodeFromString(responseBody)
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
-            Log.d(ConstantsTeam.TAG, "GET ALL: ERROR")
+            Log.d(TAG, "GET ALL: ERROR")
             throw GetAllError()
         }
+    }
+
+    companion object {
+        const val TAG = "TEAM_REPOSITORY"
+
+        private const val SERVER_URL: String = BuildConfig.SERVER_URL
+        const val API_ENTRY_POINT = "/api/v1"
+
+        const val CREATE_ROUTE = "/team/create"
+        const val UPDATE_ROUTE = "/team/update"
+        const val DELETE_ROUTE = "/team/delete"
+        const val GET_ALL_TEAMS = "/teams"
     }
 }
