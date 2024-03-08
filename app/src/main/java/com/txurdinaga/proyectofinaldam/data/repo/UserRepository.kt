@@ -179,7 +179,7 @@ class UserRepository() : IUserRepository {
         if (response.status.isSuccess()) {
             Log.d(TAG, "GET BY ID: SUCCESS")
             val responseBody = response.bodyAsText()
-            return Json.decodeFromString(responseBody)
+            return json.decodeFromString(responseBody)
         } else if (response.status == HttpStatusCode.Unauthorized) {
             throw LoginError()
         } else {
