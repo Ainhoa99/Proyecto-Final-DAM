@@ -121,6 +121,10 @@
         android:name="com.txurdinaga.proyectofinaldam.ui.GestionOcupacionesFragment"
         android:label="GestionOcupacionesFragment" />
     <fragment
+        android:id="@+id/gestionFotosFragment"
+        android:name="com.txurdinaga.proyectofinaldam.ui.GestionFotosFragment"
+        android:label="GestionFotosFragment"/>
+    <fragment
         android:id="@+id/ajustesFragment2"
         android:name="com.txurdinaga.proyectofinaldam.ui.AjustesFragment"
         android:label="fragment_ajustes"
@@ -135,4 +139,5 @@
             app:destination="@id/principalFragment"
             app:popUpTo="@id/principalFragment" />
     </fragment>
+
 </navigation>

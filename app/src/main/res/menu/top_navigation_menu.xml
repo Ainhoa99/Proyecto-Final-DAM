@@ -65,6 +65,10 @@
                     android:id="@+id/gestionOcupacionesFragment"
                     android:icon="@drawable/gestion"
                     android:title="@string/gocupacioens" />
+                <item
+                    android:id="@+id/gestionFotosFragment"
+                    android:icon="@drawable/gestion"
+                    android:title="GFotos" />
 
                 <item
                     android:id="@+id/gestionPDFs"

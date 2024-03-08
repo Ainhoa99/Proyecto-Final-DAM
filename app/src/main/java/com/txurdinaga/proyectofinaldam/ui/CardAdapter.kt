@@ -9,12 +9,14 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.room.Room
+import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.txurdinaga.proyectofinaldam.R
 import kotlin.coroutines.coroutineContext
+import android.content.Context
 
 
-class CardAdapter(private val dataSet: List<CardData>, private val clickListener: ICardClickListener):
+class CardAdapter(private val context: Context, private val dataSet: List<CardData>, private val clickListener: ICardClickListener):
     RecyclerView.Adapter<CardAdapter.ViewHolder>() {
 
     class ViewHolder(view: View, clickListener: ICardClickListener) : RecyclerView.ViewHolder(view) {
@@ -56,8 +58,11 @@ class CardAdapter(private val dataSet: List<CardData>, private val clickListener
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val currentCard = dataSet[position]
         if (currentCard.title!=null){
-            val resourceId = holder.itemView.context.resources.getIdentifier(currentCard.title, "drawable", holder.itemView.context.packageName)
-            holder.image.setImageResource(resourceId)
+            Glide.with(context)
+                .load(currentCard.url)
+                .into(holder.image)
+           // val resourceId = holder.itemView.context.resources.getIdentifier(currentCard.title, "drawable", holder.itemView.context.packageName)
+           // holder.image.setImageResource(resourceId)
         } else{
             holder.image.setImageResource(R.drawable.avatar)
         }

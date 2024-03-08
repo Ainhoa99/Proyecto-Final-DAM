@@ -93,20 +93,21 @@ class GaleriaFragment : Fragment(), ICardClickListener {
                                 fotoEquipo.title,
                                 null,
                                 null,
+                                null,
                                 null
                             )
                         )
                     }
 
 
-                    val cardAdapter = CardAdapter(dataset, this)
+                    val cardAdapter = CardAdapter(requireContext(), dataset, this)
                     val recyclerView: RecyclerView = binding.recyclerView
                     recyclerView.adapter = cardAdapter
                     recyclerView.setHasFixedSize(true);
                     recyclerView.isNestedScrollingEnabled = false;
                 } else{
                     msgFotosEmpty.visibility = View.VISIBLE
-                    val emptyAdapter = CardAdapter(emptyList(), this)
+                    val emptyAdapter = CardAdapter(requireContext(), emptyList(), this)
                     val recyclerView: RecyclerView = binding.recyclerView
                     recyclerView.adapter = emptyAdapter
                 }

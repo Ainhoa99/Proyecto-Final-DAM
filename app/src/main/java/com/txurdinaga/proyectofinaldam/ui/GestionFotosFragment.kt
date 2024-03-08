@@ -1,5 +1,7 @@
 package com.txurdinaga.proyectofinaldam.ui
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,12 +10,18 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.room.Room
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
+import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
+import com.txurdinaga.proyectofinaldam.data.repo.ImageRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
 import com.txurdinaga.proyectofinaldam.util.SearchList
+import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 
 
 class GestionFotosFragment : Fragment() {
@@ -22,6 +30,13 @@ class GestionFotosFragment : Fragment() {
     private lateinit var database: kkAppDatabase
     val searchList = SearchList(context)
 
+    private val PICK_IMAGE_REQUEST = 1
+
+    private lateinit var imageRepo: ImageRepository
+    private var imageString: String=""
+
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -29,6 +44,9 @@ class GestionFotosFragment : Fragment() {
         _binding = FragmentGestionBinding.inflate(layoutInflater, container, false)
 
         binding.tvTitle.text = getString(R.string.gestion_fotos)
+
+        imageRepo = ImageRepository()
+
 
 
         //creamos la bbdd
@@ -55,8 +73,29 @@ class GestionFotosFragment : Fragment() {
         return binding.root
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            val imageUri = data.data
+            lifecycleScope.launch {
+                requireContext().contentResolver.openInputStream(imageUri!!).use { inputStream ->
+                    val mimeType = requireContext().contentResolver.getType(imageUri)
+                    val extension = mimeType?.substringAfterLast("/")
+                    val imageFile = File.createTempFile("image", ".$extension")
+                    FileOutputStream(imageFile).use { outputStream ->
+                        inputStream?.copyTo(outputStream)
+                    }
+                    val metadata = ImageMetadata("team_logo", null, false)
+                    val imageId = imageRepo.uploadImage(imageFile, metadata)
+                    imageString = imageId
+                }
+            }
+        }
+    }
+
     private fun showFotosDialog(selectedFotos: Pair<Int, String>?, modo: String) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_name, null)
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_gestion_foto, null)
         val builder = MaterialAlertDialogBuilder(requireContext())
         builder.setView(dialogView)
 

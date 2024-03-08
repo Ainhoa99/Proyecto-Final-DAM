@@ -1,10 +1,13 @@
 package com.txurdinaga.proyectofinaldam.ui
 
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +15,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
@@ -30,15 +34,19 @@ import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.data.model.Category
+import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
 import com.txurdinaga.proyectofinaldam.data.model.Role
 import com.txurdinaga.proyectofinaldam.data.model.Team
 import com.txurdinaga.proyectofinaldam.data.model.User
+import com.txurdinaga.proyectofinaldam.data.repo.ImageRepository
 import com.txurdinaga.proyectofinaldam.data.repo.RoleRepository
 import com.txurdinaga.proyectofinaldam.data.repo.TeamRepository
 import com.txurdinaga.proyectofinaldam.data.repo.UserRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentFotosBinding
 import com.txurdinaga.proyectofinaldam.util.GetAllError
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -52,15 +60,22 @@ class PersonalFragment : Fragment(), ICardClickListener {
     var equipoSelectedId: Int = -1
     var ocupacionSelectedId: Int = -1
 
+    private val PICK_IMAGE_REQUEST = 1
 
     private lateinit var equiposList: List<Team>
     private lateinit var usuariosList: List<User>
     private lateinit var ocupacionesList: List<Role>
-    private lateinit var user:User
+    private lateinit var imagesList: List<ImageMetadata>
+
+    private var user:User = User(userId = "", token = "", picture = "", name = "", surname = "", email = "", password = "", dateOfBirth = 0, teamId = 0, roleId = 0, isAdmin = false, isActive = false, isFirstLogin = false, lastSeen = 0, familyId = "")
 
     private lateinit var teamRepo: TeamRepository
     private lateinit var userRepo: UserRepository
+    private lateinit var imageRepo: ImageRepository
     private lateinit var roleRepo: RoleRepository
+
+    private var imageString: String=""
+
 
 
     override fun onCreateView(
@@ -72,6 +87,26 @@ class PersonalFragment : Fragment(), ICardClickListener {
         return binding.root
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.data != null) {
+            val imageUri = data.data
+            lifecycleScope.launch {
+                requireContext().contentResolver.openInputStream(imageUri!!).use { inputStream ->
+                    val mimeType = requireContext().contentResolver.getType(imageUri)
+                    val extension = mimeType?.substringAfterLast("/")
+                    val imageFile = File.createTempFile("image", ".$extension")
+                    FileOutputStream(imageFile).use { outputStream ->
+                        inputStream?.copyTo(outputStream)
+                    }
+                    val metadata = ImageMetadata("team_logo", null, false)
+                    val imageId = imageRepo.uploadImage(imageFile, metadata)
+                    imageString = imageId
+                }
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -79,6 +114,8 @@ class PersonalFragment : Fragment(), ICardClickListener {
         teamRepo = TeamRepository()
         userRepo = UserRepository()
         roleRepo = RoleRepository()
+        imageRepo = ImageRepository()
+
 
         requireActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
 
@@ -136,6 +173,8 @@ class PersonalFragment : Fragment(), ICardClickListener {
             //  val usersByEquipo = database.kkUsersDao.getUsersByEquipo(equipoSeleccionado)
 
             var usersNameList= mutableListOf<User>()
+            val datasetJugadores = mutableListOf<CardData>()
+            val datasetEquipoTecnico = mutableListOf<CardData>()
 
             fun mostrarLista(){
                 if (usersNameList.isNotEmpty()){
@@ -144,14 +183,37 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     msgEqTecnico.visibility = View.VISIBLE
                     val rvEquipoTecnico = binding.recyclerViewEquipoTecnico
                     rvEquipoTecnico.visibility = View.VISIBLE
-                    val datasetJugadores = mutableListOf<CardData>()
-                    val datasetEquipoTecnico = mutableListOf<CardData>()
+
 
                     usersNameList.forEach { user ->
                         //var ocupacion = database.kkOcupacionesDao.getOcupacionById(user.ocupacionId)
 
                         var roleName= Role(0, "")
+                        var imageName= ImageMetadata("", 0, false, "")
 
+                        fun mostrarImg(){
+                            if (user.roleId == 1){
+                                datasetJugadores.add(
+                                    CardData(
+                                        user.picture,
+                                        user.userId,
+                                        user.name,
+                                        roleName.roleName,
+                                        imageName.url
+                                    )
+                                )
+                            } else{
+                                datasetEquipoTecnico.add(
+                                    CardData(
+                                        user.picture,
+                                        user.userId,
+                                        user.name,
+                                        roleName.roleName,
+                                        imageName.url
+                                    )
+                                )
+                            }
+                        }
                         lifecycleScope.launch {
                             try {
                                 ocupacionesList = roleRepo.getAllRoles()
@@ -160,56 +222,49 @@ class PersonalFragment : Fragment(), ICardClickListener {
                                         roleName=t
                                     }
                                 }
+                                imagesList = imageRepo.getAllImages()
+                                imagesList.forEach {t ->
+                                    if (t.imageId==user.picture){
+                                        imageName=t
+                                    }
+
+                                }
+                                mostrarImg()
                             } catch (getE: GetAllError) {
                                 // Mostrar mensaje de error sobre problemas generales durante la creación
                             }
                         }
 
-                        if (user.roleId == 1){
-                            datasetJugadores.add(
-                                CardData(
-                                    user.picture,
-                                    user.userId,
-                                    user.name,
-                                    roleName.roleName
 
-                                )
-                            )
-                        } else{
-                            datasetEquipoTecnico.add(
-                                CardData(
-                                    user.picture,
-                                    user.userId,
-                                    user.name,
-                                    roleName.roleName
-                                )
-                            )
+                    }
+
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        val cardAdapter = CardAdapter(requireContext(), datasetJugadores, this)
+                        val recyclerView: RecyclerView = binding.recyclerView
+                        recyclerView.adapter = cardAdapter
+                        recyclerView.setHasFixedSize(true);
+                        recyclerView.isNestedScrollingEnabled = false;
+                        val layoutManager = recyclerView.layoutManager as GridLayoutManager?
+                        // Verificamos si el layoutManager no es nulo para evitar errores
+                        layoutManager?.apply {
+                            // Establecemos el spanCount deseado
+                            spanCount = 3
                         }
-                    }
+
+                        val cardAdapterEquipoTecnico = CardAdapter(requireContext(),datasetEquipoTecnico, this)
+                        val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
+                        recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
+                        recyclerViewEquipoTecnico.setHasFixedSize(true);
+                        recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
+
+                    }, 300)
 
 
-                    val cardAdapter = CardAdapter(datasetJugadores, this)
-                    val recyclerView: RecyclerView = binding.recyclerView
-                    recyclerView.adapter = cardAdapter
-                    recyclerView.setHasFixedSize(true);
-                    recyclerView.isNestedScrollingEnabled = false;
-                    val layoutManager = recyclerView.layoutManager as GridLayoutManager?
-                    // Verificamos si el layoutManager no es nulo para evitar errores
-                    layoutManager?.apply {
-                        // Establecemos el spanCount deseado
-                        spanCount = 3
-                    }
-
-                    val cardAdapterEquipoTecnico = CardAdapter(datasetEquipoTecnico, this)
-                    val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
-                    recyclerViewEquipoTecnico.adapter = cardAdapterEquipoTecnico
-                    recyclerViewEquipoTecnico.setHasFixedSize(true);
-                    recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
                 } else{
                     msgFotosEmpty.visibility = View.VISIBLE
                     msgJugadores.visibility = View.GONE
                     msgEqTecnico.visibility = View.GONE
-                    val emptyAdapter = CardAdapter(emptyList(), this)
+                    val emptyAdapter = CardAdapter(requireContext(), emptyList(), this)
                     val recyclerView: RecyclerView = binding.recyclerView
                     recyclerView.adapter = emptyAdapter
                     val recyclerViewEquipoTecnico: RecyclerView = binding.recyclerViewEquipoTecnico
@@ -259,7 +314,7 @@ class PersonalFragment : Fragment(), ICardClickListener {
 
         var name = dialogView.findViewById<TextInputEditText>(R.id.textViewNombre)
         var apellido = dialogView.findViewById<TextInputEditText>(R.id.textViewApellidos)
-        var img = dialogView.findViewById<ImageView>(R.id.foto)
+        var btn_shield = dialogView.findViewById<ImageView>(R.id.foto)
         var email = dialogView.findViewById<TextInputEditText>(R.id.email)
         var isAdmin = dialogView.findViewById<CheckBox>(R.id.checkBoxAdmin)
         var isActiva = dialogView.findViewById<CheckBox>(R.id.checkBoxActiva)
@@ -272,8 +327,6 @@ class PersonalFragment : Fragment(), ICardClickListener {
         val fechaLayout =dialogView.findViewById<TextInputLayout>(R.id.LayoutFecha)
         val equipoLayout =dialogView.findViewById<TextInputLayout>(R.id.spEquipo)
         val ocupacionLayout =dialogView.findViewById<TextInputLayout>(R.id.spOcupacion)
-
-
 
         var btnBorrar = dialogView.findViewById<ImageView>(R.id.imageViewCancelar)
         var btnConfirmar = dialogView.findViewById<ImageView>(R.id.imageViewConfirmar)
@@ -315,6 +368,11 @@ class PersonalFragment : Fragment(), ICardClickListener {
         ocupacion.setOnItemClickListener { parent, view, position, id ->
             var ocupacionSelected = parent.getItemAtPosition(position) as Role
             ocupacionSelectedId = ocupacionSelected.roleId
+        }
+
+        btn_shield.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
         }
 
         fun comprobarCampos():Boolean{
@@ -363,25 +421,27 @@ class PersonalFragment : Fragment(), ICardClickListener {
             if (cardData.id !=null){
                // val user = database.kkUsersDao.getUsersById(cardData.id)
 
+                fun mostrarDatos(){
+                    name.setText(user.name)
+                    apellido.setText(user.surname)
+//                img.setImageResource(resources.getIdentifier(user.picture, "drawable", requireContext().packageName))
+                    fecha.setText(user.dateOfBirth.toString())
+                    email.setText(user.email)
+                    if (user.isAdmin==true){
+                        isAdmin.isChecked= true
+                    }
+                    if (user.isActive==true){
+                        isActiva.isChecked = true
+                    }
+                }
 
                 lifecycleScope.launch {
                     try {
                         user = userRepo.getUser(cardData.id)
+                        mostrarDatos()
                     } catch (getE: GetAllError) {
                         // Mostrar mensaje de error sobre problemas generales durante la creación
                     }
-                }
-
-                name.setText(user.name)
-                apellido.setText(user.surname)
-                img.setImageResource(resources.getIdentifier(user.picture, "drawable", requireContext().packageName))
-                fecha.setText(user.dateOfBirth.toString())
-                email.setText(user.email)
-                if (user.isAdmin==true){
-                    isAdmin.isChecked= true
-                }
-                if (user.isActive==true){
-                    isActiva.isChecked = true
                 }
 
                 btnBorrar.setOnClickListener {
@@ -396,7 +456,7 @@ class PersonalFragment : Fragment(), ICardClickListener {
                         lifecycleScope.launch {
                             try {
                                 val fechaLong = convertirFechaStringAFechaLong(fecha.text.toString())
-                                userRepo.update(User(userId = user.userId, token = user.token, picture = null, name = name.text.toString(), surname = apellido.text.toString(), email = email.text.toString(), password = user.password, dateOfBirth = fechaLong, teamId = equipoSelectedId, roleId = ocupacionSelectedId, isAdmin = isAdmin.isChecked, isActive = isActiva.isChecked, isFirstLogin = user.isFirstLogin, lastSeen = user.lastSeen, familyId = user.familyId))
+                                userRepo.update(User(userId = user.userId, token = user.token, picture = imageString, name = name.text.toString(), surname = apellido.text.toString(), email = email.text.toString(), password = user.password, dateOfBirth = fechaLong, teamId = equipoSelectedId, roleId = ocupacionSelectedId, isAdmin = isAdmin.isChecked, isActive = isActiva.isChecked, isFirstLogin = user.isFirstLogin, lastSeen = user.lastSeen, familyId = user.familyId))
                             } catch (getE: GetAllError) {
                                 // Mostrar mensaje de error sobre problemas generales durante la creación
                             }
@@ -406,26 +466,24 @@ class PersonalFragment : Fragment(), ICardClickListener {
                 }
             }
         } else{
-            img.setImageResource(resources.getIdentifier("avatar", "drawable", requireContext().packageName))
+            btn_shield.setImageResource(resources.getIdentifier("avatar", "drawable", requireContext().packageName))
             btnBorrar.setOnClickListener {
                 dialog.dismiss()
             }
             btnConfirmar.setOnClickListener {
-                btnConfirmar.setOnClickListener {
-                    val todoOk = comprobarCampos()
-                    if(todoOk){
-                        //database.kkUsersDao.insert(kkUsersEntity(foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
-                        val fechaLong = convertirFechaStringAFechaLong(fecha.text.toString())
-                        lifecycleScope.launch {
-                            try {
-                                userRepo.register(User(picture = null, name = name.text.toString(), surname = apellido.text.toString(), email = email.text.toString(), dateOfBirth = fechaLong, teamId = equipoSelectedId, roleId = ocupacionSelectedId, isAdmin = isAdmin.isChecked, isActive = isActiva.isChecked, isFirstLogin = true))
-                            } catch (getE: GetAllError) {
-                                // Mostrar mensaje de error sobre problemas generales durante la creación
-                            }
+                val todoOk = comprobarCampos()
+                if(todoOk){
+                    //database.kkUsersDao.insert(kkUsersEntity(foto = null, nombre = name.text.toString(), apellido = apellido.text.toString(), mail = email.text.toString(), password = "xxx", fecha_nacimiento = fecha.text.toString(), equipoId = equipoSelectedId, ocupacionId = ocupacionSelectedId, admin = isAdmin.isChecked, activo = isActiva.isChecked ))
+                    val fechaLong = convertirFechaStringAFechaLong(fecha.text.toString())
+                    lifecycleScope.launch {
+                        try {
+                            userRepo.register(User(picture = imageString, name = name.text.toString(), surname = apellido.text.toString(), email = email.text.toString(), dateOfBirth = fechaLong, teamId = equipoSelectedId, roleId = ocupacionSelectedId, isAdmin = isAdmin.isChecked, isActive = isActiva.isChecked, isFirstLogin = true))
+                        } catch (getE: GetAllError) {
+                            // Mostrar mensaje de error sobre problemas generales durante la creación
                         }
-                        dialog.dismiss()
-
                     }
+                    dialog.dismiss()
+
                 }
             }
         }

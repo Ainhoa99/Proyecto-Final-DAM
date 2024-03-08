@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.gestionLigasFragment,
                 R.id.gestionCategoriasFragment,
                 R.id.gestionColaboradoresFragment,
+                R.id.gestionFotosFragment,
                 R.id.fotosFragment,
                 R.id.loginFragment2,
                 R.id.galeriaFragment,
@@ -144,7 +145,8 @@ class MainActivity : AppCompatActivity() {
                 destination.id == R.id.gestionOcupacionesFragment ||
                 destination.id == R.id.personalFragment ||
                 destination.id == R.id.ajustesFragment2 ||
-                destination.id == R.id.cerrarSesionFragment
+                destination.id == R.id.cerrarSesionFragment ||
+                destination.id == R.id.gestionFotosFragment
             ) {
                 supportActionBar?.title = "Unkina SBT"
             }
@@ -202,6 +204,7 @@ class MainActivity : AppCompatActivity() {
                 val gPatrocinadores = menu.findItem(R.id.gestionColaboradoresFragment)
                 val gLigas = menu.findItem(R.id.gestionLigasFragment)
                 val gOcupaciones = menu.findItem(R.id.gestionOcupacionesFragment)
+                val gFotos = menu.findItem(R.id.gestionFotosFragment)
                 val gPDFs = menu.findItem(R.id.gestionPDFs)
                 val inicioSesion = menu.findItem(R.id.loginFragment2)
                 val login = menu.findItem(R.id.loginFragment2)
@@ -212,6 +215,7 @@ class MainActivity : AppCompatActivity() {
                 gPatrocinadores.isVisible = usuario
                 gLigas.isVisible = usuario
                 gOcupaciones.isVisible = usuario
+                gFotos.isVisible = usuario
                 gPDFs.isVisible = usuario
                 inicioSesion.isVisible = usuario
                 login.isVisible = false
@@ -238,6 +242,7 @@ class MainActivity : AppCompatActivity() {
         val gestionLigas = menu.findItem(R.id.gestionLigasFragment)
         val gestionCategorias = menu.findItem(R.id.gestionCategoriasFragment)
         val gestionColaboradores = menu.findItem(R.id.gestionColaboradoresFragment)
+        val gestionFotos = menu.findItem(R.id.gestionFotosFragment)
         val fotos = menu.findItem(R.id.fotosFragment)
         val login = menu.findItem(R.id.loginFragment2)
         val galeria = menu.findItem(R.id.galeriaFragment)
@@ -252,6 +257,7 @@ class MainActivity : AppCompatActivity() {
         gestionLigas.isVisible = false
         gestionCategorias.isVisible = false
         gestionColaboradores.isVisible = false
+        gestionFotos.isVisible = false
         fotos.isVisible = false
         galeria.isVisible = false
         gestionPDFs.isVisible = false
@@ -267,6 +273,7 @@ class MainActivity : AppCompatActivity() {
         val gestionEquipos = menu.findItem(R.id.gestionEquiposFragment)
         val inscripcion = menu.findItem(R.id.inscripcionFragment)
         val gestionPartidos = menu.findItem(R.id.gestionPartidosFragment)
+        val gestionFotos = menu.findItem(R.id.gestionFotosFragment)
         val colaboradores = menu.findItem(R.id.colaboradoresFragment2)
         val informacion = menu.findItem(R.id.informacionFragment2)
         val gestionLigas = menu.findItem(R.id.gestionLigasFragment)
@@ -285,6 +292,7 @@ class MainActivity : AppCompatActivity() {
         gestionEquipos.isVisible = true
         inscripcion.isVisible = true
         gestionPartidos.isVisible = true
+        gestionFotos.isVisible = true
         colaboradores.isVisible = true
         //informacion.isVisible = true
         gestionLigas.isVisible = true
