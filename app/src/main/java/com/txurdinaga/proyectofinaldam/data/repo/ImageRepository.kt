@@ -4,6 +4,7 @@ import android.util.Log
 import com.bumptech.glide.load.model.GlideUrl
 import com.bumptech.glide.load.model.LazyHeaders
 import com.txurdinaga.proyectofinaldam.BuildConfig
+import com.txurdinaga.proyectofinaldam.data.model.Category
 import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
 import com.txurdinaga.proyectofinaldam.util.DeleteError
 import com.txurdinaga.proyectofinaldam.util.EncryptedPrefsUtil
@@ -13,16 +14,19 @@ import com.txurdinaga.proyectofinaldam.util.UploadError
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.request.delete
 import io.ktor.client.request.forms.formData
 import io.ktor.client.request.forms.submitFormWithBinaryData
 import io.ktor.client.request.get
 import io.ktor.client.request.header
+import io.ktor.client.request.setBody
 import io.ktor.client.statement.HttpResponse
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.Headers
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.http.isSuccess
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +38,7 @@ interface IImageRepository {
     suspend fun uploadImage(image: File, metadata: ImageMetadata): String
     suspend fun getImage(imageId: String): GlideUrl
     suspend fun getAllImages(): List<ImageMetadata>
+    suspend fun deleteImage(imageId: String)
 }
 
 class ImageRepository : IImageRepository {
@@ -131,11 +136,32 @@ class ImageRepository : IImageRepository {
         }
     }
 
+    override suspend fun deleteImage(imageId: String) {
+        token = EncryptedPrefsUtil.getToken()
+        val response: HttpResponse = withContext(Dispatchers.IO) {
+            client.delete("${SERVER_URL}${API_ENTRY_POINT}${DELETE_ROUTE}/$imageId") {
+                header(
+                    HttpHeaders.Authorization,
+                    "Bearer $token"
+                )
+            }
+        }
+        if (response.status.isSuccess()) {
+            Log.d("IMAGE_REPOSITORY", "DELETE: SUCCESS")
+        } else if (response.status == HttpStatusCode.Unauthorized) {
+            throw LoginError()
+        } else {
+            Log.d("IMAGE_REPOSITORY", "DELETE: ERROR")
+            throw DeleteError()
+        }
+    }
+
     companion object {
         private const val SERVER_URL: String = BuildConfig.SERVER_URL
         private const val API_ENTRY_POINT = "/api/v1"
         private const val UPLOAD_ROUTE = "/image/upload"
         private const val GET_ROUTE = "/image"
         private const val GET_ALL_IMAGES = "/images"
+        private const val DELETE_ROUTE = "/image"
     }
 }
