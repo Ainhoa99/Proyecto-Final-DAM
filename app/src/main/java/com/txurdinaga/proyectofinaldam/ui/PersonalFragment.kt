@@ -49,6 +49,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Date
 import java.util.Locale
 
 class PersonalFragment : Fragment(), ICardClickListener {
@@ -257,7 +258,7 @@ class PersonalFragment : Fragment(), ICardClickListener {
                         recyclerViewEquipoTecnico.setHasFixedSize(true);
                         recyclerViewEquipoTecnico.isNestedScrollingEnabled = false;
 
-                    }, 300)
+                    }, 400)
 
 
                 } else{
@@ -425,7 +426,13 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     name.setText(user.name)
                     apellido.setText(user.surname)
 //                img.setImageResource(resources.getIdentifier(user.picture, "drawable", requireContext().packageName))
-                    fecha.setText(user.dateOfBirth.toString())
+                    var fechaLongOriginal = user.dateOfBirth
+                    var fechaStringOriginal = fechaLongOriginal?.let {
+                        convertirFechaLongAFechaString(
+                            it
+                        )
+                    }
+                    fecha.setText(fechaStringOriginal.toString())
                     email.setText(user.email)
                     if (user.isAdmin==true){
                         isAdmin.isChecked= true
@@ -435,12 +442,10 @@ class PersonalFragment : Fragment(), ICardClickListener {
                     }
                 }
 
-                lifecycleScope.launch {
-                    try {
-                        user = userRepo.getUser(cardData.id)
+                usuariosList.forEach { i ->
+                    if (i.userId == cardData.id){
+                        user=i
                         mostrarDatos()
-                    } catch (getE: GetAllError) {
-                        // Mostrar mensaje de error sobre problemas generales durante la creación
                     }
                 }
 
@@ -532,6 +537,12 @@ class PersonalFragment : Fragment(), ICardClickListener {
         val formato = SimpleDateFormat("dd/MM/yyyy")
         val fecha = formato.parse(fechaString)
         return fecha?.time ?: 0
+    }
+
+    private fun convertirFechaLongAFechaString(fechaLong: Long): String {
+        val formato = SimpleDateFormat("dd/MM/yyyy")
+        val fecha = Date(fechaLong)
+        return formato.format(fecha)
     }
 
     private fun showDatePickerDialog(txtInsertarFecha: TextView) {
