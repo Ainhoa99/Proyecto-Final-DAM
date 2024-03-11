@@ -1,18 +1,25 @@
 package com.txurdinaga.proyectofinaldam.ui
 
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.card.MaterialCardView
 import com.txurdinaga.proyectofinaldam.R
 
-class ImageAdapter(private val images: List<Int>) :
+class ImageAdapter(private val context: Context, private val images: List<CardData>) :
     RecyclerView.Adapter<ImageAdapter.ImageViewHolder>() {
 
-    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView: ImageView = itemView.findViewById(R.id.imageView)
+    class ImageViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val image: ImageView
+        init {
+            image = view.findViewById(R.id.image)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
@@ -21,13 +28,15 @@ class ImageAdapter(private val images: List<Int>) :
     }
 
     override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
-        val imageResId = images[position % images.size]
-        holder.imageView.setImageResource(imageResId)
+        val currentCard = images[position]
+        Glide.with(context)
+            .load(currentCard.url)
+            .into(holder.image)
     }
 
     override fun getItemCount(): Int {
         // Retornamos un valor grande para que parezca que la lista es infinita
-        return Int.MAX_VALUE
+        return images.size
     }
 }
 

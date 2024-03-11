@@ -2,11 +2,17 @@ package com.txurdinaga.proyectofinaldam.ui
 
 import android.app.Activity
 import android.content.Intent
+import android.media.Image
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -16,8 +22,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputLayout
 import com.txurdinaga.proyectofinaldam.R
 import com.txurdinaga.proyectofinaldam.data.model.ImageMetadata
+import com.txurdinaga.proyectofinaldam.data.model.Team
 import com.txurdinaga.proyectofinaldam.data.repo.ImageRepository
+import com.txurdinaga.proyectofinaldam.data.repo.TeamRepository
 import com.txurdinaga.proyectofinaldam.databinding.FragmentGestionBinding
+import com.txurdinaga.proyectofinaldam.util.GetAllError
 import com.txurdinaga.proyectofinaldam.util.SearchList
 import kotlinx.coroutines.launch
 import java.io.File
@@ -36,6 +45,16 @@ class GestionFotosFragment : Fragment() {
     private var imageString: String=""
 
 
+    var equipoSeleccionado = 0
+    var equipoSelectedId: Int = -1
+
+    private lateinit var equiposList: List<Team>
+    private lateinit var teamRepo: TeamRepository
+
+    private lateinit var metadata: ImageMetadata
+    private var imageId: String = ""
+    private lateinit var imageFile: File
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,7 +65,7 @@ class GestionFotosFragment : Fragment() {
         binding.tvTitle.text = getString(R.string.gestion_fotos)
 
         imageRepo = ImageRepository()
-
+        teamRepo = TeamRepository()
 
 
         //creamos la bbdd
@@ -66,9 +85,9 @@ class GestionFotosFragment : Fragment() {
                 showConfirmDeleteDialog(selectedFoto)
             }
         }
-        binding.btnModificacion.setOnClickListener() {
-            showModFotosDialog()
-        }
+        //binding.btnModificacion.setOnClickListener() {
+        //    showModFotosDialog()
+        //}
 
         return binding.root
     }
@@ -82,13 +101,10 @@ class GestionFotosFragment : Fragment() {
                 requireContext().contentResolver.openInputStream(imageUri!!).use { inputStream ->
                     val mimeType = requireContext().contentResolver.getType(imageUri)
                     val extension = mimeType?.substringAfterLast("/")
-                    val imageFile = File.createTempFile("image", ".$extension")
+                    imageFile = File.createTempFile("image", ".$extension")
                     FileOutputStream(imageFile).use { outputStream ->
                         inputStream?.copyTo(outputStream)
                     }
-                    val metadata = ImageMetadata("team_logo", null, false)
-                    val imageId = imageRepo.uploadImage(imageFile, metadata)
-                    imageString = imageId
                 }
             }
         }
@@ -103,7 +119,23 @@ class GestionFotosFragment : Fragment() {
         val fotoName = dialogView.findViewById<EditText>(R.id.name)
         val fotoNameLayout = dialogView.findViewById<TextInputLayout>(R.id.nameLayout)
         var dialogTitle = "Alta de Fotos"
+        val equipo = dialogView.findViewById<AutoCompleteTextView>(R.id.equipo)
+        var btn_shield = dialogView.findViewById<Button>(R.id.foto)
+        var equiposNameList= mutableListOf<Team>()
 
+        lifecycleScope.launch {
+            try {
+                equiposList = teamRepo.getAllTeams()
+                equiposList.forEach { t ->
+                    equiposNameList.add(t)
+                }
+            } catch (getE: GetAllError) {
+                // Mostrar mensaje de error sobre problemas generales durante la creación
+            }
+        }
+
+        val adapterEquipos = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, equiposNameList)
+        equipo.setAdapter(adapterEquipos)
 
         if(modo != "alta" &&selectedFotos!=null){//no es alta, es MODIFICACION
             foto = database.kkfotosDao.getFotosById(selectedFotos.first)
@@ -117,6 +149,17 @@ class GestionFotosFragment : Fragment() {
         builder.setNegativeButton("Cancelar") { dialog, _ -> dialog.cancel() }
         val dialog = builder.create()
         dialog.show()
+
+        equipo.setOnItemClickListener { parent, view, position, id ->
+            var equipoSelected = parent.getItemAtPosition(position) as Team
+            equipoSelectedId = equipoSelected.teamId
+
+        }
+
+        btn_shield.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        }
 
 
         val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
@@ -138,7 +181,17 @@ class GestionFotosFragment : Fragment() {
 
             if(allFieldsFilled){
                 if (modo == "alta") {
-                    database.kkfotosDao.insert(kkFotosEntity(title="l",temporada= "", equipoId= 3, galeria = false))
+                    lifecycleScope.launch {
+                        try {
+                            metadata = ImageMetadata("team_image", equipoSelectedId, true)
+                            imageId = imageRepo.uploadImage(imageFile, metadata)
+                            imageString = imageId
+                        } catch (getE: GetAllError) {
+                            // Mostrar mensaje de error sobre problemas generales durante la creación
+                        }
+                    }
+
+
                 } else {
                     if (foto != null) {
                         foto.title = fotoName.text.toString()

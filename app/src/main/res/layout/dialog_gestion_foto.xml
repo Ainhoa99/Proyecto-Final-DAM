@@ -9,7 +9,7 @@
 
     <Button
         style="@style/Widget.Material3.Button.ElevatedButton"
-        android:id="@+id/btn_fotos"
+        android:id="@+id/foto"
         android:layout_width="275dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
@@ -35,21 +35,7 @@
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/temporadaLayout"
-        style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
-        android:layout_width="275dp"
-        android:layout_height="60dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="15dp">
 
-        <AutoCompleteTextView
-            android:id="@+id/temporada"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:text="Temporada"/>
-    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/equipoLayout"
