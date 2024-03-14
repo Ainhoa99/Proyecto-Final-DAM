@@ -1,6 +1,7 @@
 package com.txurdinaga.proyectofinaldam.data.repo
 
 import android.util.Log
+import com.txurdinaga.proyectofinaldam.BuildConfig
 import com.txurdinaga.proyectofinaldam.data.model.User
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.API_ENTRY_POINT
 import com.txurdinaga.proyectofinaldam.data.repo.Constants.DELETE_ROUTE
@@ -55,7 +56,7 @@ interface IUserRepository {
 private object Constants {
     const val TAG = "USER_REPOSITORY"
 
-    const val SERVER_URL = "https://sardina-server.duckdns.org"
+    val SERVER_URL: String = BuildConfig.SERVER_URL
     const val API_ENTRY_POINT = "/api/v1"
 
     const val LOGIN_ROUTE = "/user/login"
